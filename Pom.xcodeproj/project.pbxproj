@@ -24,8 +24,6 @@
 		484FC6481C8045E50014595E /* GlanceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 484FC6471C8045E50014595E /* GlanceController.swift */; };
 		484FC64A1C8045E50014595E /* ComplicationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 484FC6491C8045E50014595E /* ComplicationController.swift */; };
 		484FC64C1C8045E50014595E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 484FC64B1C8045E50014595E /* Assets.xcassets */; };
-		484FC6621C8046F90014595E /* TimeSpent in Resources */ = {isa = PBXBuildFile; fileRef = 484FC6611C8046F90014595E /* TimeSpent */; };
-		484FC6641C804A9F0014595E /* Play in Resources */ = {isa = PBXBuildFile; fileRef = 484FC6631C804A9F0014595E /* Play */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -111,8 +109,6 @@
 		484FC6491C8045E50014595E /* ComplicationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComplicationController.swift; sourceTree = "<group>"; };
 		484FC64B1C8045E50014595E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		484FC64D1C8045E50014595E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		484FC6611C8046F90014595E /* TimeSpent */ = {isa = PBXFileReference; lastKnownFileType = folder; path = TimeSpent; sourceTree = "<group>"; };
-		484FC6631C804A9F0014595E /* Play */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Play; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -208,8 +204,6 @@
 				484FC6301C8045E50014595E /* Interface.storyboard */,
 				484FC6331C8045E50014595E /* Assets.xcassets */,
 				484FC6351C8045E50014595E /* Info.plist */,
-				484FC6631C804A9F0014595E /* Play */,
-				484FC6611C8046F90014595E /* TimeSpent */,
 			);
 			path = "Pom WatchKit App";
 			sourceTree = "<group>";
@@ -409,9 +403,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				484FC6621C8046F90014595E /* TimeSpent in Resources */,
 				484FC6341C8045E50014595E /* Assets.xcassets in Resources */,
-				484FC6641C804A9F0014595E /* Play in Resources */,
 				484FC6321C8045E50014595E /* Interface.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -751,6 +743,7 @@
 				484FC6521C8045E50014595E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		484FC6541C8045E50014595E /* Build configuration list for PBXNativeTarget "Pom WatchKit App" */ = {
 			isa = XCConfigurationList;
@@ -759,6 +752,7 @@
 				484FC6561C8045E50014595E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		484FC6581C8045E50014595E /* Build configuration list for PBXNativeTarget "Pom" */ = {
 			isa = XCConfigurationList;
@@ -767,6 +761,7 @@
 				484FC65A1C8045E50014595E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		484FC65B1C8045E50014595E /* Build configuration list for PBXNativeTarget "PomTests" */ = {
 			isa = XCConfigurationList;
@@ -775,6 +770,7 @@
 				484FC65D1C8045E50014595E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		484FC65E1C8045E50014595E /* Build configuration list for PBXNativeTarget "PomUITests" */ = {
 			isa = XCConfigurationList;
@@ -783,6 +779,7 @@
 				484FC6601C8045E50014595E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

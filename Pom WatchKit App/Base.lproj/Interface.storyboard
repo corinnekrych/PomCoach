@@ -10,13 +10,13 @@
             <objects>
                 <controller id="AgC-eL-Hgc" customClass="InterfaceController" customModule="Pom_WatchKit_App" customModuleProvider="target">
                     <items>
-                        <group width="1" height="0.90000000000000002" alignment="center" verticalAlignment="center" backgroundImage="Time0Spent.png" animationDuration="25" layout="vertical" id="wyJ-Y2-GKo">
+                        <group width="1" height="0.90000000000000002" alignment="center" verticalAlignment="center" backgroundImage="Time11Spent" animationDuration="25" layout="vertical" id="wyJ-Y2-GKo">
                             <items>
                                 <button alignment="left" verticalAlignment="center" semanticContentAttribute="spatial" id="52d-rN-Bm9" userLabel="StartButton">
-                                    <group key="contentGroup" width="1" height="0.90000000000000002" alignment="left" backgroundImage="start_line_color.png" contentMode="center" animationDuration="5" layout="vertical" id="4ZQ-XI-I0p" userLabel="StartButtonGroup">
+                                    <group key="contentGroup" width="1" height="0.90000000000000002" alignment="left" backgroundImage="Start" contentMode="center" animationDuration="5" layout="vertical" id="4ZQ-XI-I0p" userLabel="StartButtonGroup">
                                         <items>
-                                            <timer alignment="center" verticalAlignment="bottom" format="short" id="6Bf-gb-Zh3">
-                                                <calendarUnit key="units" hour="YES" minute="YES"/>
+                                            <timer alignment="center" verticalAlignment="bottom" id="6Bf-gb-Zh3">
+                                                <calendarUnit key="units" minute="YES" second="YES"/>
                                             </timer>
                                         </items>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -31,6 +31,7 @@
                     </items>
                     <connections>
                         <outlet property="startButton" destination="52d-rN-Bm9" id="Y9O-vn-Cti"/>
+                        <outlet property="timer" destination="6Bf-gb-Zh3" id="UPG-DN-75s"/>
                     </connections>
                 </controller>
             </objects>

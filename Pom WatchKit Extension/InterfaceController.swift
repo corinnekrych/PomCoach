@@ -13,11 +13,13 @@ import Foundation
 class InterfaceController: WKInterfaceController {
 
     @IBOutlet var startButton: WKInterfaceButton!
+    @IBOutlet var timer: WKInterfaceTimer!
     var isStarted: Bool!
     
     override func awakeWithContext(context: AnyObject?) {
         super.awakeWithContext(context)
         isStarted = false
+        startButton.setBackgroundImage(UIImage(named: "Start"))
         // Configure interface objects here.
     }
 
@@ -32,9 +34,17 @@ class InterfaceController: WKInterfaceController {
     }
 
     @IBAction func onStartButton() {
+        print("onStartButton")
         isStarted = !isStarted
         if isStarted == true {
-            //startButton.
+            let countdown: NSTimeInterval = 25*60
+            let date = NSDate(timeIntervalSinceNow: countdown)
+            timer.setDate(date)
+            timer.start()
+            startButton.setBackgroundImage(UIImage(named: "Stop"))
+        } else {
+            timer.stop()
+            startButton.setBackgroundImage(UIImage(named: "Start"))
         }
     }
 }
