@@ -9,10 +9,13 @@
 import WatchKit
 import Foundation
 
+// todo change with object model
+let interval: NSTimeInterval = 10//25*60
 
 class InterfaceController: WKInterfaceController {
 
     @IBOutlet var group: WKInterfaceGroup!
+    @IBOutlet var startButtonGroup: WKInterfaceGroup!
     @IBOutlet var startButton: WKInterfaceButton!
     @IBOutlet var timer: WKInterfaceTimer!
     var isStarted: Bool!
@@ -20,10 +23,8 @@ class InterfaceController: WKInterfaceController {
     override func awakeWithContext(context: AnyObject?) {
         super.awakeWithContext(context)
         isStarted = false
-        startButton.setBackgroundImageNamed("Start")
+        startButtonGroup.setBackgroundImageNamed("Start")
         group.setBackgroundImageNamed("Time")
-        group.startAnimatingWithImagesInRange(NSMakeRange(0, 101), duration: 1.2, repeatCount: 1)
-        // Configure interface objects here.
     }
 
     override func willActivate() {
@@ -40,14 +41,17 @@ class InterfaceController: WKInterfaceController {
         print("onStartButton")
         isStarted = !isStarted
         if isStarted == true {
-            let countdown: NSTimeInterval = 25*60
+            let countdown: NSTimeInterval = interval
             let date = NSDate(timeIntervalSinceNow: countdown)
             timer.setDate(date)
             timer.start()
-            startButton.setBackgroundImageNamed("Stop")
+            group.startAnimatingWithImagesInRange(NSMakeRange(0, 101), duration: interval, repeatCount: 1)
+            startButtonGroup.setBackgroundImageNamed("Stop")
         } else {
             timer.stop()
-            startButton.setBackgroundImage(UIImage(named: "Start"))
+            startButtonGroup.setBackgroundImageNamed("Start")
+            group.stopAnimating()
+            //group.setBackgroundImageNamed("Time10")
         }
     }
 }
