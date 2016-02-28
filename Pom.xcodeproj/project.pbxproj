@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		481C34041C81DB2300FBE279 /* Activity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 481C34031C81DB2300FBE279 /* Activity.swift */; };
 		484FC6071C8045E50014595E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 484FC6061C8045E50014595E /* AppDelegate.swift */; };
 		484FC6091C8045E50014595E /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 484FC6081C8045E50014595E /* ViewController.swift */; };
 		484FC60C1C8045E50014595E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 484FC60A1C8045E50014595E /* Main.storyboard */; };
@@ -24,6 +25,9 @@
 		484FC6481C8045E50014595E /* GlanceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 484FC6471C8045E50014595E /* GlanceController.swift */; };
 		484FC64A1C8045E50014595E /* ComplicationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 484FC6491C8045E50014595E /* ComplicationController.swift */; };
 		484FC64C1C8045E50014595E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 484FC64B1C8045E50014595E /* Assets.xcassets */; };
+		48751CD51C830086006255F4 /* ActivitiesManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48751CD41C830086006255F4 /* ActivitiesManager.swift */; };
+		48751CD61C8320A2006255F4 /* Activity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 481C34031C81DB2300FBE279 /* Activity.swift */; };
+		48751CD71C8320A2006255F4 /* ActivitiesManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48751CD41C830086006255F4 /* ActivitiesManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -83,6 +87,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		481C34031C81DB2300FBE279 /* Activity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Activity.swift; path = Pom/Activity.swift; sourceTree = "<group>"; };
 		484FC6031C8045E50014595E /* Pom.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Pom.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		484FC6061C8045E50014595E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		484FC6081C8045E50014595E /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -109,6 +114,7 @@
 		484FC6491C8045E50014595E /* ComplicationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComplicationController.swift; sourceTree = "<group>"; };
 		484FC64B1C8045E50014595E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		484FC64D1C8045E50014595E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		48751CD41C830086006255F4 /* ActivitiesManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivitiesManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -143,9 +149,19 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		481C34021C81DAC700FBE279 /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				481C34031C81DB2300FBE279 /* Activity.swift */,
+				48751CD41C830086006255F4 /* ActivitiesManager.swift */,
+			);
+			name = Shared;
+			sourceTree = "<group>";
+		};
 		484FC5FA1C8045E50014595E = {
 			isa = PBXGroup;
 			children = (
+				481C34021C81DAC700FBE279 /* Shared */,
 				484FC6051C8045E50014595E /* Pom */,
 				484FC62F1C8045E50014595E /* Pom WatchKit App */,
 				484FC63E1C8045E50014595E /* Pom WatchKit Extension */,
@@ -423,7 +439,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				481C34041C81DB2300FBE279 /* Activity.swift in Sources */,
 				484FC6091C8045E50014595E /* ViewController.swift in Sources */,
+				48751CD51C830086006255F4 /* ActivitiesManager.swift in Sources */,
 				484FC6071C8045E50014595E /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -448,6 +466,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				48751CD61C8320A2006255F4 /* Activity.swift in Sources */,
+				48751CD71C8320A2006255F4 /* ActivitiesManager.swift in Sources */,
 				484FC6461C8045E50014595E /* NotificationController.swift in Sources */,
 				484FC6441C8045E50014595E /* ExtensionDelegate.swift in Sources */,
 				484FC64A1C8045E50014595E /* ComplicationController.swift in Sources */,

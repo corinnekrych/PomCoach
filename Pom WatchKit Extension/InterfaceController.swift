@@ -10,7 +10,7 @@ import WatchKit
 import Foundation
 
 // todo change with object model
-let interval: NSTimeInterval = 10//25*60
+//let interval: NSTimeInterval = 10//25*60
 
 class InterfaceController: WKInterfaceController {
 
@@ -18,40 +18,55 @@ class InterfaceController: WKInterfaceController {
     @IBOutlet var startButtonGroup: WKInterfaceGroup!
     @IBOutlet var startButton: WKInterfaceButton!
     @IBOutlet var timer: WKInterfaceTimer!
-    var isStarted: Bool!
+    var timerFire: NSTimer!
     
     override func awakeWithContext(context: AnyObject?) {
         super.awakeWithContext(context)
-        isStarted = false
         startButtonGroup.setBackgroundImageNamed("Start")
         group.setBackgroundImageNamed("Time")
     }
 
     override func willActivate() {
-        // This method is called when watch view controller is about to be visible to user
         super.willActivate()
     }
 
     override func didDeactivate() {
-        // This method is called when watch view controller is no longer visible
         super.didDeactivate()
     }
+    
 
     @IBAction func onStartButton() {
         print("onStartButton")
-        isStarted = !isStarted
-        if isStarted == true {
-            let countdown: NSTimeInterval = interval
-            let date = NSDate(timeIntervalSinceNow: countdown)
-            timer.setDate(date)
+        let manager = ActivitiesManager.instance
+        guard let currentActivity = manager.currentActivity else {return}
+        if !currentActivity.isStarted() {
+            print("currentActivitied:\(currentActivity.name):")
+            let duration = NSDate(timeIntervalSinceNow: currentActivity.duration)
+            timer.setDate(duration)
             timer.start()
-            group.startAnimatingWithImagesInRange(NSMakeRange(0, 101), duration: interval, repeatCount: 1)
+            timerFire = NSTimer.scheduledTimerWithTimeInterval(currentActivity.duration, target: self, selector: "fire", userInfo: nil, repeats: false)
+            currentActivity.start()
+            group.setBackgroundImageNamed("Time")
+            group.startAnimatingWithImagesInRange(NSMakeRange(0, 101), duration: currentActivity.duration, repeatCount: 1)
             startButtonGroup.setBackgroundImageNamed("Stop")
         } else {
             timer.stop()
+            timerFire.invalidate()
             startButtonGroup.setBackgroundImageNamed("Start")
+            currentActivity.stop()
             group.stopAnimating()
-            //group.setBackgroundImageNamed("Time10")
+            group.setBackgroundImageNamed("Time0")
         }
+    }
+    
+    func fire() {
+        timer.stop()
+        startButtonGroup.setBackgroundImageNamed("Start")
+        let manager = ActivitiesManager.instance
+        guard let currentActivity = manager.currentActivity else {return}
+                print("FIRE: \(currentActivity.name)")
+        currentActivity.stop()
+        group.stopAnimating()
+        group.setBackgroundImageNamed("Time0")
     }
 }
