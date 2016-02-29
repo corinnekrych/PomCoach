@@ -13,14 +13,21 @@
                         <group width="1" height="0.90000000000000002" alignment="center" verticalAlignment="center" backgroundImage="Time12" animationDuration="25" layout="vertical" id="wyJ-Y2-GKo">
                             <items>
                                 <button alignment="left" verticalAlignment="center" semanticContentAttribute="spatial" id="52d-rN-Bm9" userLabel="StartButton">
-                                    <group key="contentGroup" width="1" height="0.90000000000000002" alignment="left" backgroundImage="Start" contentMode="center" animationDuration="5" layout="vertical" id="4ZQ-XI-I0p" userLabel="StartButtonGroup">
+                                    <group key="contentGroup" width="1" height="0.90000000000000002" alignment="left" contentMode="center" layout="vertical" spacing="0.0" id="4ZQ-XI-I0p" userLabel="StartButtonGroup">
                                         <items>
-                                            <timer alignment="center" verticalAlignment="bottom" id="6Bf-gb-Zh3">
+                                            <imageView alignment="center" verticalAlignment="center" image="Start" id="3BZ-W7-cAU"/>
+                                            <timer alignment="center" verticalAlignment="center" hidden="YES" id="6Bf-gb-Zh3">
+                                                <color key="textColor" red="0.40000000600000002" green="1" blue="0.40000000600000002" alpha="1" colorSpace="calibratedRGB"/>
+                                                <fontDescription key="font" type="system" weight="ultraLight" pointSize="27"/>
                                                 <calendarUnit key="units" minute="YES" second="YES"/>
                                             </timer>
+                                            <label height="21" alignment="center" verticalAlignment="center" text="25 min" id="HSC-Pz-Rqc">
+                                                <color key="textColor" red="0.0" green="1" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                <fontDescription key="font" type="system" weight="ultraLight" pointSize="12"/>
+                                            </label>
                                         </items>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                        <edgeInsets key="margins" left="0.0" right="0.0" top="0.0" bottom="22"/>
+                                        <edgeInsets key="margins" left="0.0" right="0.0" top="16" bottom="10"/>
                                     </group>
                                     <connections>
                                         <action selector="onStartButton" destination="AgC-eL-Hgc" id="nNG-Z4-Z9Q"/>
@@ -32,8 +39,9 @@
                     <connections>
                         <outlet property="group" destination="wyJ-Y2-GKo" id="jwi-Xg-nGA"/>
                         <outlet property="startButton" destination="52d-rN-Bm9" id="Y9O-vn-Cti"/>
-                        <outlet property="startButtonGroup" destination="4ZQ-XI-I0p" id="B6D-sa-0wW"/>
+                        <outlet property="startButtonImage" destination="3BZ-W7-cAU" id="0Ts-8n-6ZI"/>
                         <outlet property="timer" destination="6Bf-gb-Zh3" id="UPG-DN-75s"/>
+                        <outlet property="totalTimeLabel" destination="HSC-Pz-Rqc" id="bp7-DE-smf"/>
                     </connections>
                 </controller>
             </objects>

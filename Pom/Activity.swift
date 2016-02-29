@@ -21,7 +21,7 @@ public protocol Activity {
     var timer: NSTimer? {get set}
     var remainingTime: NSTimeInterval? {get}
     func start()
-    func stop()
+    func stopAndGoNext()
     func isStarted() -> Bool
     init(name: String, duration: NSTimeInterval, manager: ActivitiesManager)
 }
@@ -55,7 +55,7 @@ public class TaskActivity: Activity {
         timer = NSTimer.scheduledTimerWithTimeInterval(duration, target: self, selector: "stop", userInfo: nil, repeats: false)
     }
     
-    public func stop() {
+    public func stopAndGoNext() {
         endDate = NSDate()
         timer?.invalidate()
         activitiesManager.setNext()
@@ -95,7 +95,7 @@ public class WorkoutActivity: Activity {
         timer = NSTimer(timeInterval: duration, target: self, selector: "stop", userInfo: nil, repeats: false)
     }
     
-    public func stop() {
+    public func stopAndGoNext() {
         endDate = NSDate()
         timer?.invalidate()
         activitiesManager.setNext()

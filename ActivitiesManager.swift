@@ -35,8 +35,9 @@ public class ActivitiesManager {
     public func setNext() -> Activity? {
         guard let activities = activities else {return nil}
         let remainingActivities = activities.filter {$0.endDate == nil}
-        if remainingActivities.count == 1 {
+        if remainingActivities.count == 0 {
             currentActivity = nil
+            return nil
         }
         currentActivity = remainingActivities[0]
         return currentActivity

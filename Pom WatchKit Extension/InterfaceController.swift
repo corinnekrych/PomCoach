@@ -9,21 +9,19 @@
 import WatchKit
 import Foundation
 
-// todo change with object model
-//let interval: NSTimeInterval = 10//25*60
-
 class InterfaceController: WKInterfaceController {
 
     @IBOutlet var group: WKInterfaceGroup!
-    @IBOutlet var startButtonGroup: WKInterfaceGroup!
     @IBOutlet var startButton: WKInterfaceButton!
     @IBOutlet var timer: WKInterfaceTimer!
+    @IBOutlet var startButtonImage: WKInterfaceImage!
+    @IBOutlet var totalTimeLabel: WKInterfaceLabel!
     var timerFire: NSTimer!
     
     override func awakeWithContext(context: AnyObject?) {
         super.awakeWithContext(context)
-        startButtonGroup.setBackgroundImageNamed("Start")
         group.setBackgroundImageNamed("Time")
+        formatTotalTime(ActivitiesManager.instance.currentActivity)
     }
 
     override func willActivate() {
@@ -48,25 +46,39 @@ class InterfaceController: WKInterfaceController {
             currentActivity.start()
             group.setBackgroundImageNamed("Time")
             group.startAnimatingWithImagesInRange(NSMakeRange(0, 101), duration: currentActivity.duration, repeatCount: 1)
-            startButtonGroup.setBackgroundImageNamed("Stop")
+            startButtonImage.setHidden(true)
+            timer.setHidden(false)
+            formatTotalTime(ActivitiesManager.instance.currentActivity)
         } else {
             timer.stop()
             timerFire.invalidate()
-            startButtonGroup.setBackgroundImageNamed("Start")
-            currentActivity.stop()
+            startButtonImage.setHidden(false)
+            timer.setHidden(true)
+            currentActivity.stopAndGoNext()
             group.stopAnimating()
+            // init for next task
             group.setBackgroundImageNamed("Time0")
+            formatTotalTime(ActivitiesManager.instance.currentActivity)
         }
     }
     
     func fire() {
         timer.stop()
-        startButtonGroup.setBackgroundImageNamed("Start")
+        startButtonImage.setHidden(false)
+        timer.setHidden(true)
         let manager = ActivitiesManager.instance
         guard let currentActivity = manager.currentActivity else {return}
-                print("FIRE: \(currentActivity.name)")
-        currentActivity.stop()
+        print("FIRE: \(currentActivity.name)")
+        currentActivity.stopAndGoNext()
         group.stopAnimating()
+        // init for next
         group.setBackgroundImageNamed("Time0")
+        formatTotalTime(ActivitiesManager.instance.currentActivity)
+    }
+    
+    func formatTotalTime(activity: Activity?) {
+        if let duration = activity?.duration {
+            totalTimeLabel.setText("\(duration) sec")
+        }
     }
 }
