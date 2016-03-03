@@ -11,7 +11,6 @@ import Foundation
 public class ActivitiesManager {
     public var activities: [Activity]?
     public static let instance = ActivitiesManager()
-    public var currentActivity: Activity?
     
     public init() {
       // TODO: remove hardcoded
@@ -24,23 +23,29 @@ public class ActivitiesManager {
             WorkoutActivity(name: "break3", manager: self),
             TaskActivity(name: "task4", manager: self),
             WorkoutActivity(name: "longerbreak1", duration: LongWorkoutInterval, manager: self)]
-        let remainingActivities = activities!.filter {$0.endDate == nil}
-        currentActivity = remainingActivities[0]
     }
     
     public func isCurrentActivityStarted() -> Bool {
         return currentActivity?.timer?.valid ?? false
     }
     
-    public func setNext() -> Activity? {
-        guard let activities = activities else {return nil}
-        let remainingActivities = activities.filter {$0.endDate == nil}
-        if remainingActivities.count == 0 {
-            currentActivity = nil
-            return nil
+    public var remainingActivities:[Activity]? {
+        get {
+            return activities?.filter {$0.endDate == nil}
         }
-        currentActivity = remainingActivities[0]
-        return currentActivity
+    }
+    
+    public var currentActivity:Activity? {
+        get {
+            guard let activities = remainingActivities else {return nil}
+            return activities[0] ?? nil
+        }
+    }
+    
+    public var completedActivities:[Activity]? {
+        get {
+            return activities?.filter {$0.endDate != nil}
+        }
     }
     
 }

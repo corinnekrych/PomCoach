@@ -54,7 +54,7 @@ class InterfaceController: WKInterfaceController {
             timerFire.invalidate()
             startButtonImage.setHidden(false)
             timer.setHidden(true)
-            currentActivity.stopAndGoNext()
+            currentActivity.stop()
             group.stopAnimating()
             // init for next task
             group.setBackgroundImageNamed("Time0")
@@ -69,7 +69,7 @@ class InterfaceController: WKInterfaceController {
         let manager = ActivitiesManager.instance
         guard let currentActivity = manager.currentActivity else {return}
         print("FIRE: \(currentActivity.name)")
-        currentActivity.stopAndGoNext()
+        currentActivity.stop()
         group.stopAnimating()
         // init for next
         group.setBackgroundImageNamed("Time0")
