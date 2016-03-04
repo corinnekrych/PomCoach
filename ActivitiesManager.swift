@@ -16,13 +16,13 @@ public class ActivitiesManager {
       // TODO: remove hardcoded
         activities = [
             TaskActivity(name: "task1", manager: self),
-            WorkoutActivity(name: "break1", manager: self),
+            TaskActivity(name: "break1", duration: WorkkoutInterval, type:.Break, manager: self),
             TaskActivity(name: "task2", manager: self),
-            WorkoutActivity(name: "break2", manager: self),
+            TaskActivity(name: "break2", duration: WorkkoutInterval, type:.Break, manager: self),
             TaskActivity(name: "task3", manager: self),
-            WorkoutActivity(name: "break3", manager: self),
+            TaskActivity(name: "break3", duration: WorkkoutInterval, type:.Break, manager: self),
             TaskActivity(name: "task4", manager: self),
-            WorkoutActivity(name: "longerbreak1", duration: LongWorkoutInterval, manager: self)]
+            TaskActivity(name: "longerbreak1", duration: LongWorkoutInterval, type: .LongBreak, manager: self)]
     }
     
     public func isCurrentActivityStarted() -> Bool {
@@ -32,6 +32,18 @@ public class ActivitiesManager {
     public var remainingActivities:[Activity]? {
         get {
             return activities?.filter {$0.endDate == nil}
+        }
+        set {
+            if let newValue = newValue {
+                if let completedActivities = completedActivities {
+                    activities = newValue + completedActivities
+                } else {
+                    activities = newValue
+                }
+            } else {
+                activities = completedActivities
+            }
+            
         }
     }
     

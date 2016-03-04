@@ -234,6 +234,11 @@
                     </view>
                     <navigationItem key="navigationItem" title="POM COACH" id="eXa-Ng-dtM">
                         <barButtonItem key="backBarButtonItem" title="Back" id="aJ4-9z-kas"/>
+                        <barButtonItem key="leftBarButtonItem" title="Item" systemItem="edit" id="Wmg-zF-NVe">
+                            <connections>
+                                <action selector="editMode:" destination="ybq-Nv-qyS" id="Upf-mD-8od"/>
+                            </connections>
+                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="zrL-bW-ClX">
                             <connections>
                                 <action selector="beginAddingTask" destination="ybq-Nv-qyS" id="RpI-oe-8Ea"/>

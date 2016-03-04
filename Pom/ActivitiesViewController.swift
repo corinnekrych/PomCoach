@@ -24,25 +24,62 @@ class ActivitiesViewController: UIViewController {
         tableView.separatorStyle = .None
         //loadSavedTasks()
     }
-    
+
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         tableView.reloadData()
     }
+    
+    func tableView(tableView: UITableView, editingStyleForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCellEditingStyle {
+        return .Delete
+    }
+    
+    func tableView(tableView: UITableView, shouldIndentWhileEditingRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+        return true
+    }
+
+    func tableView(tableView: UITableView, moveRowAtIndexPath sourceIndexPath: NSIndexPath, toIndexPath destinationIndexPath: NSIndexPath) {
+        if sourceIndexPath.section == 0 {
+            guard var remainingActivities = activitiesMgr.remainingActivities else {return}
+            let moved = remainingActivities[sourceIndexPath.row]
+            remainingActivities.removeAtIndex(sourceIndexPath.row)
+            remainingActivities.insert(moved, atIndex: destinationIndexPath.row)
+            activitiesMgr.remainingActivities = remainingActivities
+        }
+    }
 }
+
+
 
 // MARK: Add New Task
 extension ActivitiesViewController {
+    @IBAction func editMode(sender: UIBarButtonItem) {
+        self.tableView.editing = !self.tableView.editing
+        saveTasks()
+    }
+    
+    func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+        if editingStyle == .Delete && indexPath.section == 0 {
+            // Delete the row from the data source
+            // meals.removeAtIndex(indexPath.row)
+            guard var remainingActivities = activitiesMgr.remainingActivities else {return}
+            remainingActivities.removeAtIndex(indexPath.row)
+            activitiesMgr.remainingActivities = remainingActivities
+            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
+        }
+    }
+    
     @IBAction func beginAddingTask() {
         addingNewTask = true
         
-        if let _ = activitiesMgr.activities {
+        if let _ = activitiesMgr.remainingActivities {
             tableView.insertRowsAtIndexPaths([NSIndexPath(forRow: 0, inSection: 0)], withRowAnimation: .Top)
         } else {
             tableView.reloadRowsAtIndexPaths([NSIndexPath(forRow: 0, inSection: 0)], withRowAnimation: .Bottom)
         }
         
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Done, target: self, action: "finishAddingTask")
+ 
     }
     
     func finishAddingTask() {
@@ -61,8 +98,8 @@ extension ActivitiesViewController {
         addingNewTask = false
         tableView.reloadRowsAtIndexPaths([NSIndexPath(forRow: 0, inSection: 0)], withRowAnimation: .Fade)
         newTaskCell?.reset()
-        //savetasks()
-        
+        saveTasks()
+        tableView.endEditing(true)
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: "beginAddingTask")
     }
     
@@ -72,6 +109,7 @@ extension ActivitiesViewController {
         alert.addAction(okAction)
         self.presentViewController(alert, animated: true, completion: nil)
     }
+    
 }
 
 // MARK: UITableViewDelegate
@@ -108,7 +146,7 @@ extension ActivitiesViewController: UITableViewDataSource {
             if addingNewTask {
                 return 1 + activitiesMgr.remainingActivities!.count
             } else {
-                return max(1,activitiesMgr.remainingActivities!.count)
+                return max(1, activitiesMgr.remainingActivities!.count)
             }
         }
         else if section == 1 {
@@ -164,24 +202,25 @@ extension ActivitiesViewController: UITableViewDataSource {
 }
 
 // MARK: Task Persistance
-//extension ActivitiesViewController {
-//    private var savedTasksPath: String {
-//        let paths = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)
-//        let docPath = paths.first!
-//        return (docPath as NSString).stringByAppendingPathComponent("SavedTasks")
-//    }
-//    
-//    func loadSavedTasks() {
+extension ActivitiesViewController {
+    private var savedTasksPath: String {
+        let paths = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)
+        let docPath = paths.first!
+        return (docPath as NSString).stringByAppendingPathComponent("SavedTasks")
+    }
+    
+    func loadSavedTasks() {
 //        if let data = NSData(contentsOfFile: savedTasksPath) {
 //            let savedTasks = NSKeyedUnarchiver.unarchiveObjectWithData(data) as! TaskList
 //            tasks = savedTasks
 //        } else {
 //            tasks = TaskList()
 //        }
-//    }
-//    
-//    func saveTasks() {
-//        NSKeyedArchiver.archiveRootObject(tasks, toFile: savedTasksPath)
-//    }
-//}
-//
+    }
+    
+    func saveTasks() {
+        print("REMAINING\(activitiesMgr.remainingActivities)")
+        //NSKeyedArchiver.archiveRootObject(tasks, toFile: savedTasksPath)
+    }
+}
+

@@ -38,7 +38,7 @@ public enum ActivityType: Int, CustomStringConvertible {
     }
 }
 
-public protocol Activity {
+public protocol Activity: CustomStringConvertible {
     var name: String {get}
     var duration: NSTimeInterval {get}
     var activitiesManager: ActivitiesManager {get}
@@ -61,6 +61,11 @@ public class TaskActivity: NSObject, Activity {
     public var endDate: NSDate?
     public var timer: NSTimer?
     public var type: ActivityType
+    
+    
+    public override var description: String {
+        return "\(self.name)"
+    }
     
     public var remainingTime: NSTimeInterval? {
         get {
@@ -86,47 +91,6 @@ public class TaskActivity: NSObject, Activity {
     
     public func stop() {
         print("fire")
-        endDate = NSDate()
-        timer?.invalidate()
-    }
-    
-    public func isStarted() -> Bool {
-        return timer?.valid ?? false
-    }
-}
-
-public class WorkoutActivity: Activity {
-    public let name: String
-    public let duration: NSTimeInterval
-    public let activitiesManager: ActivitiesManager
-    public var startDate: NSDate?
-    public var endDate: NSDate?
-    public var timer: NSTimer?
-    public var type: ActivityType
-    
-    public var remainingTime: NSTimeInterval? {
-        get {
-            return timer?.fireDate.timeIntervalSinceNow
-        }
-    }
-    
-    public required init(name: String, duration: NSTimeInterval, type: ActivityType = .Break, manager: ActivitiesManager) {
-        self.name = name
-        self.duration = duration
-        self.type = type
-        self.activitiesManager = manager
-    }
-    
-    public convenience init(name: String, manager: ActivitiesManager) {
-        self.init(name: name, duration: NSTimeInterval(WorkkoutInterval), manager: manager)
-    }
-    
-    public func start() {
-        startDate = NSDate()
-        timer = NSTimer(timeInterval: duration, target: self, selector: "stop", userInfo: nil, repeats: false)
-    }
-    
-    public func stop() {
         endDate = NSDate()
         timer?.invalidate()
     }
