@@ -18,7 +18,6 @@ class ActivitiesViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
         tableView.backgroundColor = UIColor.blackColor()
         tableView.separatorStyle = .None
         //loadSavedTasks()
@@ -29,6 +28,10 @@ class ActivitiesViewController: UIViewController {
         tableView.reloadData()
     }
     
+}
+
+// MARK: Delete task
+extension ActivitiesViewController {
     func tableView(tableView: UITableView, editingStyleForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCellEditingStyle {
         return .Delete
     }
@@ -36,7 +39,7 @@ class ActivitiesViewController: UIViewController {
     func tableView(tableView: UITableView, shouldIndentWhileEditingRowAtIndexPath indexPath: NSIndexPath) -> Bool {
         return true
     }
-
+    
     func tableView(tableView: UITableView, moveRowAtIndexPath sourceIndexPath: NSIndexPath, toIndexPath destinationIndexPath: NSIndexPath) {
         if sourceIndexPath.section == 0 {
             guard var remainingActivities = activitiesMgr.remainingActivities else {return}
@@ -47,7 +50,6 @@ class ActivitiesViewController: UIViewController {
         }
     }
 }
-
 
 // MARK: Add New Task
 extension ActivitiesViewController {
@@ -64,8 +66,7 @@ extension ActivitiesViewController {
             if remainingActivities.count > 0 {
                 remainingActivities.removeAtIndex(indexPath.row)
                 activitiesMgr.remainingActivities = remainingActivities
-                if remainingActivities.count == 0 {
-    
+                if remainingActivities.count == 0 { // always keep on row in section 0
                     tableView.reloadRowsAtIndexPaths([NSIndexPath(forRow: 0, inSection: 0)], withRowAnimation: .Fade)
                 } else {
                     tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
@@ -77,7 +78,6 @@ extension ActivitiesViewController {
     
     @IBAction func beginAddingTask() {
         addingNewTask = true
-        
         if (activitiesMgr.remainingActivities != nil && activitiesMgr.remainingActivities?.count > 0) {
             tableView.insertRowsAtIndexPaths([NSIndexPath(forRow: 0, inSection: 0)], withRowAnimation: .Top)
         } else {
@@ -85,17 +85,16 @@ extension ActivitiesViewController {
         }
         
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Done, target: self, action: "finishAddingTask")
- 
     }
     
     func finishAddingTask() {
         guard let name = newTaskCell?.taskNameField.text where name.characters.count > 0 else {
-            displayError("Please add a Name")
+            displayError("Name me!")
             return
         }
         
         guard let color = newTaskCell?.selectedColor else {
-            displayError("Invalid Color")
+            displayError("Dont' know that Color????")
             return
         }
         
@@ -126,13 +125,14 @@ extension ActivitiesViewController: UITableViewDelegate {
             return
         }
         guard indexPath.section != 1 else { return }
-        guard activitiesMgr.activities!.count != 0 else { return }
+        guard activitiesMgr.activities!.count != 0 else {
+            return
+        }
         guard !(addingNewTask && indexPath.section == 0 && indexPath.row == 0) else { return }
         
         let task = activitiesMgr.remainingActivities![indexPath.row]
         let alert = UIAlertController(title: task.name, message: "Do you want to start \(task.name)?", preferredStyle: .ActionSheet)
         let okAction = UIAlertAction(title: "OK", style: .Default, handler: { (action: UIAlertAction) -> Void in
-            
             let cell = tableView.cellForRowAtIndexPath(indexPath) as! TaskCell
             let userInfo = ["index": indexPath.row, "cell": cell]
             let _ = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: Selector("update:"), userInfo: userInfo, repeats: true)
@@ -141,16 +141,14 @@ extension ActivitiesViewController: UITableViewDelegate {
         
         alert.addAction(okAction)
         alert.addAction(UIAlertAction(title: "Cancel", style: .Default, handler: nil))
-        
         alert.view.tintColor = UIColor.blackColor()
         let subview = alert.view.subviews.first! as UIView
         let alertContentView = subview.subviews.first! as UIView
         alertContentView.backgroundColor = UIColor.blackColor()
         alert.view.tintColor = UIColor.whiteColor();
-        
-        
         self.presentViewController(alert, animated: true, completion: nil)
-        
+        // workaround for http://stackoverflow.com/questions/21075540/presentviewcontrolleranimatedyes-view-will-not-appear-until-user-taps-again
+        CFRunLoopWakeUp(CFRunLoopGetCurrent());
         saveTasks()
     }
     
