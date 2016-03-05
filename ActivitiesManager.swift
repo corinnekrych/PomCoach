@@ -21,7 +21,7 @@ public class ActivitiesManager {
 //            TaskActivity(name: "break2", duration: WorkkoutInterval, type:.Break, manager: self),
 //            TaskActivity(name: "task3", manager: self),
 //            TaskActivity(name: "break3", duration: WorkkoutInterval, type:.Break, manager: self),
-            TaskActivity(name: "task4", manager: self),
+//            TaskActivity(name: "task4", manager: self),
             TaskActivity(name: "longerbreak1", duration: LongWorkoutInterval, type: .LongBreak, manager: self)]
     }
     

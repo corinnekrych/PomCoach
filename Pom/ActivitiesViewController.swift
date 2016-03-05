@@ -6,7 +6,6 @@
 //  Copyright © 2016 corinne. All rights reserved.
 //
 
-
 import UIKit
 
 class ActivitiesViewController: UIViewController {
@@ -50,7 +49,6 @@ class ActivitiesViewController: UIViewController {
 }
 
 
-
 // MARK: Add New Task
 extension ActivitiesViewController {
     @IBAction func editMode(sender: UIBarButtonItem) {
@@ -62,17 +60,16 @@ extension ActivitiesViewController {
         if editingStyle == .Delete && indexPath.section == 0 {
             // Delete the row from the data source
             // meals.removeAtIndex(indexPath.row)
-            guard var remainingActivities = activitiesMgr.remainingActivities else {
-                tableView.reloadData()
-                print("111")
-                return
-            }
+            guard var remainingActivities = activitiesMgr.remainingActivities else {return}
             if remainingActivities.count > 0 {
-                print("222")
                 remainingActivities.removeAtIndex(indexPath.row)
                 activitiesMgr.remainingActivities = remainingActivities
-                print("::\(remainingActivities.count)::\(activitiesMgr.remainingActivities!.count)\(indexPath.row)")
-                tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
+                if remainingActivities.count == 0 {
+    
+                    tableView.reloadRowsAtIndexPaths([NSIndexPath(forRow: 0, inSection: 0)], withRowAnimation: .Fade)
+                } else {
+                    tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
+                }
             }
             tableView.reloadData()
         }
@@ -174,8 +171,6 @@ extension ActivitiesViewController: UITableViewDelegate {
             }
             
             let timePassed = Int(totalTime - timeRemaining!) as Int
-            
-            print("PAssed\(timePassed) color\(color)")
             cell.progressView.update(color, current: timePassed, total: Int(totalTime))
         } else { // last row
             tableView.reloadData()
@@ -215,7 +210,8 @@ extension ActivitiesViewController: UITableViewDataSource {
                 let cell = tableView.dequeueReusableCellWithIdentifier("NewTaskCell", forIndexPath: indexPath) as! NewTaskCell
                 newTaskCell = cell
                 return cell
-            } else if activitiesMgr.remainingActivities == nil || activitiesMgr.remainingActivities?.count == 0 {
+            }
+            else if activitiesMgr.remainingActivities == nil || activitiesMgr.remainingActivities?.count == 0 {
                 // Placeholder when there are no ongoing tasks
                 return tableView.dequeueReusableCellWithIdentifier("NoOngoingCell", forIndexPath: indexPath)
             }
