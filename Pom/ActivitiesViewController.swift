@@ -30,7 +30,7 @@ class ActivitiesViewController: UIViewController {
     
 }
 
-// MARK: Delete task
+// MARK: Delete / Move task
 extension ActivitiesViewController {
     func tableView(tableView: UITableView, editingStyleForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCellEditingStyle {
         return .Delete
@@ -48,6 +48,17 @@ extension ActivitiesViewController {
             remainingActivities.insert(moved, atIndex: destinationIndexPath.row)
             activitiesMgr.remainingActivities = remainingActivities
         }
+    }
+    
+    func tableView(tableView: UITableView, targetIndexPathForMoveFromRowAtIndexPath sourceIndexPath: NSIndexPath, toProposedIndexPath proposedDestinationIndexPath: NSIndexPath) -> NSIndexPath {
+        if sourceIndexPath.section != proposedDestinationIndexPath.section {
+            var row = 0
+            if sourceIndexPath.section < proposedDestinationIndexPath.section {
+                row = self.tableView(tableView, numberOfRowsInSection: sourceIndexPath.section) - 1
+            }
+            return NSIndexPath(forRow: row, inSection: sourceIndexPath.section)
+        }
+        return proposedDestinationIndexPath
     }
 }
 
@@ -131,6 +142,14 @@ extension ActivitiesViewController: UITableViewDelegate {
         guard !(addingNewTask && indexPath.section == 0 && indexPath.row == 0) else { return }
         
         let task = activitiesMgr.remainingActivities![indexPath.row]
+        
+        if(task.name != activitiesMgr.currentActivity!.name) {
+            displayError("Do your tasks in order ;)")
+        }
+        if (task.startDate != nil) {
+            displayError("\(task.name) is alreday started :P")
+        }
+        
         let alert = UIAlertController(title: task.name, message: "Do you want to start \(task.name)?", preferredStyle: .ActionSheet)
         let okAction = UIAlertAction(title: "OK", style: .Default, handler: { (action: UIAlertAction) -> Void in
             let cell = tableView.cellForRowAtIndexPath(indexPath) as! TaskCell
