@@ -123,9 +123,25 @@ extension ActivitiesViewController: UITableViewDelegate {
         guard !(addingNewTask && indexPath.section == 0 && indexPath.row == 0) else { return }
         
         let task = activitiesMgr.remainingActivities![indexPath.row]
-        task.start()
+        let alert = UIAlertController(title: task.name, message: "Do you want to start \(task.name)?", preferredStyle: .ActionSheet)
+        let okAction = UIAlertAction(title: "OK", style: .Default, handler: { (action: UIAlertAction) -> Void in
+            task.start()
+            //            progressView.update(activity.type.color, current: timePassed, total: totalTime)
+        })
 
-        //saveTasks()
+        alert.addAction(okAction)
+        alert.addAction(UIAlertAction(title: "Cancel", style: .Default, handler: nil))
+        
+        alert.view.tintColor = UIColor.blackColor()
+        let subview = alert.view.subviews.first! as UIView
+        let alertContentView = subview.subviews.first! as UIView
+        alertContentView.backgroundColor = UIColor.blackColor()
+        alert.view.tintColor = UIColor.whiteColor();
+        
+
+        self.presentViewController(alert, animated: true, completion: nil)
+
+        saveTasks()
     }
     
     func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
