@@ -11,6 +11,7 @@ import Foundation
 
 class InterfaceController: WKInterfaceController {
 
+    @IBOutlet var taskNameLabel: WKInterfaceLabel!
     @IBOutlet var group: WKInterfaceGroup!
     @IBOutlet var startButton: WKInterfaceButton!
     @IBOutlet var timer: WKInterfaceTimer!
@@ -21,7 +22,7 @@ class InterfaceController: WKInterfaceController {
     override func awakeWithContext(context: AnyObject?) {
         super.awakeWithContext(context)
         group.setBackgroundImageNamed("Time")
-        formatTotalTime(ActivitiesManager.instance.currentActivity)
+        display(ActivitiesManager.instance.currentActivity)
     }
 
     override func willActivate() {
@@ -32,6 +33,21 @@ class InterfaceController: WKInterfaceController {
         super.didDeactivate()
     }
     
+    @IBAction func stop() {
+        print("::::::STOP")
+        let manager = ActivitiesManager.instance
+        guard let currentActivity = manager.currentActivity else {return}
+        
+        timer.stop()
+        timerFire.invalidate()
+        startButtonImage.setHidden(false)
+        timer.setHidden(true)
+        currentActivity.stop()
+        group.stopAnimating()
+        // init for next task
+        group.setBackgroundImageNamed("Time0")
+        display(ActivitiesManager.instance.currentActivity)
+    }
 
     @IBAction func onStartButton() {
         print("onStartButton")
@@ -48,7 +64,7 @@ class InterfaceController: WKInterfaceController {
             group.startAnimatingWithImagesInRange(NSMakeRange(0, 101), duration: currentActivity.duration, repeatCount: 1)
             startButtonImage.setHidden(true)
             timer.setHidden(false)
-            formatTotalTime(ActivitiesManager.instance.currentActivity)
+            display(ActivitiesManager.instance.currentActivity)
         } else {
             timer.stop()
             timerFire.invalidate()
@@ -58,7 +74,7 @@ class InterfaceController: WKInterfaceController {
             group.stopAnimating()
             // init for next task
             group.setBackgroundImageNamed("Time0")
-            formatTotalTime(ActivitiesManager.instance.currentActivity)
+            display(ActivitiesManager.instance.currentActivity)
         }
     }
     
@@ -73,12 +89,20 @@ class InterfaceController: WKInterfaceController {
         group.stopAnimating()
         // init for next
         group.setBackgroundImageNamed("Time0")
-        formatTotalTime(ActivitiesManager.instance.currentActivity)
+        display(ActivitiesManager.instance.currentActivity)
     }
     
-    func formatTotalTime(activity: Activity?) {
+    func display(activity: Activity?) {
         if let duration = activity?.duration {
-            totalTimeLabel.setText("\(duration) sec")
+            if duration < 60 {
+                totalTimeLabel.setText("\(duration) sec")
+            } else {
+                let durationInMin = duration/60
+                totalTimeLabel.setText("\(durationInMin) min")
+            }
+        }
+        if let name = activity?.name {
+            taskNameLabel.setText(name)
         }
     }
 }

@@ -10,6 +10,10 @@
             <objects>
                 <controller id="AgC-eL-Hgc" customClass="InterfaceController" customModule="Pom_WatchKit_App" customModuleProvider="target">
                     <items>
+                        <label alignment="center" text="Label" textAlignment="left" minimumScaleFactor="0.69999999999999996" id="bUc-Uq-I5O">
+                            <color key="textColor" red="0.40000000600000002" green="1" blue="0.40000000600000002" alpha="1" colorSpace="calibratedRGB"/>
+                            <fontDescription key="font" type="system" weight="ultraLight" pointSize="17"/>
+                        </label>
                         <group width="1" height="0.90000000000000002" alignment="center" verticalAlignment="center" backgroundImage="Time12" animationDuration="25" layout="vertical" id="wyJ-Y2-GKo">
                             <items>
                                 <button alignment="left" verticalAlignment="center" semanticContentAttribute="spatial" id="52d-rN-Bm9" userLabel="StartButton">
@@ -36,10 +40,21 @@
                             </items>
                         </group>
                     </items>
+                    <menu key="menu" id="27i-5w-IEK">
+                        <items>
+                            <menuItem title="stop" icon="decline" id="AmD-4o-A2J">
+                                <connections>
+                                    <action selector="stop" destination="AgC-eL-Hgc" id="8b3-4a-FC9"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem title="Menu Item" icon="accept" id="CTp-5t-QuM"/>
+                        </items>
+                    </menu>
                     <connections>
                         <outlet property="group" destination="wyJ-Y2-GKo" id="jwi-Xg-nGA"/>
                         <outlet property="startButton" destination="52d-rN-Bm9" id="Y9O-vn-Cti"/>
                         <outlet property="startButtonImage" destination="3BZ-W7-cAU" id="0Ts-8n-6ZI"/>
+                        <outlet property="taskNameLabel" destination="bUc-Uq-I5O" id="Wzv-yl-twT"/>
                         <outlet property="timer" destination="6Bf-gb-Zh3" id="UPG-DN-75s"/>
                         <outlet property="totalTimeLabel" destination="HSC-Pz-Rqc" id="bp7-DE-smf"/>
                     </connections>

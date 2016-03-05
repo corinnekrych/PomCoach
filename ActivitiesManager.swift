@@ -18,11 +18,11 @@ public class ActivitiesManager {
 //            TaskActivity(name: "task1", manager: self),
 //            TaskActivity(name: "break1", duration: WorkkoutInterval, type:.Break, manager: self),
 //            TaskActivity(name: "task2", manager: self),
-            TaskActivity(name: "break2", duration: WorkkoutInterval, type:.Break, manager: self),
+//            TaskActivity(name: "shall we take a short break2 reallllly is that a good idea? niot so sure", duration: WorkkoutInterval, type:.Break, manager: self),
 //            TaskActivity(name: "task3", manager: self),
             TaskActivity(name: "break3", duration: WorkkoutInterval, type:.Break, manager: self),
 //            TaskActivity(name: "task4", manager: self),
-            TaskActivity(name: "longerbreak1", duration: LongWorkoutInterval, type: .LongBreak, manager: self)]
+            TaskActivity(name: "longerbreak1", duration: NSTimeInterval(4), type: .LongBreak, manager: self)]
     }
     
     public func isCurrentActivityStarted() -> Bool {
@@ -50,7 +50,8 @@ public class ActivitiesManager {
     public var currentActivity:Activity? {
         get {
             guard let activities = remainingActivities else {return nil}
-            return activities[0] ?? nil
+            if activities.count == 0 {return nil}
+            return activities[0]
         }
     }
     
