@@ -62,17 +62,26 @@ extension ActivitiesViewController {
         if editingStyle == .Delete && indexPath.section == 0 {
             // Delete the row from the data source
             // meals.removeAtIndex(indexPath.row)
-            guard var remainingActivities = activitiesMgr.remainingActivities else {return}
-            remainingActivities.removeAtIndex(indexPath.row)
-            activitiesMgr.remainingActivities = remainingActivities
-            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
+            guard var remainingActivities = activitiesMgr.remainingActivities else {
+                tableView.reloadData()
+                print("111")
+                return
+            }
+            if remainingActivities.count > 0 {
+                print("222")
+                remainingActivities.removeAtIndex(indexPath.row)
+                activitiesMgr.remainingActivities = remainingActivities
+                print("::\(remainingActivities.count)::\(activitiesMgr.remainingActivities!.count)\(indexPath.row)")
+                tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
+            }
+            tableView.reloadData()
         }
     }
     
     @IBAction func beginAddingTask() {
         addingNewTask = true
         
-        if let _ = activitiesMgr.remainingActivities {
+        if (activitiesMgr.remainingActivities != nil && activitiesMgr.remainingActivities?.count > 0) {
             tableView.insertRowsAtIndexPaths([NSIndexPath(forRow: 0, inSection: 0)], withRowAnimation: .Top)
         } else {
             tableView.reloadRowsAtIndexPaths([NSIndexPath(forRow: 0, inSection: 0)], withRowAnimation: .Bottom)
@@ -99,6 +108,7 @@ extension ActivitiesViewController {
         tableView.reloadRowsAtIndexPaths([NSIndexPath(forRow: 0, inSection: 0)], withRowAnimation: .Fade)
         newTaskCell?.reset()
         saveTasks()
+        tableView.reloadData()
         tableView.endEditing(true)
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: "beginAddingTask")
     }
@@ -125,10 +135,13 @@ extension ActivitiesViewController: UITableViewDelegate {
         let task = activitiesMgr.remainingActivities![indexPath.row]
         let alert = UIAlertController(title: task.name, message: "Do you want to start \(task.name)?", preferredStyle: .ActionSheet)
         let okAction = UIAlertAction(title: "OK", style: .Default, handler: { (action: UIAlertAction) -> Void in
+            
+            let cell = tableView.cellForRowAtIndexPath(indexPath) as! TaskCell
+            let userInfo = ["index": indexPath.row, "cell": cell]
+            let _ = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: Selector("update:"), userInfo: userInfo, repeats: true)
             task.start()
-            //            progressView.update(activity.type.color, current: timePassed, total: totalTime)
         })
-
+        
         alert.addAction(okAction)
         alert.addAction(UIAlertAction(title: "Cancel", style: .Default, handler: nil))
         
@@ -138,10 +151,35 @@ extension ActivitiesViewController: UITableViewDelegate {
         alertContentView.backgroundColor = UIColor.blackColor()
         alert.view.tintColor = UIColor.whiteColor();
         
-
+        
         self.presentViewController(alert, animated: true, completion: nil)
-
+        
         saveTasks()
+    }
+    
+    func update(timer: NSTimer) {
+        guard let userInfo = timer.userInfo else {return}
+        let index = userInfo["index"] as! Int
+        let cell = userInfo["cell"] as! TaskCell
+        guard let tasks = activitiesMgr.remainingActivities else {return}
+        if tasks.count > 0 {
+            let timeRemaining = tasks[index].remainingTime
+            let color = tasks[index].type.color
+            let totalTime = tasks[index].duration
+            if timeRemaining == nil {
+                timer.invalidate();
+                cell.progressView.update(color, current: Int(totalTime), total: Int(totalTime))
+                tableView.reloadData()
+                return
+            }
+            
+            let timePassed = Int(totalTime - timeRemaining!) as Int
+            
+            print("PAssed\(timePassed) color\(color)")
+            cell.progressView.update(color, current: timePassed, total: Int(totalTime))
+        } else { // last row
+            tableView.reloadData()
+        }
     }
     
     func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
@@ -177,17 +215,19 @@ extension ActivitiesViewController: UITableViewDataSource {
                 let cell = tableView.dequeueReusableCellWithIdentifier("NewTaskCell", forIndexPath: indexPath) as! NewTaskCell
                 newTaskCell = cell
                 return cell
-            } else if activitiesMgr.activities == nil {
+            } else if activitiesMgr.remainingActivities == nil || activitiesMgr.remainingActivities?.count == 0 {
                 // Placeholder when there are no ongoing tasks
                 return tableView.dequeueReusableCellWithIdentifier("NoOngoingCell", forIndexPath: indexPath)
             }
         }
         
         let cell = tableView.dequeueReusableCellWithIdentifier(TaskCell.ReuseId, forIndexPath: indexPath) as! TaskCell
-        
-        let task = indexPath.section == 0 ? activitiesMgr.remainingActivities![indexPath.row] : activitiesMgr.completedActivities![indexPath.row]
-        cell.updateWithTask(task)
-        
+        if let activities = activitiesMgr.remainingActivities {
+            if (activities.count > 0) {
+                let task = indexPath.section == 0 ? activities[indexPath.row] : activitiesMgr.completedActivities![indexPath.row]
+                cell.updateWithTask(task)
+            }
+        }
         return cell
     }
     
