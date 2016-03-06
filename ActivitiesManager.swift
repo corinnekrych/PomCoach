@@ -15,14 +15,25 @@ public class ActivitiesManager {
     public init() {
       // TODO: remove hardcoded
         activities = [
-//            TaskActivity(name: "task1", manager: self),
-//            TaskActivity(name: "break1", duration: WorkkoutInterval, type:.Break, manager: self),
-//            TaskActivity(name: "task2", manager: self),
-//            TaskActivity(name: "shall we take a short break2 reallllly is that a good idea? niot so sure", duration: WorkkoutInterval, type:.Break, manager: self),
-//            TaskActivity(name: "task3", manager: self),
-            TaskActivity(name: "break3", duration: NSTimeInterval(20), type:.Break, manager: self),
-//            TaskActivity(name: "task4", manager: self),
-            TaskActivity(name: "longerbreak1", duration: NSTimeInterval(4), type: .LongBreak, manager: self)]
+            TaskActivity(name: "read emails", manager: self),
+            TaskActivity(name: "10 curls", duration: WorkoutInterval, type:.Break, manager: self),
+            TaskActivity(name: "layout", manager: self),
+            TaskActivity(name: "coffee", duration: WorkoutInterval, type:.Break, manager: self),
+            TaskActivity(name: "animation", manager: self),
+            TaskActivity(name: "10 push ups", duration: WorkoutInterval, type:.Break, manager: self),
+            TaskActivity(name: "glance 1/2", manager: self),
+            
+            TaskActivity(name: "walk outside", duration: LongWorkoutInterval, type:.Break, manager: self), //2h30
+            
+            TaskActivity(name: "glace 2/2", manager: self),
+            TaskActivity(name: "10 push ups", duration: WorkoutInterval, type:.Break, manager: self),
+            TaskActivity(name: "complication", manager: self),
+            TaskActivity(name: "50 crunchies", duration: WorkoutInterval, type:.Break, manager: self),
+            TaskActivity(name: "WC: Interactive Messaging", manager: self),
+            TaskActivity(name: "10 squats/leg raises", duration: WorkoutInterval, type:.Break, manager: self),
+            TaskActivity(name: "WC: Application Context", manager: self),
+            
+            TaskActivity(name: "footing", duration: LongWorkoutInterval, type:.Break, manager: self)]
     }
     
     public func isCurrentActivityStarted() -> Bool {

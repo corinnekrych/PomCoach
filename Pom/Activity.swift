@@ -9,7 +9,7 @@
 import Foundation
 
 public let TaskInterval = NSTimeInterval(10)
-public let WorkkoutInterval = NSTimeInterval(5)
+public let WorkoutInterval = NSTimeInterval(5)
 public let LongWorkoutInterval = NSTimeInterval(5)
 import UIKit
 

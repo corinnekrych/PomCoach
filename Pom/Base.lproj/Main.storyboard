@@ -137,6 +137,9 @@
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GvI-vf-7tY">
                                                     <rect key="frame" x="0.0" y="60" width="125" height="30"/>
                                                     <color key="backgroundColor" red="0.9337349398" green="0.0" blue="0.2490904796" alpha="0.29999999999999999" colorSpace="calibratedRGB"/>
+                                                    <state key="normal" title="Task">
+                                                        <color key="titleColor" red="0.0" green="0.50196081400000003" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                    </state>
                                                     <connections>
                                                         <action selector="onColorButton:" destination="1UZ-lc-HfN" eventType="touchUpInside" id="a2p-O6-oaP"/>
                                                     </connections>
@@ -144,8 +147,8 @@
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DE0-ip-ErD">
                                                     <rect key="frame" x="125" y="60" width="125" height="30"/>
                                                     <color key="backgroundColor" red="0.0" green="0.0" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                                    <state key="normal">
-                                                        <color key="titleColor" red="0.0" green="0.0" blue="0.50196081400000003" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <state key="normal" title="Break">
+                                                        <color key="titleColor" red="1" green="1" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     </state>
                                                     <connections>
                                                         <action selector="onColorButton:" destination="1UZ-lc-HfN" eventType="touchUpInside" id="Atu-Ca-lRm"/>
@@ -154,6 +157,9 @@
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cDK-z0-ctf">
                                                     <rect key="frame" x="250" y="60" width="125" height="30"/>
                                                     <color key="backgroundColor" red="0.50196081400000003" green="0.50196081400000003" blue="0.50196081400000003" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <state key="normal" title="Long Break">
+                                                        <color key="titleColor" red="1" green="0.40000000600000002" blue="0.40000000600000002" alpha="1" colorSpace="calibratedRGB"/>
+                                                    </state>
                                                     <connections>
                                                         <action selector="onColorButton:" destination="1UZ-lc-HfN" eventType="touchUpInside" id="2UB-Gy-7EW"/>
                                                     </connections>
