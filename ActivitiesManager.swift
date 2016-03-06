@@ -20,7 +20,7 @@ public class ActivitiesManager {
 //            TaskActivity(name: "task2", manager: self),
 //            TaskActivity(name: "shall we take a short break2 reallllly is that a good idea? niot so sure", duration: WorkkoutInterval, type:.Break, manager: self),
 //            TaskActivity(name: "task3", manager: self),
-            TaskActivity(name: "break3", duration: WorkkoutInterval, type:.Break, manager: self),
+            TaskActivity(name: "break3", duration: NSTimeInterval(20), type:.Break, manager: self),
 //            TaskActivity(name: "task4", manager: self),
             TaskActivity(name: "longerbreak1", duration: NSTimeInterval(4), type: .LongBreak, manager: self)]
     }

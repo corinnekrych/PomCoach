@@ -28,6 +28,15 @@ class InterfaceController: WKInterfaceController {
     override func willActivate() {
         super.willActivate()
     }
+    
+    override func didAppear() {
+        super.didAppear()
+        guard let currentActivity = ActivitiesManager.instance.currentActivity else {return}
+        if (currentActivity.isStarted() == true) {
+            let imageRangeRemaining = (currentActivity.duration - (currentActivity.remainingTime ?? 0))*90/currentActivity.duration
+            group.startAnimatingWithImagesInRange(NSMakeRange(Int(imageRangeRemaining), 90), duration: currentActivity.duration, repeatCount: 1)
+        }
+    }
 
     override func didDeactivate() {
         super.didDeactivate()
@@ -61,7 +70,7 @@ class InterfaceController: WKInterfaceController {
             timerFire = NSTimer.scheduledTimerWithTimeInterval(currentActivity.duration, target: self, selector: "fire", userInfo: nil, repeats: false)
             currentActivity.start()
             group.setBackgroundImageNamed("Time")
-            group.startAnimatingWithImagesInRange(NSMakeRange(0, 101), duration: currentActivity.duration, repeatCount: 1)
+            group.startAnimatingWithImagesInRange(NSMakeRange(0, 90), duration: currentActivity.duration, repeatCount: 1)
             startButtonImage.setHidden(true)
             timer.setHidden(false)
             display(ActivitiesManager.instance.currentActivity)
@@ -93,16 +102,20 @@ class InterfaceController: WKInterfaceController {
     }
     
     func display(activity: Activity?) {
-        if let duration = activity?.duration {
-            if duration < 60 {
-                totalTimeLabel.setText("\(duration) sec")
-            } else {
-                let durationInMin = duration/60
-                totalTimeLabel.setText("\(durationInMin) min")
-            }
+        guard let activity = activity else {
+        taskNameLabel.setText("NOTHING TO DO :)")
+        timer.setHidden(true)
+        totalTimeLabel.setHidden(true)
+        startButtonImage.setHidden(true)
+        return
         }
-        if let name = activity?.name {
-            taskNameLabel.setText(name)
+        let duration = activity.duration
+        if duration < 60 {
+            totalTimeLabel.setText("\(duration) sec")
+        } else {
+            let durationInMin = duration/60
+            totalTimeLabel.setText("\(durationInMin) min")
         }
+        taskNameLabel.setText(activity.name)
     }
 }
