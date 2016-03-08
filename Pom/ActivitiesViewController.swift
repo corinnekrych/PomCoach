@@ -7,8 +7,9 @@
 //
 
 import UIKit
+import WatchConnectivity
 
-class ActivitiesViewController: UIViewController {
+class ActivitiesViewController: UIViewController, WCSessionDelegate {
     @IBOutlet weak var tableView: UITableView!
     
     var activitiesMgr = ActivitiesManager.instance
@@ -16,16 +17,52 @@ class ActivitiesViewController: UIViewController {
     var newTaskCell: NewTaskCell?
     var addingNewTask: Bool = false
     
+    var session : WCSession!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.backgroundColor = UIColor.blackColor()
         tableView.separatorStyle = .None
+        if (WCSession.isSupported()) {
+            session = WCSession.defaultSession()
+            session.delegate = self;
+            session.activateSession()
+        }
         //loadSavedTasks()
     }
 
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         tableView.reloadData()
+    }
+    
+    func session(session: WCSession, didReceiveMessage message: [String : AnyObject], replyHandler: ([String : AnyObject]) -> Void) {
+        print("ON IOS: \(message)")
+        let taskName = message["task"] as? String
+        let tasksFiltered = activitiesMgr.activities?.filter {$0.name == taskName}
+        guard let tasks = tasksFiltered else {return}
+        var task = tasks[0]
+        
+        let dateFormatter = NSDateFormatter()
+        dateFormatter.dateFormat = "hh:mm:ss"
+        
+        let startDateString = message["startDate"] as? String
+        var startDate: NSDate? = nil
+        if let startDateString = startDateString {
+            startDate = dateFormatter.dateFromString(startDateString)
+        }
+        task.startDate = startDate
+        
+        let endDateString = message["endDate"] as? String
+        var endDate:NSDate? = nil
+        if let endDateString = endDateString {
+            endDate = dateFormatter.dateFromString(endDateString)
+        }
+        task.endDate = endDate
+        
+        dispatch_async(dispatch_get_main_queue()) {
+            self.tableView.reloadData()
+        }
     }
     
 }

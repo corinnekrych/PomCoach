@@ -8,8 +8,9 @@
 
 import WatchKit
 import Foundation
+import WatchConnectivity
 
-class InterfaceController: WKInterfaceController {
+class InterfaceController: WKInterfaceController, WCSessionDelegate {
 
     @IBOutlet var taskNameLabel: WKInterfaceLabel!
     @IBOutlet var group: WKInterfaceGroup!
@@ -18,15 +19,22 @@ class InterfaceController: WKInterfaceController {
     @IBOutlet var startButtonImage: WKInterfaceImage!
     @IBOutlet var totalTimeLabel: WKInterfaceLabel!
     var timerFire: NSTimer!
+    var session: WCSession!
+    
+    override func willActivate() {
+        super.willActivate()
+        
+        if (WCSession.isSupported()) {
+            session = WCSession.defaultSession()
+            session.delegate = self
+            session.activateSession()
+        }
+    }
     
     override func awakeWithContext(context: AnyObject?) {
         super.awakeWithContext(context)
         group.setBackgroundImageNamed("Time")
         display(ActivitiesManager.instance.currentActivity)
-    }
-
-    override func willActivate() {
-        super.willActivate()
     }
     
     override func didAppear() {
@@ -74,17 +82,34 @@ class InterfaceController: WKInterfaceController {
             startButtonImage.setHidden(true)
             timer.setHidden(false)
             display(ActivitiesManager.instance.currentActivity)
-        } else {
-            timer.stop()
-            timerFire.invalidate()
-            startButtonImage.setHidden(false)
-            timer.setHidden(true)
-            currentActivity.stop()
-            group.stopAnimating()
-            // init for next task
-            group.setBackgroundImageNamed("Time0")
-            display(ActivitiesManager.instance.currentActivity)
+            sendStartTimer(currentActivity.name, startDate: currentActivity.startDate, endDate: currentActivity.endDate)
         }
+    }
+    
+    func sendStartTimer(taskName: String, startDate: NSDate?, endDate: NSDate?) {
+        let dateFormatter = NSDateFormatter()
+        dateFormatter.dateFormat = "hh:mm:ss"
+        var startDateString: String
+        if let startDate = startDate {
+            startDateString = dateFormatter.stringFromDate(startDate)
+        } else {
+            startDateString = ""
+        }
+        var endDateString: String
+        if let endDate = endDate {
+            endDateString = dateFormatter.stringFromDate(endDate)
+        } else {
+            endDateString = ""
+        }
+        let applicationData = ["task": taskName, "start": startDateString, "end": endDateString]
+        
+        session.sendMessage(applicationData, replyHandler: {(dict: [String : AnyObject]) -> Void in
+            // handle reply from iPhone app here
+            print("iOS APP KNOWS Watch \(dict)")
+            }, errorHandler: {(error ) -> Void in
+                // catch any errors here
+                print("OOPs... Watch \(error)")
+        })
     }
     
     func fire() {
@@ -99,6 +124,7 @@ class InterfaceController: WKInterfaceController {
         // init for next
         group.setBackgroundImageNamed("Time0")
         display(ActivitiesManager.instance.currentActivity)
+        sendStartTimer(currentActivity.name, startDate: currentActivity.startDate, endDate: currentActivity.endDate)
     }
     
     func display(activity: Activity?) {
