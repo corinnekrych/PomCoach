@@ -106,7 +106,7 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
         session.sendMessage(applicationData, replyHandler: {(dict: [String : AnyObject]) -> Void in
             // handle reply from iPhone app here
             print("iOS APP KNOWS Watch \(dict)")
-            }, errorHandler: {(error ) -> Void in
+            }, errorHandler: {(error) -> Void in
                 // catch any errors here
                 print("OOPs... Watch \(error)")
         })

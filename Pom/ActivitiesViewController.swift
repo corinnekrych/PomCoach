@@ -43,7 +43,14 @@ class ActivitiesViewController: UIViewController, WCSessionDelegate {
         let tasksFiltered = activitiesMgr.activities?.filter {$0.name == taskName}
         guard let tasks = tasksFiltered else {return}
         var task = tasks[0]
-        
+        if task.isStarted() {
+            replyHandler(["taskId": task.name, "status": "started"])
+            return
+        }
+        if task.endDate != nil {
+            replyHandler(["taskId": task.name, "status": "finished"])
+            return
+        }
         let dateFormatter = NSDateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
         
@@ -60,7 +67,7 @@ class ActivitiesViewController: UIViewController, WCSessionDelegate {
             endDate = dateFormatter.dateFromString(endDateString)
         }
         task.endDate = endDate
-        
+        replyHandler(["taskId": task.name, "status": "updated ok"])
         dispatch_async(dispatch_get_main_queue()) {
             self.tableView.reloadData()
         }
