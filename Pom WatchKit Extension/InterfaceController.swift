@@ -88,7 +88,7 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
     
     func sendStartTimer(taskName: String, startDate: NSDate?, endDate: NSDate?) {
         let dateFormatter = NSDateFormatter()
-        dateFormatter.dateFormat = "hh:mm:ss"
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
         var startDateString: String
         if let startDate = startDate {
             startDateString = dateFormatter.stringFromDate(startDate)
@@ -102,7 +102,7 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
             endDateString = ""
         }
         let applicationData = ["task": taskName, "start": startDateString, "end": endDateString]
-        
+        print("SEND from watch \(applicationData)")
         session.sendMessage(applicationData, replyHandler: {(dict: [String : AnyObject]) -> Void in
             // handle reply from iPhone app here
             print("iOS APP KNOWS Watch \(dict)")

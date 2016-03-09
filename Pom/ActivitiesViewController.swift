@@ -23,6 +23,7 @@ class ActivitiesViewController: UIViewController, WCSessionDelegate {
         super.viewDidLoad()
         tableView.backgroundColor = UIColor.blackColor()
         tableView.separatorStyle = .None
+        
         if (WCSession.isSupported()) {
             session = WCSession.defaultSession()
             session.delegate = self;
@@ -37,23 +38,23 @@ class ActivitiesViewController: UIViewController, WCSessionDelegate {
     }
     
     func session(session: WCSession, didReceiveMessage message: [String : AnyObject], replyHandler: ([String : AnyObject]) -> Void) {
-        print("ON IOS: \(message)")
+        print("RECEIVED ON IOS: \(message)")
         let taskName = message["task"] as? String
         let tasksFiltered = activitiesMgr.activities?.filter {$0.name == taskName}
         guard let tasks = tasksFiltered else {return}
         var task = tasks[0]
         
         let dateFormatter = NSDateFormatter()
-        dateFormatter.dateFormat = "hh:mm:ss"
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
         
-        let startDateString = message["startDate"] as? String
+        let startDateString = message["start"] as? String
         var startDate: NSDate? = nil
         if let startDateString = startDateString {
             startDate = dateFormatter.dateFromString(startDateString)
         }
         task.startDate = startDate
         
-        let endDateString = message["endDate"] as? String
+        let endDateString = message["end"] as? String
         var endDate:NSDate? = nil
         if let endDateString = endDateString {
             endDate = dateFormatter.dateFromString(endDateString)
