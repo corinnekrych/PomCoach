@@ -12,7 +12,9 @@ You might already have heard of the [Pomodoro technique](https://en.wikipedia.or
 * iPhone/Watch (some stuff not working so well on simulator)
 
 ## Build it
-
+```
+open Pom.xcodeproj
+```
 ## Run it
 Et voila!
 ![PomCoach](PomCoach)
