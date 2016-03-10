@@ -17,4 +17,4 @@ open Pom.xcodeproj
 ```
 ## Run it
 Et voila!
-![PomCoach](PomCoach)
+![PomCoach](PomCoach.png)
