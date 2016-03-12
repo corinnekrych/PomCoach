@@ -14,7 +14,7 @@ public let LongWorkoutInterval = NSTimeInterval(5)
 import UIKit
 
 public enum ActivityType: Int, CustomStringConvertible {
-    case Task, Break, LongBreak
+    case Task = 0, Break = 1, LongBreak = 2
     public static let allColors = [Task, Break, LongBreak]
     
     public var name: String {
@@ -36,6 +36,15 @@ public enum ActivityType: Int, CustomStringConvertible {
     public var description: String {
         return name
     }
+    
+    public init?(rawValue: Int) {
+        switch rawValue {
+        case 0: self = .Task
+        case 1: self = .Break
+        case 2: self = .LongBreak
+        default: return nil
+        }
+    }
 }
 
 public protocol Activity: CustomStringConvertible {
@@ -50,10 +59,10 @@ public protocol Activity: CustomStringConvertible {
     func start()
     func stop()
     func isStarted() -> Bool
-    init(name: String, duration: NSTimeInterval, type: ActivityType, manager: ActivitiesManager)
+    init(name: String, duration: NSTimeInterval, startDate: NSDate?, endDate: NSDate?, type: ActivityType, manager: ActivitiesManager)
 }
 
-public class TaskActivity: NSObject, Activity {
+final public class TaskActivity: NSObject, Activity {
     public let name: String
     public let duration: NSTimeInterval
     public let activitiesManager: ActivitiesManager
@@ -73,7 +82,7 @@ public class TaskActivity: NSObject, Activity {
         }
     }
     
-    public required init(name: String, duration: NSTimeInterval, type: ActivityType = .Task, manager: ActivitiesManager) {
+    public required init(name: String, duration: NSTimeInterval, startDate: NSDate? = nil, endDate: NSDate? = nil, type: ActivityType = .Task, manager: ActivitiesManager) {
         self.name = name
         self.duration = duration
         self.type = type
@@ -81,7 +90,7 @@ public class TaskActivity: NSObject, Activity {
     }
     
     public convenience init(name: String, manager: ActivitiesManager) {
-        self.init(name: name, duration: NSTimeInterval(TaskInterval), manager: manager)
+        self.init(name: name, duration: NSTimeInterval(TaskInterval), startDate:nil, endDate: nil,  manager: manager)
     }
     
     public func start() {
@@ -97,5 +106,31 @@ public class TaskActivity: NSObject, Activity {
     
     public func isStarted() -> Bool {
         return timer?.valid ?? false
+    }
+}
+
+// MARK: NSCoding
+extension TaskActivity: NSCoding {
+
+    public convenience init?(coder aDecoder: NSCoder) {
+        guard let name = aDecoder.decodeObjectForKey("name") as? String,
+        let intType = aDecoder.decodeObjectForKey("type") as? Int, type = ActivityType(rawValue:intType),
+        let startDate = aDecoder.decodeObjectForKey("startDate") as? Double,
+        let endDate = aDecoder.decodeObjectForKey("endDate") as? Double
+        else {return nil}
+
+        let duration = NSTimeInterval(aDecoder.decodeDoubleForKey("duration"))
+        
+        self.init(name: name, duration: duration, type: type, startDate: NSDate(timeIntervalSinceReferenceDate:startDate), endDate: NSDate(timeIntervalSinceReferenceDate:endDate), manager: ActivitiesManager.instance)
+    }
+    
+    public func encodeWithCoder(encoder: NSCoder) {
+        guard let startDateDouble = startDate?.timeIntervalSinceReferenceDate,
+            let endDateDouble = endDate?.timeIntervalSinceReferenceDate else {return}
+        encoder.encodeObject(name, forKey: "name")
+        encoder.encodeDouble(duration, forKey: "duration")
+        encoder.encodeInteger(type.rawValue, forKey: "type")
+        encoder.encodeDouble(startDateDouble, forKey: "startDate")
+        encoder.encodeDouble(endDateDouble, forKey: "endDate")
     }
 }

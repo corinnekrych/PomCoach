@@ -8,12 +8,13 @@
 
 import Foundation
 
-public class ActivitiesManager {
+public class ActivitiesManager: NSObject {
     public var activities: [Activity]?
     public static let instance = ActivitiesManager()
     
-    public init() {
-      // TODO: remove hardcoded
+    public override init() {
+        super.init()
+        // TODO: remove hardcoded
         activities = [
             TaskActivity(name: "read emails", manager: self),
             TaskActivity(name: "10 curls", duration: WorkoutInterval, type:.Break, manager: self),
@@ -71,5 +72,4 @@ public class ActivitiesManager {
             return activities?.filter {$0.endDate != nil}
         }
     }
-    
 }
