@@ -87,6 +87,8 @@ final public class TaskActivity: NSObject, Activity {
         self.duration = duration
         self.type = type
         activitiesManager = manager
+        self.startDate = startDate
+        self.endDate = endDate
     }
     
     public convenience init(name: String, manager: ActivitiesManager) {
@@ -117,15 +119,9 @@ extension TaskActivity: NSCoding {
             let duration = aDecoder.decodeObjectForKey("duration") as? NSTimeInterval,
             let intType = aDecoder.decodeObjectForKey("type") as? Int, let type = ActivityType(rawValue:intType)
             else {return nil}
-        var date1: NSDate? = nil
-        if let startDate = aDecoder.decodeObjectForKey("startDate") as? NSDate {
-            date1 = startDate
-        }
-        var date2: NSDate? = nil
-        if let endDate = aDecoder.decodeObjectForKey("endDate") as? NSDate {
-            date2 = endDate
-        }
-        self.init(name: name, duration: duration, startDate: date1, endDate: date2, type: type, manager: ActivitiesManager.instance)
+        let date1 = aDecoder.decodeObjectForKey("startDate") as?  NSDate
+        let date2 = aDecoder.decodeObjectForKey("endDate") as? NSDate
+        self.init(name: name, duration: duration, startDate: date1, endDate:  date2, type: type, manager: ActivitiesManager.instance)
     }
     
     public func encodeWithCoder(encoder: NSCoder) {

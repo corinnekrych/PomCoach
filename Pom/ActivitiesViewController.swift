@@ -229,6 +229,7 @@ extension ActivitiesViewController: UITableViewDelegate {
                 timer.invalidate();
                 cell.progressView.update(color, current: Int(totalTime), total: Int(totalTime))
                 tableView.reloadData()
+                saveTasks()
                 return
             }
             
@@ -321,7 +322,7 @@ extension ActivitiesViewController {
         if let savedObjects = NSUserDefaults.standardUserDefaults().objectForKey("objects") as? NSData {
             let act = NSKeyedUnarchiver.unarchiveObjectWithData(savedObjects) as! [TaskActivity]
             act.map({ (task: TaskActivity) -> TaskActivity in
-                print("act::\(task.name)::\(task.startDate)::\(task.duration)::\(task.type)")
+                print("act::\(task.name)::\(task.startDate)::\(task.endDate)::\(task.duration)::\(task.type)")
                 return task
             })
             activitiesMgr.activities = act
@@ -331,9 +332,15 @@ extension ActivitiesViewController {
     func saveTasks() {
         print("Saving...")
         if let activities = activitiesMgr.activities {
+            activities.map({ (task: TaskActivity) -> TaskActivity in
+                print("act::\(task.name)::\(task.startDate)::\(task.endDate)::\(task.duration)::\(task.type)")
+                return task
+            })
+
             let object = NSKeyedArchiver.archivedDataWithRootObject(activities)
             NSUserDefaults.standardUserDefaults().setObject(object, forKey: "objects")
             NSUserDefaults.standardUserDefaults().synchronize()
+
             print("Saved...")
         }
     }
