@@ -29,7 +29,7 @@ class ActivitiesViewController: UIViewController, WCSessionDelegate {
             session.delegate = self;
             session.activateSession()
         }
-        //loadSavedTasks()
+        loadSavedTasks()
     }
 
     override func viewWillAppear(animated: Bool) {
@@ -42,7 +42,7 @@ class ActivitiesViewController: UIViewController, WCSessionDelegate {
         let taskName = message["task"] as? String
         let tasksFiltered = activitiesMgr.activities?.filter {$0.name == taskName}
         guard let tasks = tasksFiltered else {return}
-        var task = tasks[0]
+        let task = tasks[0]
         if task.isStarted() {
             replyHandler(["taskId": task.name, "status": "started"])
             return
@@ -92,6 +92,7 @@ extension ActivitiesViewController {
             remainingActivities.removeAtIndex(sourceIndexPath.row)
             remainingActivities.insert(moved, atIndex: destinationIndexPath.row)
             activitiesMgr.remainingActivities = remainingActivities
+            //saveTasks()
         }
     }
     
@@ -104,14 +105,6 @@ extension ActivitiesViewController {
             return NSIndexPath(forRow: row, inSection: sourceIndexPath.section)
         }
         return proposedDestinationIndexPath
-    }
-}
-
-// MARK: Add New Task
-extension ActivitiesViewController {
-    @IBAction func editMode(sender: UIBarButtonItem) {
-        self.tableView.editing = !self.tableView.editing
-        saveTasks()
     }
     
     func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
@@ -128,9 +121,19 @@ extension ActivitiesViewController {
                     tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
                 }
             }
+            //saveTasks()
             tableView.reloadData()
         }
     }
+}
+
+// MARK: Add New Task
+extension ActivitiesViewController {
+    @IBAction func editMode(sender: UIBarButtonItem) {
+        self.tableView.editing = !self.tableView.editing
+        saveTasks()
+    }
+
     
     @IBAction func beginAddingTask() {
         addingNewTask = true
@@ -154,7 +157,7 @@ extension ActivitiesViewController {
             return
         }
         
-        let task = TaskActivity(name: name, duration: TaskInterval, type: color, manager: ActivitiesManager.instance)
+        let task = TaskActivity(name: name, duration: TaskInterval, startDate:nil, endDate: nil, type: color, manager: ActivitiesManager.instance)
         activitiesMgr.activities?.insert(task, atIndex: 0)
         addingNewTask = false
         tableView.reloadRowsAtIndexPaths([NSIndexPath(forRow: 0, inSection: 0)], withRowAnimation: .Fade)
@@ -237,6 +240,7 @@ extension ActivitiesViewController: UITableViewDelegate {
         } else { // last row
             tableView.reloadData()
         }
+        saveTasks()
     }
     
     func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
@@ -319,22 +323,166 @@ extension ActivitiesViewController: UITableViewDataSource {
 extension ActivitiesViewController {
     private var savedTasksPath: String {
         let paths = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)
-        let docPath = paths.first!
-        return (docPath as NSString).stringByAppendingPathComponent("SavedTasks")
+        let docPath = paths.first! as NSString
+        let doc = docPath.stringByAppendingPathComponent("SavedTasks")
+        print("DOC::\(doc)")
+        return doc
     }
     
     func loadSavedTasks() {
 //        if let data = NSData(contentsOfFile: savedTasksPath) {
-//            let savedTasks = NSKeyedUnarchiver.unarchiveObjectWithData(data) as! TaskList
-//            tasks = savedTasks
+//            let activitiesMgr = NSKeyedUnarchiver.unarchiveObjectWithData(data) as? ActivitiesManager
+//            guard let actMgr = activitiesMgr else {return}
+//            self.activitiesMgr = actMgr
 //        } else {
-//            tasks = TaskList()
+//            activitiesMgr.activities = []
 //        }
+        
+        
+//        if let savedObjects = NSUserDefaults.standardUserDefaults().objectForKey("objects") as? NSData {
+//            let act = NSKeyedUnarchiver.unarchiveObjectWithData(savedObjects) as! [Task]
+//            print("act::\(act[0].name)::\(act[0].startDate)::\(act[0].duration)::\(act[0].type)")
+//        }
+//        
+        
+        if let savedObjects = NSUserDefaults.standardUserDefaults().objectForKey("objects") as? NSData {
+            let act = NSKeyedUnarchiver.unarchiveObjectWithData(savedObjects) as! [TaskActivity]
+            print("act::\(act[0].name)::\(act[0].startDate)::\(act[0].duration)::\(act[0].type)")
+        }
     }
     
     func saveTasks() {
-        print("REMAINING\(activitiesMgr.remainingActivities)")
-        //NSKeyedArchiver.archiveRootObject(tasks, toFile: savedTasksPath)
+        print("Saving...")
+        //guard let activities = activitiesMgr.activities else {return}
+        //NSKeyedArchiver.archiveRootObject(activitiesMgr, toFile: savedTasksPath)
+        let task = TaskActivity(name: "toto", duration: NSTimeInterval(20), startDate:nil, endDate: NSDate(), type: ActivityType.Break, manager: ActivitiesManager.instance)
+        //let task = Task(name: "dd", duration: NSTimeInterval(20), startDate: NSDate(), endDate: NSDate(), type: ActivityType.Break, act: TaskManager.instance)
+        let act = [task]
+        let object = NSKeyedArchiver.archivedDataWithRootObject(act)
+        NSUserDefaults.standardUserDefaults().setObject(object, forKey: "objects")
+        NSUserDefaults.standardUserDefaults().synchronize()
+        print("Saved...")
+    }
+}
+final public class TaskManager: NSObject, NSCoding {
+    public static let instance = TaskManager()
+    public var tasks: [Task]?
+    public override init() {
+        self.tasks = []
+    }
+    public init(task: [Task]) {
+        self.tasks = task
+    }
+    public convenience required init?(coder aDecoder: NSCoder) {
+        guard let tasks = aDecoder.decodeObjectForKey("tasks") as? [Task]
+            else {return nil}
+        
+        self.init(task: tasks)
+    }
+    
+    public func encodeWithCoder(encoder: NSCoder) {
+        encoder.encodeObject(tasks, forKey: "tasks")
+    }
+    public init(activities: [Task]) {
+        self.tasks = activities
+    }
+    
+    public func isCurrentActivityStarted() -> Bool {
+        return currentActivity?.timer?.valid ?? false
+    }
+    
+    public var remainingActivities:[Task]? {
+        get {
+            return tasks?.filter {$0.endDate == nil}
+        }
+        set {
+            if let newValue = newValue {
+                if let completedActivities = completedActivities {
+                    tasks = newValue + completedActivities
+                } else {
+                    tasks = newValue
+                }
+            } else {
+                tasks = completedActivities
+            }
+            
+        }
+    }
+    
+    public var currentActivity:Task? {
+        get {
+            guard let tasks = remainingActivities else {return nil}
+            if tasks.count == 0 {return nil}
+            return tasks[0]
+        }
+    }
+    
+    public var completedActivities:[Task]? {
+        get {
+            return tasks?.filter {$0.endDate != nil}
+        }
+    }
+}
+
+final public class Task: NSObject, NSCoding {
+    public let name: String
+    public var startDate: NSDate?
+    public var endDate: NSDate?
+    public let duration: NSTimeInterval
+    public var timer: NSTimer?
+    public var type: ActivityType
+    public var activitiesMgr: TaskManager
+    
+//    public convenience init(name: String, manager: TaskManager) {
+//        self.init(name: name, duration: NSTimeInterval(TaskInterval), startDate:nil, endDate: nil,  manager: manager)
+//    }
+    public override var description: String {
+        return "\(self.name)"
+    }
+    
+    public var remainingTime: NSTimeInterval? {
+        get {
+            return timer?.fireDate.timeIntervalSinceNow
+        }
+    }
+    public func start() {
+        startDate = NSDate()
+        timer = NSTimer.scheduledTimerWithTimeInterval(duration, target: self, selector: Selector("stop"), userInfo: nil, repeats: false)
+    }
+    
+    public func stop() {
+        print("fire")
+        endDate = NSDate()
+        timer?.invalidate()
+    }
+    
+    public func isStarted() -> Bool {
+        return timer?.valid ?? false
+    }
+    
+    public init(name: String, duration: NSTimeInterval, startDate: NSDate?, endDate: NSDate?, type: ActivityType, act: TaskManager) {
+        self.name = name
+        self.startDate = startDate
+        self.startDate = endDate
+        self.duration = duration
+        self.type = type
+        self.activitiesMgr = act
+    }
+    public convenience required init?(coder aDecoder: NSCoder) {
+        guard let name = aDecoder.decodeObjectForKey("name") as? String,
+            let startDate = aDecoder.decodeObjectForKey("startDate") as? NSDate,
+            let duration = aDecoder.decodeObjectForKey("duration") as? NSTimeInterval,
+            let type = aDecoder.decodeObjectForKey("type") as? Int
+            else {return nil}
+        self.init(name: name, duration: duration,  startDate: startDate, endDate: nil, type: ActivityType(rawValue: type)!, act: TaskManager.instance)
+    }
+    
+    public func encodeWithCoder(encoder: NSCoder) {
+        guard let startDate = startDate else {return}
+        encoder.encodeObject(name, forKey: "name")
+        encoder.encodeObject(startDate, forKey: "startDate")
+        encoder.encodeObject(duration, forKey: "duration")
+        encoder.encodeObject(type.rawValue, forKey: "type")
     }
 }
 

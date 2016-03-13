@@ -33,6 +33,7 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
     
     override func awakeWithContext(context: AnyObject?) {
         super.awakeWithContext(context)
+        loadSavedTasks()
         group.setBackgroundImageNamed("Time")
         display(ActivitiesManager.instance.currentActivity)
     }
@@ -127,7 +128,7 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
         sendStartTimer(currentActivity.name, startDate: currentActivity.startDate, endDate: currentActivity.endDate)
     }
     
-    func display(activity: Activity?) {
+    func display(activity: TaskActivity?) {
         guard let activity = activity else {
         taskNameLabel.setText("NOTHING TO DO :)")
         timer.setHidden(true)
@@ -143,5 +144,29 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
             totalTimeLabel.setText("\(durationInMin) min")
         }
         taskNameLabel.setText(activity.name)
+    }
+}
+// MARK: Task Persistance
+extension InterfaceController {
+    private var savedTasksPath: String {
+        let paths = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)
+        let docPath = paths.first! as NSString
+        let doc = docPath.stringByAppendingPathComponent("SavedTasks")
+        print("DOC::\(doc)")
+        return doc
+    }
+    
+    func loadSavedTasks() {
+        if let data = NSData(contentsOfFile: savedTasksPath) {
+            let savedTasks = NSKeyedUnarchiver.unarchiveObjectWithData(data) as! [TaskActivity]
+            ActivitiesManager.instance.activities = savedTasks
+        } else {
+            ActivitiesManager.instance.activities = []
+        }
+    }
+    
+    func saveTasks() {
+        guard let activities = ActivitiesManager.instance.activities else {return}
+        NSKeyedArchiver.archiveRootObject(activities, toFile: savedTasksPath)
     }
 }

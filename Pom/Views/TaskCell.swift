@@ -21,7 +21,7 @@ class TaskCell: UITableViewCell {
 
 // MARK: Populate Cell
 extension TaskCell {
-    func updateWithTask(activity:Activity) {
+    func updateWithTask(activity:TaskActivity) {
         nameLabel.text = activity.name
         var timePassed: Int = 0
         let totalTime: Int = Int(activity.duration)
