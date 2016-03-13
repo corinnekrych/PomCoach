@@ -8,40 +8,44 @@
 
 import Foundation
 
-public class ActivitiesManager: NSObject {
-    public var activities: [Activity]?
+final public class ActivitiesManager {
+    public var activities: [TaskActivity]?
     public static let instance = ActivitiesManager()
     
-    public override init() {
-        super.init()
+    public init() {
         // TODO: remove hardcoded
-        activities = [
-            TaskActivity(name: "read emails", manager: self),
-            TaskActivity(name: "10 curls", duration: WorkoutInterval, type:.Break, manager: self),
-            TaskActivity(name: "layout", manager: self),
-            TaskActivity(name: "coffee", duration: WorkoutInterval, type:.Break, manager: self),
-            TaskActivity(name: "animation", manager: self),
-            TaskActivity(name: "10 push ups", duration: WorkoutInterval, type:.Break, manager: self),
-            TaskActivity(name: "glance 1/2", manager: self),
-            
-            TaskActivity(name: "walk outside", duration: LongWorkoutInterval, type:.Break, manager: self), //2h30
-            
-            TaskActivity(name: "glace 2/2", manager: self),
-            TaskActivity(name: "10 push ups", duration: WorkoutInterval, type:.Break, manager: self),
-            TaskActivity(name: "complication", manager: self),
-            TaskActivity(name: "50 crunchies", duration: WorkoutInterval, type:.Break, manager: self),
-            TaskActivity(name: "WC: Interactive Messaging", manager: self),
-            TaskActivity(name: "10 squats/leg raises", duration: WorkoutInterval, type:.Break, manager: self),
-            TaskActivity(name: "WC: Application Context", manager: self),
-            
-            TaskActivity(name: "footing", duration: LongWorkoutInterval, type:.Break, manager: self)]
+        activities = []
+        //        activities = [
+        //            TaskActivity(name: "read emails", manager: self),
+        //            TaskActivity(name: "10 curls", duration: WorkoutInterval, type:.Break, manager: self),
+        //            TaskActivity(name: "layout", manager: self),
+        //            TaskActivity(name: "coffee", duration: WorkoutInterval, type:.Break, manager: self),
+        //            TaskActivity(name: "animation", manager: self),
+        //            TaskActivity(name: "10 push ups", duration: WorkoutInterval, type:.Break, manager: self),
+        //            TaskActivity(name: "glance 1/2", manager: self),
+        //
+        //            TaskActivity(name: "walk outside", duration: LongWorkoutInterval, type:.Break, manager: self), //2h30
+        //
+        //            TaskActivity(name: "glace 2/2", manager: self),
+        //            TaskActivity(name: "10 push ups", duration: WorkoutInterval, type:.Break, manager: self),
+        //            TaskActivity(name: "complication", manager: self),
+        //            TaskActivity(name: "50 crunchies", duration: WorkoutInterval, type:.Break, manager: self),
+        //            TaskActivity(name: "WC: Interactive Messaging", manager: self),
+        //            TaskActivity(name: "10 squats/leg raises", duration: WorkoutInterval, type:.Break, manager: self),
+        //            TaskActivity(name: "WC: Application Context", manager: self),
+        //
+        //            TaskActivity(name: "footing", duration: LongWorkoutInterval, type:.Break, manager: self)]
+    }
+    
+    public init(activities: [TaskActivity]) {
+        self.activities = activities
     }
     
     public func isCurrentActivityStarted() -> Bool {
         return currentActivity?.timer?.valid ?? false
     }
     
-    public var remainingActivities:[Activity]? {
+    public var remainingActivities:[TaskActivity]? {
         get {
             return activities?.filter {$0.endDate == nil}
         }
@@ -59,7 +63,7 @@ public class ActivitiesManager: NSObject {
         }
     }
     
-    public var currentActivity:Activity? {
+    public var currentActivity:TaskActivity? {
         get {
             guard let activities = remainingActivities else {return nil}
             if activities.count == 0 {return nil}
@@ -67,7 +71,7 @@ public class ActivitiesManager: NSObject {
         }
     }
     
-    public var completedActivities:[Activity]? {
+    public var completedActivities:[TaskActivity]? {
         get {
             return activities?.filter {$0.endDate != nil}
         }

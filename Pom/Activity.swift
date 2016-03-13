@@ -114,23 +114,28 @@ extension TaskActivity: NSCoding {
 
     public convenience init?(coder aDecoder: NSCoder) {
         guard let name = aDecoder.decodeObjectForKey("name") as? String,
-        let intType = aDecoder.decodeObjectForKey("type") as? Int, type = ActivityType(rawValue:intType),
-        let startDate = aDecoder.decodeObjectForKey("startDate") as? Double,
-        let endDate = aDecoder.decodeObjectForKey("endDate") as? Double
-        else {return nil}
-
-        let duration = NSTimeInterval(aDecoder.decodeDoubleForKey("duration"))
-        
-        self.init(name: name, duration: duration, type: type, startDate: NSDate(timeIntervalSinceReferenceDate:startDate), endDate: NSDate(timeIntervalSinceReferenceDate:endDate), manager: ActivitiesManager.instance)
+            let duration = aDecoder.decodeObjectForKey("duration") as? NSTimeInterval,
+            let intType = aDecoder.decodeObjectForKey("type") as? Int, let type = ActivityType(rawValue:intType)
+            else {return nil}
+        var date1: NSDate? = nil
+        if let startDate = aDecoder.decodeObjectForKey("startDate") as? NSDate {
+            date1 = startDate
+        }
+        var date2: NSDate? = nil
+        if let endDate = aDecoder.decodeObjectForKey("endDate") as? NSDate {
+            date2 = endDate
+        }
+        self.init(name: name, duration: duration, startDate: date1, endDate: date2, type: type, manager: ActivitiesManager.instance)
     }
     
     public func encodeWithCoder(encoder: NSCoder) {
-        guard let startDateDouble = startDate?.timeIntervalSinceReferenceDate,
-            let endDateDouble = endDate?.timeIntervalSinceReferenceDate else {return}
         encoder.encodeObject(name, forKey: "name")
-        encoder.encodeDouble(duration, forKey: "duration")
-        encoder.encodeInteger(type.rawValue, forKey: "type")
-        encoder.encodeDouble(startDateDouble, forKey: "startDate")
-        encoder.encodeDouble(endDateDouble, forKey: "endDate")
-    }
-}
+        encoder.encodeObject(duration, forKey: "duration")
+        encoder.encodeObject(type.rawValue, forKey: "type")
+        if let startDate = startDate {
+            encoder.encodeObject(startDate, forKey: "startDate")
+        }
+        if let endDate = endDate {
+            encoder.encodeObject(endDate, forKey: "endDate")
+        }
+    }}

@@ -29,7 +29,7 @@ class ActivitiesViewController: UIViewController, WCSessionDelegate {
             session.delegate = self;
             session.activateSession()
         }
-        //loadSavedTasks()
+        loadSavedTasks()
     }
 
     override func viewWillAppear(animated: Bool) {
@@ -317,24 +317,25 @@ extension ActivitiesViewController: UITableViewDataSource {
 
 // MARK: Task Persistance
 extension ActivitiesViewController {
-    private var savedTasksPath: String {
-        let paths = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)
-        let docPath = paths.first!
-        return (docPath as NSString).stringByAppendingPathComponent("SavedTasks")
-    }
-    
     func loadSavedTasks() {
-//        if let data = NSData(contentsOfFile: savedTasksPath) {
-//            let savedTasks = NSKeyedUnarchiver.unarchiveObjectWithData(data) as! TaskList
-//            tasks = savedTasks
-//        } else {
-//            tasks = TaskList()
-//        }
+        if let savedObjects = NSUserDefaults.standardUserDefaults().objectForKey("objects") as? NSData {
+            let act = NSKeyedUnarchiver.unarchiveObjectWithData(savedObjects) as! [TaskActivity]
+            act.map({ (task: TaskActivity) -> TaskActivity in
+                print("act::\(task.name)::\(task.startDate)::\(task.duration)::\(task.type)")
+                return task
+            })
+            activitiesMgr.activities = act
+        }
     }
     
     func saveTasks() {
-        print("REMAINING\(activitiesMgr.remainingActivities)")
-        //NSKeyedArchiver.archiveRootObject(tasks, toFile: savedTasksPath)
+        print("Saving...")
+        if let activities = activitiesMgr.activities {
+            let object = NSKeyedArchiver.archivedDataWithRootObject(activities)
+            NSUserDefaults.standardUserDefaults().setObject(object, forKey: "objects")
+            NSUserDefaults.standardUserDefaults().synchronize()
+            print("Saved...")
+        }
     }
 }
 
