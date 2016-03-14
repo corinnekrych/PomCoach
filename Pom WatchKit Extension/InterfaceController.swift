@@ -10,7 +10,7 @@ import WatchKit
 import Foundation
 import WatchConnectivity
 
-class InterfaceController: WKInterfaceController, WCSessionDelegate {
+class InterfaceController: WKInterfaceController {
 
     @IBOutlet var taskNameLabel: WKInterfaceLabel!
     @IBOutlet var group: WKInterfaceGroup!
@@ -135,6 +135,7 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
         startButtonImage.setHidden(true)
         return
         }
+        startButtonImage.setHidden(false)
         let duration = activity.duration
         if duration < 60 {
             totalTimeLabel.setText("\(duration) sec")
@@ -143,5 +144,27 @@ class InterfaceController: WKInterfaceController, WCSessionDelegate {
             totalTimeLabel.setText("\(durationInMin) min")
         }
         taskNameLabel.setText(activity.name)
+    }
+}
+// MARK: WCSessionDelegate
+extension InterfaceController: WCSessionDelegate {
+    func session(session: WCSession, didReceiveApplicationContext applicationContext: [String : AnyObject]) {
+        dispatch_async(dispatch_get_main_queue()) {
+            print("Received application context \(applicationContext)")
+            if let tasks = applicationContext["activities"] as? [[String : AnyObject]] {
+                let activities = tasks.map({ (task: [String : AnyObject]) -> TaskActivity in
+                    if let name = task["name"] as? String, let duration = task["duration"] as? Double, let type = task["type"] as? Int {
+                        return TaskActivity(name: name,
+                            duration: NSTimeInterval(duration),
+                            startDate: nil, endDate: nil,
+                            type: ActivityType(rawValue: type)!,
+                            manager: ActivitiesManager.instance)
+                    }
+                    return TaskActivity(name: "TODO", duration: NSTimeInterval(10), manager: ActivitiesManager.instance)
+            })
+            ActivitiesManager.instance.remainingActivities = activities
+            self.display(ActivitiesManager.instance.currentActivity)
+            }
+        }
     }
 }

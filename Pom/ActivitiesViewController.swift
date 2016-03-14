@@ -30,6 +30,7 @@ class ActivitiesViewController: UIViewController, WCSessionDelegate {
             session.activateSession()
         }
         loadSavedTasks()
+        sendContextToAppleWatch()
     }
 
     override func viewWillAppear(animated: Bool) {
@@ -70,9 +71,9 @@ class ActivitiesViewController: UIViewController, WCSessionDelegate {
         replyHandler(["taskId": task.name, "status": "updated ok"])
         dispatch_async(dispatch_get_main_queue()) {
             self.tableView.reloadData()
+            self.saveTasks()
         }
     }
-    
 }
 
 // MARK: Delete / Move task
@@ -163,6 +164,24 @@ extension ActivitiesViewController {
         tableView.reloadData()
         tableView.endEditing(true)
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: "beginAddingTask")
+        sendContextToAppleWatch()
+    }
+    
+    func sendContextToAppleWatch() {
+        // send to watch
+        if session.paired && session.watchAppInstalled {
+            if let remainingActivities = activitiesMgr.remainingActivities {
+                let dict = remainingActivities.map({ (task: TaskActivity) -> [String: AnyObject] in
+                    return task.toDictionary()
+                })
+                do {
+                    try session.updateApplicationContext(["activities": dict])
+                } catch let error {
+                    let alertController = UIAlertController(title: "Oops!", message: "Error: \(error). Please send again!", preferredStyle: .Alert)
+                    presentViewController(alertController, animated: true, completion: nil)
+                }
+            }
+        }
     }
     
     func displayError(error: String) {

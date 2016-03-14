@@ -109,6 +109,21 @@ final public class TaskActivity: NSObject, Activity {
     public func isStarted() -> Bool {
         return timer?.valid ?? false
     }
+    
+    public func toDictionary() -> [String: AnyObject] {
+        var dict: [String: AnyObject] = [:]
+        dict["name"] = name
+        dict["duration"] = duration
+        dict["type"] = type.rawValue
+        if let startDate = startDate {
+            dict["startDate"] = startDate
+        }
+        if let endDate = endDate {
+            dict["endDate"] = endDate
+        }
+        return dict
+    }
+
 }
 
 // MARK: NSCoding
