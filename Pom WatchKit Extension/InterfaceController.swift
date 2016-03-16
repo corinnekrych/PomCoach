@@ -29,6 +29,11 @@ class InterfaceController: WKInterfaceController {
             session.delegate = self
             session.activateSession()
         }
+        guard let currentActivity = ActivitiesManager.instance.currentActivity else {return}
+        if (currentActivity.isStarted() == true) {
+            let imageRangeRemaining = (currentActivity.duration - (currentActivity.remainingTime ?? 0))*90/currentActivity.duration
+            group.startAnimatingWithImagesInRange(NSMakeRange(Int(imageRangeRemaining), 90), duration: currentActivity.duration, repeatCount: 1)
+        }
     }
     
     override func awakeWithContext(context: AnyObject?) {
@@ -39,11 +44,6 @@ class InterfaceController: WKInterfaceController {
     
     override func didAppear() {
         super.didAppear()
-        guard let currentActivity = ActivitiesManager.instance.currentActivity else {return}
-        if (currentActivity.isStarted() == true) {
-            let imageRangeRemaining = (currentActivity.duration - (currentActivity.remainingTime ?? 0))*90/currentActivity.duration
-            group.startAnimatingWithImagesInRange(NSMakeRange(Int(imageRangeRemaining), 90), duration: currentActivity.duration, repeatCount: 1)
-        }
     }
 
     override func didDeactivate() {
