@@ -103,13 +103,23 @@ class InterfaceController: WKInterfaceController {
         }
         let applicationData = ["task": taskName, "start": startDateString, "end": endDateString]
         print("SEND from watch \(applicationData)")
-        session.sendMessage(applicationData, replyHandler: {(dict: [String : AnyObject]) -> Void in
-            // handle reply from iPhone app here
-            print("iOS APP KNOWS Watch \(dict)")
-            }, errorHandler: {(error) -> Void in
-                // catch any errors here
-                print("OOPs... Watch \(error)")
-        })
+        if session.reachable {
+            session.sendMessage(applicationData, replyHandler: {(dict: [String : AnyObject]) -> Void in
+                // handle reply from iPhone app here
+                print("iOS APP KNOWS Watch \(dict)")
+                }, errorHandler: {(error) -> Void in
+                    // catch any errors here
+                    print("OOPs... Watch \(error)")
+            })
+        } else {
+            alertiOSAppLocked()
+            print("SESSION REACHable\(session.reachable)")
+        }
+    }
+    
+    func alertiOSAppLocked() {
+        let action = WKAlertAction(title: "Ok", style: .Default) {}
+        presentAlertControllerWithTitle("PomCoach", message: "Looks like your phone is locked. Unlock!", preferredStyle: .ActionSheet, actions: [action])
     }
     
     func fire() {

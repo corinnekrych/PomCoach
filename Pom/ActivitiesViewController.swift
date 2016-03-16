@@ -23,12 +23,6 @@ class ActivitiesViewController: UIViewController, WCSessionDelegate {
         super.viewDidLoad()
         tableView.backgroundColor = UIColor.blackColor()
         tableView.separatorStyle = .None
-        
-        if (WCSession.isSupported()) {
-            session = WCSession.defaultSession()
-            session.delegate = self;
-            session.activateSession()
-        }
         loadSavedTasks()
         sendContextToAppleWatch()
     }
@@ -68,11 +62,13 @@ class ActivitiesViewController: UIViewController, WCSessionDelegate {
             endDate = dateFormatter.dateFromString(endDateString)
         }
         task.endDate = endDate
-        replyHandler(["taskId": task.name, "status": "updated ok"])
+        
         dispatch_async(dispatch_get_main_queue()) {
+            
             self.tableView.reloadData()
             self.saveTasks()
         }
+        replyHandler(["taskId": task.name, "status": "updated ok"])
     }
 }
 
