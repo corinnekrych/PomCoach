@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		481C34041C81DB2300FBE279 /* Activity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 481C34031C81DB2300FBE279 /* Activity.swift */; };
+		482EC7071C9D642F00014913 /* DetailledActivityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 482EC7061C9D642F00014913 /* DetailledActivityViewController.swift */; };
 		484FC6071C8045E50014595E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 484FC6061C8045E50014595E /* AppDelegate.swift */; };
 		484FC60C1C8045E50014595E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 484FC60A1C8045E50014595E /* Main.storyboard */; };
 		484FC60E1C8045E50014595E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 484FC60D1C8045E50014595E /* Assets.xcassets */; };
@@ -30,7 +31,6 @@
 		48D2A7251C87666200631650 /* ActivitiesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48D2A7241C87666200631650 /* ActivitiesViewController.swift */; };
 		48D2A72D1C876EC600631650 /* ColorCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48D2A7291C876EC600631650 /* ColorCell.swift */; };
 		48D2A72E1C876EC600631650 /* NewTaskCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48D2A72A1C876EC600631650 /* NewTaskCell.swift */; };
-		48D2A72F1C876EC600631650 /* ProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48D2A72B1C876EC600631650 /* ProgressView.swift */; };
 		48D2A7301C876EC600631650 /* TaskCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48D2A72C1C876EC600631650 /* TaskCell.swift */; };
 /* End PBXBuildFile section */
 
@@ -92,6 +92,7 @@
 
 /* Begin PBXFileReference section */
 		481C34031C81DB2300FBE279 /* Activity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Activity.swift; path = Pom/Activity.swift; sourceTree = "<group>"; };
+		482EC7061C9D642F00014913 /* DetailledActivityViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailledActivityViewController.swift; sourceTree = "<group>"; };
 		484FC6031C8045E50014595E /* Pom.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Pom.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		484FC6061C8045E50014595E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		484FC60B1C8045E50014595E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -121,7 +122,6 @@
 		48D2A7241C87666200631650 /* ActivitiesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivitiesViewController.swift; sourceTree = "<group>"; };
 		48D2A7291C876EC600631650 /* ColorCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ColorCell.swift; path = Views/ColorCell.swift; sourceTree = "<group>"; };
 		48D2A72A1C876EC600631650 /* NewTaskCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NewTaskCell.swift; path = Views/NewTaskCell.swift; sourceTree = "<group>"; };
-		48D2A72B1C876EC600631650 /* ProgressView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ProgressView.swift; path = Views/ProgressView.swift; sourceTree = "<group>"; };
 		48D2A72C1C876EC600631650 /* TaskCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TaskCell.swift; path = Views/TaskCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -260,6 +260,7 @@
 			isa = PBXGroup;
 			children = (
 				48D2A7241C87666200631650 /* ActivitiesViewController.swift */,
+				482EC7061C9D642F00014913 /* DetailledActivityViewController.swift */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -269,7 +270,6 @@
 			children = (
 				48D2A7291C876EC600631650 /* ColorCell.swift */,
 				48D2A72A1C876EC600631650 /* NewTaskCell.swift */,
-				48D2A72B1C876EC600631650 /* ProgressView.swift */,
 				48D2A72C1C876EC600631650 /* TaskCell.swift */,
 			);
 			name = Views;
@@ -471,9 +471,9 @@
 				481C34041C81DB2300FBE279 /* Activity.swift in Sources */,
 				48D2A7251C87666200631650 /* ActivitiesViewController.swift in Sources */,
 				48751CD51C830086006255F4 /* ActivitiesManager.swift in Sources */,
-				48D2A72F1C876EC600631650 /* ProgressView.swift in Sources */,
 				484FC6071C8045E50014595E /* AppDelegate.swift in Sources */,
 				48D2A7301C876EC600631650 /* TaskCell.swift in Sources */,
+				482EC7071C9D642F00014913 /* DetailledActivityViewController.swift in Sources */,
 				48D2A72D1C876EC600631650 /* ColorCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

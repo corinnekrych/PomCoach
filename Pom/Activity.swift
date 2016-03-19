@@ -104,6 +104,7 @@ final public class TaskActivity: NSObject, Activity {
         print("fire")
         endDate = NSDate()
         timer?.invalidate()
+         NSNotificationCenter.defaultCenter().postNotificationName("TimerFired", object: nil)
     }
     
     public func isStarted() -> Bool {

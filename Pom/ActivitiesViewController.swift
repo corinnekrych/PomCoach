@@ -25,8 +25,14 @@ class ActivitiesViewController: UIViewController, WCSessionDelegate {
         tableView.separatorStyle = .None
         loadSavedTasks()
         sendContextToAppleWatch()
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("timerFired"), name: "TimerFired", object: nil)
     }
 
+    func timerFired() {
+        saveTasks()
+        tableView.reloadData()
+    }
+    
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         tableView.reloadData()
@@ -37,7 +43,7 @@ class ActivitiesViewController: UIViewController, WCSessionDelegate {
         let taskName = message["task"] as? String
         let tasksFiltered = activitiesMgr.activities?.filter {$0.name == taskName}
         guard let tasks = tasksFiltered else {return}
-        var task = tasks[0]
+        let task = tasks[0]
         if task.isStarted() {
             replyHandler(["taskId": task.name, "status": "started"])
             return
@@ -71,7 +77,18 @@ class ActivitiesViewController: UIViewController, WCSessionDelegate {
         replyHandler(["taskId": task.name, "status": "updated ok"])
     }
 }
-
+// MARK: segue
+extension ActivitiesViewController {
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if let id = segue.identifier where id == "viewTask" {
+            if let dest = segue.destinationViewController as? DetailledActivityViewController {
+                if let taskCell = sender as? TaskCell, let task = taskCell.activity {
+                    dest.task = task
+                }
+            }
+        }
+    }
+}
 // MARK: Delete / Move task
 extension ActivitiesViewController {
     func tableView(tableView: UITableView, editingStyleForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCellEditingStyle {
@@ -131,6 +148,7 @@ extension ActivitiesViewController {
     
     @IBAction func beginAddingTask() {
         addingNewTask = true
+        tableView.allowsSelection = false
         if (activitiesMgr.remainingActivities != nil && activitiesMgr.remainingActivities?.count > 0) {
             tableView.insertRowsAtIndexPaths([NSIndexPath(forRow: 0, inSection: 0)], withRowAnimation: .Top)
         } else {
@@ -161,6 +179,7 @@ extension ActivitiesViewController {
         tableView.endEditing(true)
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: "beginAddingTask")
         sendContextToAppleWatch()
+        tableView.allowsSelection = true
     }
     
     func sendContextToAppleWatch() {
@@ -200,59 +219,6 @@ extension ActivitiesViewController: UITableViewDelegate {
             return
         }
         guard !(addingNewTask && indexPath.section == 0 && indexPath.row == 0) else { return }
-        
-        let task = activitiesMgr.remainingActivities![indexPath.row]
-        
-        if(task.name != activitiesMgr.currentActivity!.name) {
-            displayError("Do your tasks in order ;)")
-        }
-        if (task.startDate != nil) {
-            displayError("\(task.name) is alreday started :P")
-        }
-        
-        let alert = UIAlertController(title: task.name, message: "Do you want to start \(task.name)?", preferredStyle: .ActionSheet)
-        let okAction = UIAlertAction(title: "OK", style: .Default, handler: { (action: UIAlertAction) -> Void in
-            let cell = tableView.cellForRowAtIndexPath(indexPath) as! TaskCell
-            let userInfo = ["index": indexPath.row, "cell": cell]
-            let _ = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: Selector("update:"), userInfo: userInfo, repeats: true)
-            task.start()
-        })
-        
-        alert.addAction(okAction)
-        alert.addAction(UIAlertAction(title: "Cancel", style: .Default, handler: nil))
-        alert.view.tintColor = UIColor.blackColor()
-        let subview = alert.view.subviews.first! as UIView
-        let alertContentView = subview.subviews.first! as UIView
-        alertContentView.backgroundColor = UIColor.blackColor()
-        alert.view.tintColor = UIColor.whiteColor();
-        self.presentViewController(alert, animated: true, completion: nil)
-        // workaround for http://stackoverflow.com/questions/21075540/presentviewcontrolleranimatedyes-view-will-not-appear-until-user-taps-again
-        CFRunLoopWakeUp(CFRunLoopGetCurrent());
-        saveTasks()
-    }
-    
-    func update(timer: NSTimer) {
-        guard let userInfo = timer.userInfo else {return}
-        let index = userInfo["index"] as! Int
-        let cell = userInfo["cell"] as! TaskCell
-        guard let tasks = activitiesMgr.remainingActivities else {return}
-        if tasks.count > 0 {
-            let timeRemaining = tasks[index].remainingTime
-            let color = tasks[index].type.color
-            let totalTime = tasks[index].duration
-            if timeRemaining == nil {
-                timer.invalidate();
-                cell.progressView.update(color, current: Int(totalTime), total: Int(totalTime))
-                tableView.reloadData()
-                saveTasks()
-                return
-            }
-            
-            let timePassed = Int(totalTime - timeRemaining!) as Int
-            cell.progressView.update(color, current: timePassed, total: Int(totalTime))
-        } else { // last row
-            tableView.reloadData()
-        }
     }
     
     func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
@@ -347,15 +313,9 @@ extension ActivitiesViewController {
     func saveTasks() {
         print("Saving...")
         if let activities = activitiesMgr.activities {
-            activities.map({ (task: TaskActivity) -> TaskActivity in
-                print("act::\(task.name)::\(task.startDate)::\(task.endDate)::\(task.duration)::\(task.type)")
-                return task
-            })
-
             let object = NSKeyedArchiver.archivedDataWithRootObject(activities)
             NSUserDefaults.standardUserDefaults().setObject(object, forKey: "objects")
             NSUserDefaults.standardUserDefaults().synchronize()
-
             print("Saved...")
         }
     }
