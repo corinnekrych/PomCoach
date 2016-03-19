@@ -3,6 +3,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
@@ -215,7 +216,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4WK-CG-kKQ">
-                                <rect key="frame" x="123.5" y="520" width="128" height="45"/>
+                                <rect key="frame" x="123" y="520" width="128" height="45"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="128" id="rk9-xh-4Iu"/>
                                 </constraints>
@@ -233,17 +234,28 @@
                                 <color key="textColor" red="0.40000000600000002" green="1" blue="0.40000000600000002" alpha="1" colorSpace="calibratedRGB"/>
                                 <color key="highlightedColor" red="0.40000000600000002" green="1" blue="0.40000000600000002" alpha="1" colorSpace="calibratedRGB"/>
                             </label>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="o9p-2C-0Nu" customClass="CircleView" customModule="Pom" customModuleProvider="target">
+                                <rect key="frame" x="37.5" y="151.5" width="300" height="300"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="300" id="MLa-hV-mh7"/>
+                                    <constraint firstAttribute="width" secondItem="o9p-2C-0Nu" secondAttribute="height" id="wzN-SL-I1b"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="4WK-CG-kKQ" firstAttribute="centerX" secondItem="ZxR-4Q-Lui" secondAttribute="centerX" id="90c-h0-S1c"/>
                             <constraint firstItem="cJF-cY-uLr" firstAttribute="centerY" secondItem="ZxR-4Q-Lui" secondAttribute="centerY" id="PdZ-Ko-iPt"/>
+                            <constraint firstItem="o9p-2C-0Nu" firstAttribute="centerY" secondItem="ZxR-4Q-Lui" secondAttribute="centerY" id="PxP-cX-nPt"/>
+                            <constraint firstItem="o9p-2C-0Nu" firstAttribute="centerX" secondItem="ZxR-4Q-Lui" secondAttribute="centerX" id="Vth-zQ-TpX"/>
                             <constraint firstItem="cJF-cY-uLr" firstAttribute="centerX" secondItem="ZxR-4Q-Lui" secondAttribute="centerX" id="aLh-4E-GbX"/>
                             <constraint firstItem="HXn-yT-h8m" firstAttribute="top" secondItem="4WK-CG-kKQ" secondAttribute="bottom" constant="38" id="oax-FW-VBu"/>
                         </constraints>
                     </view>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
                     <connections>
+                        <outlet property="circleView" destination="o9p-2C-0Nu" id="gcj-hf-1VG"/>
                         <outlet property="startButton" destination="4WK-CG-kKQ" id="KD5-3P-1MS"/>
                         <outlet property="statusLabel" destination="cJF-cY-uLr" id="HEe-KE-gnH"/>
                     </connections>

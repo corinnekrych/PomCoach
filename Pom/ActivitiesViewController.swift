@@ -25,19 +25,33 @@ class ActivitiesViewController: UIViewController, WCSessionDelegate {
         tableView.separatorStyle = .None
         loadSavedTasks()
         sendContextToAppleWatch()
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("timerFired"), name: "TimerFired", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("timerFired:"), name: "TimerFired", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("timerStarted:"), name: "TimerStarted", object: nil)
     }
 
-    func timerFired() {
-        saveTasks()
-        tableView.reloadData()
+    @objc func timerFired(note: NSNotification) {
+        dispatch_async(dispatch_get_main_queue()) {
+            print("iOSS App: TimerFired Notification")
+            self.saveTasks()
+            self.tableView.reloadData()
+        }
+    }
+    @objc func timerStarted(note: NSNotification) {
+        dispatch_async(dispatch_get_main_queue()) {
+            print("iOSS App: TimerStarted Notification")
+            self.saveTasks()
+            self.tableView.reloadData()
+        }
     }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         tableView.reloadData()
     }
-    
+}
+
+// MARK: WCSessionDelegate
+extension ActivitiesViewController {
     func session(session: WCSession, didReceiveMessage message: [String : AnyObject], replyHandler: ([String : AnyObject]) -> Void) {
         print("RECEIVED ON IOS: \(message)")
         let taskName = message["task"] as? String
@@ -59,6 +73,8 @@ class ActivitiesViewController: UIViewController, WCSessionDelegate {
         var startDate: NSDate? = nil
         if let startDateString = startDateString {
             startDate = dateFormatter.dateFromString(startDateString)
+            NSNotificationCenter.defaultCenter().postNotificationName("TimerStarted", object: ["task":task])
+
         }
         task.startDate = startDate
         
@@ -66,6 +82,7 @@ class ActivitiesViewController: UIViewController, WCSessionDelegate {
         var endDate:NSDate? = nil
         if let endDateString = endDateString {
             endDate = dateFormatter.dateFromString(endDateString)
+            NSNotificationCenter.defaultCenter().postNotificationName("TimerFired", object: ["task":task])
         }
         task.endDate = endDate
         
@@ -77,6 +94,7 @@ class ActivitiesViewController: UIViewController, WCSessionDelegate {
         replyHandler(["taskId": task.name, "status": "updated ok"])
     }
 }
+
 // MARK: segue
 extension ActivitiesViewController {
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {

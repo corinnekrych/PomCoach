@@ -28,6 +28,7 @@
 		48751CD51C830086006255F4 /* ActivitiesManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48751CD41C830086006255F4 /* ActivitiesManager.swift */; };
 		48751CD61C8320A2006255F4 /* Activity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 481C34031C81DB2300FBE279 /* Activity.swift */; };
 		48751CD71C8320A2006255F4 /* ActivitiesManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48751CD41C830086006255F4 /* ActivitiesManager.swift */; };
+		489F29241C9DA7D900938278 /* CircleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 489F29231C9DA7D900938278 /* CircleView.swift */; };
 		48D2A7251C87666200631650 /* ActivitiesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48D2A7241C87666200631650 /* ActivitiesViewController.swift */; };
 		48D2A72D1C876EC600631650 /* ColorCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48D2A7291C876EC600631650 /* ColorCell.swift */; };
 		48D2A72E1C876EC600631650 /* NewTaskCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48D2A72A1C876EC600631650 /* NewTaskCell.swift */; };
@@ -119,6 +120,7 @@
 		484FC64B1C8045E50014595E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		484FC64D1C8045E50014595E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		48751CD41C830086006255F4 /* ActivitiesManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivitiesManager.swift; sourceTree = "<group>"; };
+		489F29231C9DA7D900938278 /* CircleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CircleView.swift; sourceTree = "<group>"; };
 		48D2A7241C87666200631650 /* ActivitiesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivitiesViewController.swift; sourceTree = "<group>"; };
 		48D2A7291C876EC600631650 /* ColorCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ColorCell.swift; path = Views/ColorCell.swift; sourceTree = "<group>"; };
 		48D2A72A1C876EC600631650 /* NewTaskCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NewTaskCell.swift; path = Views/NewTaskCell.swift; sourceTree = "<group>"; };
@@ -268,6 +270,7 @@
 		48D2A7281C876EBB00631650 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				489F29231C9DA7D900938278 /* CircleView.swift */,
 				48D2A7291C876EC600631650 /* ColorCell.swift */,
 				48D2A72A1C876EC600631650 /* NewTaskCell.swift */,
 				48D2A72C1C876EC600631650 /* TaskCell.swift */,
@@ -467,6 +470,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				489F29241C9DA7D900938278 /* CircleView.swift in Sources */,
 				48D2A72E1C876EC600631650 /* NewTaskCell.swift in Sources */,
 				481C34041C81DB2300FBE279 /* Activity.swift in Sources */,
 				48D2A7251C87666200631650 /* ActivitiesViewController.swift in Sources */,
