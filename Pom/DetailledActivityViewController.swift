@@ -19,13 +19,19 @@ public class DetailledActivityViewController: UIViewController {
             displayError("Already started", viewController: self)
         } else if task.endDate == nil {
             if task.name == ActivitiesManager.instance.currentActivity?.name {
-                statusLabel.text = "\(task.name)"
-                startButton.setTitle("Stop ", forState: .Normal)
-                startButton.setTitle("Stop ", forState: .Selected)
                 task.start()
+                // TODO: to avoid duplication send event but need a way to know where the action was started not to send notigication back
+                //NSNotificationCenter.defaultCenter().postNotificationName("TimerStarted", object: ["task":task])
                 saveTasks()
-                circleView.animateCircle(0, color:task.type.color, duration: task.duration)
                 sendActivityToAppleWatch(task, viewController: self)
+                print("Task started from iOS app, sendActivityToAppleWatch() called")
+                dispatch_async(dispatch_get_main_queue()) {
+                    print("Task started from iOS app, sendActivityToAppleWatch() called.. MAIN")
+                    self.circleView.animateCircle(0, color:self.task.type.color, duration: self.task.duration)
+                    self.statusLabel.text = "\(self.task.name)"
+                    self.startButton.setTitle("Stop ", forState: .Normal)
+                    self.startButton.setTitle("Stop ", forState: .Selected)
+                }
             } else {
                 displayError("Do your tasks in order :P", viewController: self)
             }
@@ -55,33 +61,35 @@ public class DetailledActivityViewController: UIViewController {
             circleView.animateCircle(task.duration, color:task.type.color, duration: task.duration)
         }
     }
-
+    
     @objc public func timerFired(note: NSNotification) {
-        dispatch_async(dispatch_get_main_queue()) {
-            if let userInfo = note.object, taskFromNotification = userInfo["task"] as? TaskActivity where taskFromNotification.name == self.task.name {
+        if let userInfo = note.object, taskFromNotification = userInfo["task"] as? TaskActivity where taskFromNotification.name == self.task.name {
+            saveTasks()
+            sendActivitiesToAppleWatch(self)
+            print("iOS app::TimerFired::TaskNotification::\(taskFromNotification)")
+            dispatch_async(dispatch_get_main_queue()) {
                 self.startButton.setTitle("Done", forState: .Normal)
                 self.startButton.setTitle("Done", forState: .Selected)
-                saveTasks()
-                sendActivitiesToAppleWatch(self)
-                print("iOS app::TimerFired::TaskNotification::\(taskFromNotification)")
             }
-            print("iOS app::TimerFired::note::\(note)")
         }
+        print("iOS app::TimerFired::note::\(note)")
     }
     
     @objc public func timerStarted(note: NSNotification) {
-        dispatch_async(dispatch_get_main_queue()) {
-            if let userInfo = note.object, let taskFromNotification = userInfo["task"] as? TaskActivity where taskFromNotification.name == self.task.name {
+        if let userInfo = note.object, let taskFromNotification = userInfo["task"] as? TaskActivity where taskFromNotification.name == self.task.name {
+            saveTasks()
+            // TODO: to avoid duplication send event but need a way to know where the action was started not to send notigication back
+            //sendActivityToAppleWatch(task, viewController: self)
+            print("iOS app::TimerStarted::TaskNotification::\(taskFromNotification)")
+            dispatch_async(dispatch_get_main_queue()) {
                 self.startButton.setTitle("Stop", forState: .Normal)
                 self.startButton.setTitle("Stop", forState: .Selected)
-                saveTasks()
-                print("iOS app::TimerStarted::TaskNotification::\(taskFromNotification)")
                 let now = NSDate()
-                let spent = now.timeIntervalSinceReferenceDate - (self.task.startDate?.timeIntervalSinceReferenceDate)!
-                self.circleView.animateCircle(spent, color:self.task.type.color, duration: self.task.duration)
+                let spent = now.timeIntervalSinceReferenceDate - (taskFromNotification.startDate?.timeIntervalSinceReferenceDate)!
+                self.circleView.animateCircle(spent, color:taskFromNotification.type.color, duration: taskFromNotification.duration)
             }
-            print("iOS app::TimerStarted::note::\(note)")
         }
+        print("iOS app::TimerStarted::note::\(note)")
     }
 }
 

@@ -42,16 +42,16 @@ class ActivitiesViewController: UIViewController {
 // MARK: TaskStarted TaskFired event
 extension ActivitiesViewController {
     @objc func timerFired(note: NSNotification) {
+        saveTasks()
         dispatch_async(dispatch_get_main_queue()) {
             print("iOSS App: TimerFired Notification")
-            saveTasks()
             self.tableView.reloadData()
         }
     }
     @objc func timerStarted(note: NSNotification) {
+        saveTasks()
         dispatch_async(dispatch_get_main_queue()) {
             print("iOSS App: TimerStarted Notification")
-            saveTasks()
             self.tableView.reloadData()
         }
     }
@@ -228,13 +228,15 @@ extension ActivitiesViewController: UITableViewDataSource {
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if section == 0 {
             if addingNewTask {
-                return 1 + activitiesMgr.remainingActivities!.count
+                return 1 + (activitiesMgr.remainingActivities?.count ?? 0)
             } else {
-                return max(1, activitiesMgr.remainingActivities!.count)
+                return max(1, activitiesMgr.remainingActivities?.count ?? 0)
             }
         }
         else if section == 1 {
-            return activitiesMgr.completedActivities!.count
+            if let completed = activitiesMgr.completedActivities {
+            return completed.count
+            }
         }
         return 0
     }
@@ -264,8 +266,10 @@ extension ActivitiesViewController: UITableViewDataSource {
     
     // Completed Header
     func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        if section == 1 && activitiesMgr.completedActivities!.count > 0 {
-            return 30
+        if let completed = activitiesMgr.completedActivities {
+            if section == 1 && completed.count > 0 {
+                return 30
+            }
         }
         return 0
     }

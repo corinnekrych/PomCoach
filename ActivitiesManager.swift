@@ -30,7 +30,7 @@ public func loadSavedTasks() {
 }
 
 final public class ActivitiesManager {
-    public var activities: [TaskActivity]?
+    public var activities: [TaskActivity]? = []
     public static let instance = ActivitiesManager()
     
     public init() {
