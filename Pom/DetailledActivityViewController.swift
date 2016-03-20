@@ -16,7 +16,7 @@ public class DetailledActivityViewController: UIViewController {
     
     @IBAction func startTimer(sender: AnyObject) {
         if task.isStarted() {
-            displayError("Already started")
+            displayError("Already started", viewController: self)
         } else if task.endDate == nil {
             if task.name == ActivitiesManager.instance.currentActivity?.name {
                 statusLabel.text = "\(task.name)"
@@ -25,8 +25,9 @@ public class DetailledActivityViewController: UIViewController {
                 task.start()
                 saveTasks()
                 circleView.animateCircle(0, color:task.type.color, duration: task.duration)
+                sendActivityToAppleWatch(task, viewController: self)
             } else {
-                displayError("Do your tasks in order :P")
+                displayError("Do your tasks in order :P", viewController: self)
             }
         }
     }
@@ -42,7 +43,6 @@ public class DetailledActivityViewController: UIViewController {
             startButton.setTitle("Stop ", forState: .Selected)
             let now = NSDate()
             let spent = now.timeIntervalSinceReferenceDate - (task.startDate?.timeIntervalSinceReferenceDate)!
-            print("::timeRemaining:\(spent)")
             circleView.animateCircle(spent, color:task.type.color, duration: task.duration)
         } else if state == "toStart" {
             statusLabel.text = "\(task.name)"
@@ -61,7 +61,8 @@ public class DetailledActivityViewController: UIViewController {
             if let userInfo = note.object, taskFromNotification = userInfo["task"] as? TaskActivity where taskFromNotification.name == self.task.name {
                 self.startButton.setTitle("Done", forState: .Normal)
                 self.startButton.setTitle("Done", forState: .Selected)
-                self.saveTasks()
+                saveTasks()
+                sendActivitiesToAppleWatch(self)
                 print("iOS app::TimerFired::TaskNotification::\(taskFromNotification)")
             }
             print("iOS app::TimerFired::note::\(note)")
@@ -73,34 +74,15 @@ public class DetailledActivityViewController: UIViewController {
             if let userInfo = note.object, let taskFromNotification = userInfo["task"] as? TaskActivity where taskFromNotification.name == self.task.name {
                 self.startButton.setTitle("Stop", forState: .Normal)
                 self.startButton.setTitle("Stop", forState: .Selected)
-                self.saveTasks()
+                saveTasks()
                 print("iOS app::TimerStarted::TaskNotification::\(taskFromNotification)")
                 let now = NSDate()
                 let spent = now.timeIntervalSinceReferenceDate - (self.task.startDate?.timeIntervalSinceReferenceDate)!
-                print("::timeRemaining:\(spent)")
                 self.circleView.animateCircle(spent, color:self.task.type.color, duration: self.task.duration)
             }
             print("iOS app::TimerStarted::note::\(note)")
         }
     }
-    
-    func saveTasks() {
-        print("Saving...")
-        if let activities = ActivitiesManager.instance.activities {
-            let object = NSKeyedArchiver.archivedDataWithRootObject(activities)
-            NSUserDefaults.standardUserDefaults().setObject(object, forKey: "objects")
-            NSUserDefaults.standardUserDefaults().synchronize()
-            print("Saved...")
-        }
-    }
+}
 
-}
-// MARK: Utility methods
-extension DetailledActivityViewController {
-    func displayError(error: String) {
-        let alert = UIAlertController(title: error, message: nil, preferredStyle: .Alert)
-        let okAction = UIAlertAction(title: "OK", style: .Default, handler: nil)
-        alert.addAction(okAction)
-        self.presentViewController(alert, animated: true, completion: nil)
-    }
-}
+

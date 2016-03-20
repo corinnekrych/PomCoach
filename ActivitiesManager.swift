@@ -8,33 +8,32 @@
 
 import Foundation
 
+public func saveTasks() {
+    print("Saving...")
+    if let activities = ActivitiesManager.instance.activities {
+        let object = NSKeyedArchiver.archivedDataWithRootObject(activities)
+        NSUserDefaults.standardUserDefaults().setObject(object, forKey: "objects")
+        NSUserDefaults.standardUserDefaults().synchronize()
+        print("Saved...")
+    }
+}
+
+public func loadSavedTasks() {
+    if let savedObjects = NSUserDefaults.standardUserDefaults().objectForKey("objects") as? NSData {
+        let act = NSKeyedUnarchiver.unarchiveObjectWithData(savedObjects) as! [TaskActivity]
+        act.map({ (task: TaskActivity) -> TaskActivity in
+            print("act::\(task.name)::\(task.startDate)::\(task.endDate)::\(task.duration)::\(task.type)")
+            return task
+        })
+        ActivitiesManager.instance.activities = act
+    }
+}
+
 final public class ActivitiesManager {
     public var activities: [TaskActivity]?
     public static let instance = ActivitiesManager()
     
     public init() {
-        // TODO: remove hardcoded
-        activities = []
-        //        activities = [
-        //            TaskActivity(name: "read emails", manager: self),
-        //            TaskActivity(name: "10 curls", duration: WorkoutInterval, type:.Break, manager: self),
-        //            TaskActivity(name: "layout", manager: self),
-        //            TaskActivity(name: "coffee", duration: WorkoutInterval, type:.Break, manager: self),
-        //            TaskActivity(name: "animation", manager: self),
-        //            TaskActivity(name: "10 push ups", duration: WorkoutInterval, type:.Break, manager: self),
-        //            TaskActivity(name: "glance 1/2", manager: self),
-        //
-        //            TaskActivity(name: "walk outside", duration: LongWorkoutInterval, type:.Break, manager: self), //2h30
-        //
-        //            TaskActivity(name: "glace 2/2", manager: self),
-        //            TaskActivity(name: "10 push ups", duration: WorkoutInterval, type:.Break, manager: self),
-        //            TaskActivity(name: "complication", manager: self),
-        //            TaskActivity(name: "50 crunchies", duration: WorkoutInterval, type:.Break, manager: self),
-        //            TaskActivity(name: "WC: Interactive Messaging", manager: self),
-        //            TaskActivity(name: "10 squats/leg raises", duration: WorkoutInterval, type:.Break, manager: self),
-        //            TaskActivity(name: "WC: Application Context", manager: self),
-        //
-        //            TaskActivity(name: "footing", duration: LongWorkoutInterval, type:.Break, manager: self)]
     }
     
     public init(activities: [TaskActivity]) {

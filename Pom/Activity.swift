@@ -104,7 +104,7 @@ final public class TaskActivity: NSObject, Activity {
         print("fire")
         endDate = NSDate()
         timer?.invalidate()
-         NSNotificationCenter.defaultCenter().postNotificationName("TimerFired", object: nil)
+        NSNotificationCenter.defaultCenter().postNotificationName("TimerFired", object: ["task":self])
     }
     
     public func isStarted() -> Bool {
@@ -117,10 +117,10 @@ final public class TaskActivity: NSObject, Activity {
         dict["duration"] = duration
         dict["type"] = type.rawValue
         if let startDate = startDate {
-            dict["startDate"] = startDate
+            dict["startDate"] = startDate.timeIntervalSinceReferenceDate
         }
         if let endDate = endDate {
-            dict["endDate"] = endDate
+            dict["endDate"] = endDate.timeIntervalSinceReferenceDate
         }
         return dict
     }

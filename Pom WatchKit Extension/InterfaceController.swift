@@ -174,6 +174,28 @@ extension InterfaceController: WCSessionDelegate {
             })
             ActivitiesManager.instance.remainingActivities = activities
             self.display(ActivitiesManager.instance.currentActivity)
+            } else if let task = applicationContext["task"] as? [String : AnyObject] {
+                if let name = task["name"] as? String,
+                    let duration = task["duration"] as? Double,
+                    let type = task["type"] as? Int,
+                    let startDate = task["startDate"] as? Double,
+                    let endDate = task["endDate"] as? Double {
+                    
+                        // TODO when task started from app no animation displayed
+                        
+                    let taskObject = TaskActivity(name: name,
+                        duration: NSTimeInterval(duration),
+                        startDate: NSDate(timeIntervalSinceReferenceDate: startDate),
+                        endDate: NSDate(timeIntervalSinceReferenceDate: endDate),
+                        type: ActivityType(rawValue: type)!,
+                        manager: ActivitiesManager.instance)
+ 
+                    let duration = NSDate(timeIntervalSinceNow: taskObject.duration)
+                    self.timer.setDate(duration)
+                    self.timer.start()
+                    self.timerFire = NSTimer.scheduledTimerWithTimeInterval(taskObject.duration, target: self, selector: "fire", userInfo: nil, repeats: false)
+                    self.display(taskObject)
+                }
             }
         }
     }

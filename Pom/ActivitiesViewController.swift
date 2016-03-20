@@ -7,9 +7,15 @@
 //
 
 import UIKit
-import WatchConnectivity
 
-class ActivitiesViewController: UIViewController, WCSessionDelegate {
+public func displayError(error: String, viewController: UIViewController) {
+    let alert = UIAlertController(title: error, message: nil, preferredStyle: .Alert)
+    let okAction = UIAlertAction(title: "OK", style: .Default, handler: nil)
+    alert.addAction(okAction)
+    viewController.presentViewController(alert, animated: true, completion: nil)
+}
+
+class ActivitiesViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     
     var activitiesMgr = ActivitiesManager.instance
@@ -17,31 +23,14 @@ class ActivitiesViewController: UIViewController, WCSessionDelegate {
     var newTaskCell: NewTaskCell?
     var addingNewTask: Bool = false
     
-    var session : WCSession!
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.backgroundColor = UIColor.blackColor()
         tableView.separatorStyle = .None
         loadSavedTasks()
-        sendContextToAppleWatch()
+        sendActivitiesToAppleWatch(self)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("timerFired:"), name: "TimerFired", object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("timerStarted:"), name: "TimerStarted", object: nil)
-    }
-
-    @objc func timerFired(note: NSNotification) {
-        dispatch_async(dispatch_get_main_queue()) {
-            print("iOSS App: TimerFired Notification")
-            self.saveTasks()
-            self.tableView.reloadData()
-        }
-    }
-    @objc func timerStarted(note: NSNotification) {
-        dispatch_async(dispatch_get_main_queue()) {
-            print("iOSS App: TimerStarted Notification")
-            self.saveTasks()
-            self.tableView.reloadData()
-        }
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -50,50 +39,59 @@ class ActivitiesViewController: UIViewController, WCSessionDelegate {
     }
 }
 
-// MARK: WCSessionDelegate
+// MARK: TaskStarted TaskFired event
 extension ActivitiesViewController {
-    func session(session: WCSession, didReceiveMessage message: [String : AnyObject], replyHandler: ([String : AnyObject]) -> Void) {
-        print("RECEIVED ON IOS: \(message)")
-        let taskName = message["task"] as? String
-        let tasksFiltered = activitiesMgr.activities?.filter {$0.name == taskName}
-        guard let tasks = tasksFiltered else {return}
-        let task = tasks[0]
-        if task.isStarted() {
-            replyHandler(["taskId": task.name, "status": "started"])
-            return
-        }
-        if task.endDate != nil {
-            replyHandler(["taskId": task.name, "status": "finished"])
-            return
-        }
-        let dateFormatter = NSDateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
-        
-        let startDateString = message["start"] as? String
-        var startDate: NSDate? = nil
-        if let startDateString = startDateString {
-            startDate = dateFormatter.dateFromString(startDateString)
-            NSNotificationCenter.defaultCenter().postNotificationName("TimerStarted", object: ["task":task])
-
-        }
-        task.startDate = startDate
-        
-        let endDateString = message["end"] as? String
-        var endDate:NSDate? = nil
-        if let endDateString = endDateString {
-            endDate = dateFormatter.dateFromString(endDateString)
-            NSNotificationCenter.defaultCenter().postNotificationName("TimerFired", object: ["task":task])
-        }
-        task.endDate = endDate
-        
+    @objc func timerFired(note: NSNotification) {
         dispatch_async(dispatch_get_main_queue()) {
-            
+            print("iOSS App: TimerFired Notification")
+            saveTasks()
             self.tableView.reloadData()
-            self.saveTasks()
         }
-        replyHandler(["taskId": task.name, "status": "updated ok"])
+    }
+    @objc func timerStarted(note: NSNotification) {
+        dispatch_async(dispatch_get_main_queue()) {
+            print("iOSS App: TimerStarted Notification")
+            saveTasks()
+            self.tableView.reloadData()
+        }
     }
 }
+
+// MARK: Update context
+func sendActivitiesToAppleWatch(viewController: UIViewController) {
+    if let delegate = UIApplication.sharedApplication().delegate as? AppDelegate {
+        // send to watch
+        if delegate.session.paired && delegate.session.watchAppInstalled {
+            if let remainingActivities = ActivitiesManager.instance.remainingActivities {
+                let dict = remainingActivities.map({ (task: TaskActivity) -> [String: AnyObject] in
+                    return task.toDictionary()
+                })
+                do {
+                    try delegate.session.updateApplicationContext(["activities": dict])
+                } catch let error {
+                    let alertController = UIAlertController(title: "Oops!", message: "Error: \(error). Please send again!", preferredStyle: .Alert)
+                    viewController.presentViewController(alertController, animated: true, completion: nil)
+                }
+            }
+        }
+    }
+}
+
+func sendActivityToAppleWatch(task: TaskActivity, viewController: UIViewController) {
+    if let delegate = UIApplication.sharedApplication().delegate as? AppDelegate {
+        // send to watch
+        if delegate.session.paired && delegate.session.watchAppInstalled {
+            do {
+                try delegate.session.updateApplicationContext(["task": task.toDictionary()])
+            } catch let error {
+                let alertController = UIAlertController(title: "Oops!", message: "Error: \(error). Please send again!", preferredStyle: .Alert)
+                viewController.presentViewController(alertController, animated: true, completion: nil)
+            }
+        }
+    }
+}
+
+
 
 // MARK: segue
 extension ActivitiesViewController {
@@ -178,12 +176,12 @@ extension ActivitiesViewController {
     
     func finishAddingTask() {
         guard let name = newTaskCell?.taskNameField.text where name.characters.count > 0 else {
-            displayError("Name me!")
+            displayError("Name me!", viewController: self)
             return
         }
         
         guard let color = newTaskCell?.selectedColor else {
-            displayError("Dont' know that Color????")
+            displayError("Dont' know that Color????", viewController: self)
             return
         }
         
@@ -196,34 +194,9 @@ extension ActivitiesViewController {
         tableView.reloadData()
         tableView.endEditing(true)
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: "beginAddingTask")
-        sendContextToAppleWatch()
+        sendActivitiesToAppleWatch(self)
         tableView.allowsSelection = true
     }
-    
-    func sendContextToAppleWatch() {
-        // send to watch
-        if session.paired && session.watchAppInstalled {
-            if let remainingActivities = activitiesMgr.remainingActivities {
-                let dict = remainingActivities.map({ (task: TaskActivity) -> [String: AnyObject] in
-                    return task.toDictionary()
-                })
-                do {
-                    try session.updateApplicationContext(["activities": dict])
-                } catch let error {
-                    let alertController = UIAlertController(title: "Oops!", message: "Error: \(error). Please send again!", preferredStyle: .Alert)
-                    presentViewController(alertController, animated: true, completion: nil)
-                }
-            }
-        }
-    }
-    
-    func displayError(error: String) {
-        let alert = UIAlertController(title: error, message: nil, preferredStyle: .Alert)
-        let okAction = UIAlertAction(title: "OK", style: .Default, handler: nil)
-        alert.addAction(okAction)
-        self.presentViewController(alert, animated: true, completion: nil)
-    }
-    
 }
 
 // MARK: UITableViewDelegate
@@ -312,30 +285,6 @@ extension ActivitiesViewController: UITableViewDataSource {
             return 90
         }
         return 60
-    }
-}
-
-// MARK: Task Persistance
-extension ActivitiesViewController {
-    func loadSavedTasks() {
-        if let savedObjects = NSUserDefaults.standardUserDefaults().objectForKey("objects") as? NSData {
-            let act = NSKeyedUnarchiver.unarchiveObjectWithData(savedObjects) as! [TaskActivity]
-            act.map({ (task: TaskActivity) -> TaskActivity in
-                print("act::\(task.name)::\(task.startDate)::\(task.endDate)::\(task.duration)::\(task.type)")
-                return task
-            })
-            activitiesMgr.activities = act
-        }
-    }
-    
-    func saveTasks() {
-        print("Saving...")
-        if let activities = activitiesMgr.activities {
-            let object = NSKeyedArchiver.archivedDataWithRootObject(activities)
-            NSUserDefaults.standardUserDefaults().setObject(object, forKey: "objects")
-            NSUserDefaults.standardUserDefaults().synchronize()
-            print("Saved...")
-        }
     }
 }
 
