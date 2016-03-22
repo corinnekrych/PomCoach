@@ -7,11 +7,18 @@
 //
 
 import WatchKit
+import WatchConnectivity
 
 class ExtensionDelegate: NSObject, WKExtensionDelegate {
-
+    var session: WCSession!
+    let actvitiesMgr = ActivitiesManager.instance
     func applicationDidFinishLaunching() {
         // Perform any final initialization of your application.
+        if (WCSession.isSupported()) {
+            session = WCSession.defaultSession()
+            session.delegate = self
+            session.activateSession()
+        }
     }
 
     func applicationDidBecomeActive() {
@@ -23,4 +30,54 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate {
         // Use this method to pause ongoing tasks, disable timers, etc.
     }
 
+}
+// MARK: WCSessionDelegate
+extension ExtensionDelegate: WCSessionDelegate {
+    func session(session: WCSession, didReceiveApplicationContext applicationContext: [String : AnyObject]) {
+        print("Received application context \(applicationContext)")
+        if let tasks = applicationContext["activities"] as? [[String : AnyObject]] {
+            let activities = tasks.map({ (task: [String : AnyObject]) -> TaskActivity in
+                if let name = task["name"] as? String, let duration = task["duration"] as? Double, let type = task["type"] as? Int {
+                    return TaskActivity(name: name,
+                        duration: NSTimeInterval(duration),
+                        startDate: nil, endDate: nil,
+                        type: ActivityType(rawValue: type)!,
+                        manager: ActivitiesManager.instance)
+                }
+                return TaskActivity(name: "TODO", duration: NSTimeInterval(10), manager: ActivitiesManager.instance)
+            })
+            
+            actvitiesMgr.remainingActivities = activities //update list in background
+            dispatch_async(dispatch_get_main_queue()) { //update list in foregroung if app running
+                NSNotificationCenter.defaultCenter().postNotificationName("ActivitiesUpdated", object: nil)
+            }
+        } else if let task = applicationContext["task"] as? [String : AnyObject] {
+            print("INSIDE1 \(task)")
+            if let name = task["name"] as? String,
+                let duration = task["duration"] as? Double,
+                let type = task["type"] as? Int,
+                let startDate = task["startDate"] as? Double {
+                    
+                    // TODO when task started from app no animation displayeddis
+                    print("INSIDE2 \(name)")
+                    let taskObject = TaskActivity(name: name,
+                        duration: NSTimeInterval(duration),
+                        startDate: NSDate(timeIntervalSinceReferenceDate: startDate),
+                        endDate: nil,
+                        type: ActivityType(rawValue: type)!,
+                        manager: actvitiesMgr)
+                    let tasksFound = actvitiesMgr.activities?.filter{$0.name == name}
+                    print("INSIDE3 \(tasksFound)")
+                    if let tasksFound = tasksFound where tasksFound.count > 0 {
+                        print("INSIDE4 update task start date \(tasksFound)")
+                        tasksFound[0].startDate = NSDate(timeIntervalSinceReferenceDate: startDate) // update task in background
+                    }
+        
+                    dispatch_async(dispatch_get_main_queue()) { // send notif in foregroung to ntfiy ui if app running
+                        print("Notify CurrentActivityStarted")
+                        NSNotificationCenter.defaultCenter().postNotificationName("CurrentActivityStarted", object: ["task":taskObject])
+                   }
+            }
+        }
+    }
 }

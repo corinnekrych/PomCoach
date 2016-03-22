@@ -20,26 +20,51 @@ class InterfaceController: WKInterfaceController {
     @IBOutlet var totalTimeLabel: WKInterfaceLabel!
     var timerFire: NSTimer!
     var session: WCSession!
+    var actvitiesMgr: ActivitiesManager!
     
     override func willActivate() {
         super.willActivate()
         
-        if (WCSession.isSupported()) {
-            session = WCSession.defaultSession()
-            session.delegate = self
-            session.activateSession()
-        }
-        guard let currentActivity = ActivitiesManager.instance.currentActivity else {return}
-        if (currentActivity.isStarted() == true) {
-            let imageRangeRemaining = (currentActivity.duration - (currentActivity.remainingTime ?? 0))*90/currentActivity.duration
-            group.startAnimatingWithImagesInRange(NSMakeRange(Int(imageRangeRemaining), 90), duration: currentActivity.duration, repeatCount: 1)
+        guard let currentActivity = actvitiesMgr.currentActivity else {return}
+        display(currentActivity)
+        
+        if let _ = currentActivity.startDate where currentActivity.endDate == nil {
+            replayAnimation(currentActivity)
         }
     }
     
+    func activitiesUpdated(note: NSNotification) { // insert new task, or task completed on ios app
+        group.setBackgroundImageNamed("Time0")
+        self.display(actvitiesMgr.currentActivity)
+    }
+    
+    func activityStarted(note: NSNotification) { // task started from ios app
+        if let userInfo = note.object, let taskFromNotification = userInfo["task"] as? TaskActivity, let current = actvitiesMgr.currentActivity where taskFromNotification.name == current.name {
+            replayAnimation(taskFromNotification)
+        }
+    }
+    
+    func replayAnimation(task: TaskActivity) {
+        if let startDate = task.startDate  {
+            self.group.setBackgroundImageNamed("Time")
+            let timeElapsed = NSDate().timeIntervalSinceDate(startDate)
+            let imageRangeRemaining = (timeElapsed)*90/task.duration
+            self.group.startAnimatingWithImagesInRange(NSMakeRange(Int(imageRangeRemaining), 90), duration: task.duration - timeElapsed, repeatCount: 1)
+            self.display(task)
+        }
+    }
+
     override func awakeWithContext(context: AnyObject?) {
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("activitiesUpdated:"), name: "ActivitiesUpdated", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("activityStarted:"), name: "CurrentActivityStarted", object: nil)
+
         super.awakeWithContext(context)
         group.setBackgroundImageNamed("Time")
-        display(ActivitiesManager.instance.currentActivity)
+        
+        let delegate = WKExtension.sharedExtension().delegate as! ExtensionDelegate
+        session = delegate.session
+        actvitiesMgr = delegate.actvitiesMgr
+        display(actvitiesMgr.currentActivity)
     }
     
     override func didAppear() {
@@ -52,8 +77,7 @@ class InterfaceController: WKInterfaceController {
     
     @IBAction func stop() {
         print("::::::STOP")
-        let manager = ActivitiesManager.instance
-        guard let currentActivity = manager.currentActivity else {return}
+        guard let currentActivity = actvitiesMgr.currentActivity else {return}
         
         timer.stop()
         timerFire.invalidate()
@@ -63,13 +87,12 @@ class InterfaceController: WKInterfaceController {
         group.stopAnimating()
         // init for next task
         group.setBackgroundImageNamed("Time0")
-        display(ActivitiesManager.instance.currentActivity)
+        display(actvitiesMgr.currentActivity)
     }
     
     @IBAction func onStartButton() {
         print("onStartButton")
-        let manager = ActivitiesManager.instance
-        guard let currentActivity = manager.currentActivity else {return}
+        guard let currentActivity = actvitiesMgr.currentActivity else {return}
         if !currentActivity.isStarted() {
             print("currentActivitied:\(currentActivity.name):")
             let duration = NSDate(timeIntervalSinceNow: currentActivity.duration)
@@ -81,7 +104,7 @@ class InterfaceController: WKInterfaceController {
             group.startAnimatingWithImagesInRange(NSMakeRange(0, 90), duration: currentActivity.duration, repeatCount: 1)
             startButtonImage.setHidden(true)
             timer.setHidden(false)
-            display(ActivitiesManager.instance.currentActivity)
+            display(actvitiesMgr.currentActivity)
             sendStartTimer(currentActivity.name, startDate: currentActivity.startDate, endDate: currentActivity.endDate)
         }
     }
@@ -126,14 +149,13 @@ class InterfaceController: WKInterfaceController {
         timer.stop()
         startButtonImage.setHidden(false)
         timer.setHidden(true)
-        let manager = ActivitiesManager.instance
-        guard let currentActivity = manager.currentActivity else {return}
+        guard let currentActivity = actvitiesMgr.currentActivity else {return}
         print("FIRE: \(currentActivity.name)")
         currentActivity.stop()
         group.stopAnimating()
         // init for next
         group.setBackgroundImageNamed("Time0")
-        display(ActivitiesManager.instance.currentActivity)
+        display(actvitiesMgr.currentActivity)
         sendStartTimer(currentActivity.name, startDate: currentActivity.startDate, endDate: currentActivity.endDate)
     }
     
@@ -154,53 +176,5 @@ class InterfaceController: WKInterfaceController {
             totalTimeLabel.setText("\(durationInMin) min")
         }
         taskNameLabel.setText(activity.name)
-    }
-}
-// MARK: WCSessionDelegate
-extension InterfaceController: WCSessionDelegate {
-    func session(session: WCSession, didReceiveApplicationContext applicationContext: [String : AnyObject]) {
-        print("Received application context \(applicationContext)")
-        if let tasks = applicationContext["activities"] as? [[String : AnyObject]] {
-            let activities = tasks.map({ (task: [String : AnyObject]) -> TaskActivity in
-                if let name = task["name"] as? String, let duration = task["duration"] as? Double, let type = task["type"] as? Int {
-                    return TaskActivity(name: name,
-                        duration: NSTimeInterval(duration),
-                        startDate: nil, endDate: nil,
-                        type: ActivityType(rawValue: type)!,
-                        manager: ActivitiesManager.instance)
-                }
-                return TaskActivity(name: "TODO", duration: NSTimeInterval(10), manager: ActivitiesManager.instance)
-            })
-            ActivitiesManager.instance.remainingActivities = activities
-            dispatch_async(dispatch_get_main_queue()) {
-                self.display(ActivitiesManager.instance.currentActivity)
-            }
-        } else if let task = applicationContext["task"] as? [String : AnyObject] {
-            print("INSIDE1 \(task)")
-            if let name = task["name"] as? String,
-                let duration = task["duration"] as? Double,
-                let type = task["type"] as? Int,
-                let startDate = task["startDate"] as? Double {
-                    
-                    // TODO when task started from app no animation displayeddis
-                    print("INSIDE2 \(name)")
-                    let taskObject = TaskActivity(name: name,
-                        duration: NSTimeInterval(duration),
-                        startDate: NSDate(timeIntervalSinceReferenceDate: startDate),
-                        endDate: nil,
-                        type: ActivityType(rawValue: type)!,
-                        manager: ActivitiesManager.instance)
-                    dispatch_async(dispatch_get_main_queue()) {
-                        let duration = NSDate(timeIntervalSinceNow: taskObject.duration)
-                        self.timer.setDate(duration)
-                        self.timer.start()
-                        print("start timer when task started ")
-                        self.timerFire = NSTimer.scheduledTimerWithTimeInterval(taskObject.duration, target: self, selector: "fire", userInfo: nil, repeats: false)
-                        self.group.setBackgroundImageNamed("Time")
-                        self.group.startAnimatingWithImagesInRange(NSMakeRange(0, 90), duration: taskObject.duration, repeatCount: 1)
-                        self.display(taskObject)
-                    }
-            }
-        }
     }
 }

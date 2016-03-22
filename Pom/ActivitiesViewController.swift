@@ -59,14 +59,19 @@ extension ActivitiesViewController {
 
 // MARK: Update context
 func sendActivitiesToAppleWatch(viewController: UIViewController) {
+    print("sendActivitiesToAppleWatch")
     if let delegate = UIApplication.sharedApplication().delegate as? AppDelegate {
         // send to watch
+        print("sendActivitiesToAppleWatch::delegateSessio")
         if delegate.session.paired && delegate.session.watchAppInstalled {
+            print("sendActivitiesToAppleWatch::watchinstalled")
             if let remainingActivities = ActivitiesManager.instance.remainingActivities {
+                
                 let dict = remainingActivities.map({ (task: TaskActivity) -> [String: AnyObject] in
                     return task.toDictionary()
                 })
                 do {
+                    print("sendActivitiesToAppleWatch::updateApplicationContext")
                     try delegate.session.updateApplicationContext(["activities": dict])
                 } catch let error {
                     let alertController = UIAlertController(title: "Oops!", message: "Error: \(error). Please send again!", preferredStyle: .Alert)

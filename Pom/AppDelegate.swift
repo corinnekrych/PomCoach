@@ -64,24 +64,25 @@ extension AppDelegate {
         let dateFormatter = NSDateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
         
+        let endDateString = message["end"] as? String
+        var endDate:NSDate? = nil
         let startDateString = message["start"] as? String
         var startDate: NSDate? = nil
+        
+        if let endDateString = endDateString  where endDateString != "" {
+            endDate = dateFormatter.dateFromString(endDateString)
+            NSNotificationCenter.defaultCenter().postNotificationName("TimerFired", object: ["task":task])
+            task.endDate = endDate
+            saveTasks()
+            replyHandler(["taskId": task.name, "status": "updated ok"])
+            return
+        }
         if let startDateString = startDateString {
             startDate = dateFormatter.dateFromString(startDateString)
             NSNotificationCenter.defaultCenter().postNotificationName("TimerStarted", object: ["task":task])
-            
+            task.startDate = startDate
         }
-        task.startDate = startDate
-        
-        let endDateString = message["end"] as? String
-        var endDate:NSDate? = nil
-        if let endDateString = endDateString {
-            endDate = dateFormatter.dateFromString(endDateString)
-            NSNotificationCenter.defaultCenter().postNotificationName("TimerFired", object: ["task":task])
-        }
-        task.endDate = endDate
         saveTasks()
-
         replyHandler(["taskId": task.name, "status": "updated ok"])
     }
 }
