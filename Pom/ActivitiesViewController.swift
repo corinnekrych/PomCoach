@@ -260,12 +260,12 @@ extension ActivitiesViewController: UITableViewDataSource {
         }
         
         let cell = tableView.dequeueReusableCellWithIdentifier(TaskCell.ReuseId, forIndexPath: indexPath) as! TaskCell
-        if let activities = activitiesMgr.remainingActivities {
-            if (activities.count > 0) {
-                let task = indexPath.section == 0 ? activities[indexPath.row] : activitiesMgr.completedActivities![indexPath.row]
+        //if let activities = activitiesMgr.remainingActivities {
+            //if (activities.count > 0) {
+                let task = indexPath.section == 0 ? activitiesMgr.remainingActivities![indexPath.row] : activitiesMgr.completedActivities![indexPath.row]
                 cell.updateWithTask(task)
-            }
-        }
+            //}
+        //}
         return cell
     }
     
