@@ -18,20 +18,8 @@ public class DetailledActivityViewController: UIViewController {
         if task.isStarted() {
             displayError("Already started", viewController: self)
         } else if task.endDate == nil {
-            if task.name == ActivitiesManager.instance.currentActivity?.name {
-                task.start()
-                // TODO: to avoid duplication send event but need a way to know where the action was started not to send notigication back
-                //NSNotificationCenter.defaultCenter().postNotificationName("TimerStarted", object: ["task":task])
-                saveTasks()
-                sendActivityToAppleWatch(task, viewController: self)
-                print("Task started from iOS app, sendActivityToAppleWatch() called")
-                dispatch_async(dispatch_get_main_queue()) {
-                    print("Task started from iOS app, sendActivityToAppleWatch() called.. MAIN")
-                    self.circleView.animateCircle(0, color:self.task.type.color, duration: self.task.duration)
-                    self.statusLabel.text = "\(self.task.name)"
-                    self.startButton.setTitle("Stop ", forState: .Normal)
-                    self.startButton.setTitle("Stop ", forState: .Selected)
-                }
+            if task.name == ActivitiesManager.instance.currentActivity?.name {                
+                NSNotificationCenter.defaultCenter().postNotificationName("TimerStarted", object: ["task":task, "sender":"ios"])
             } else {
                 displayError("Do your tasks in order :P", viewController: self)
             }
@@ -65,7 +53,12 @@ public class DetailledActivityViewController: UIViewController {
     @objc public func timerFired(note: NSNotification) {
         if let userInfo = note.object, taskFromNotification = userInfo["task"] as? TaskActivity where taskFromNotification.name == self.task.name {
             saveTasks()
-            sendActivitiesToAppleWatch(self)
+            if let sender = userInfo["sender"] as? String where sender == "watch" {
+                print("::Activity fired from watch")
+            } else {
+                print("::Activity fired from iOS")
+                sendActivitiesToAppleWatch(self)
+            }
             print("iOS app::TimerFired::TaskNotification::\(taskFromNotification)")
             dispatch_async(dispatch_get_main_queue()) {
                 self.startButton.setTitle("Done", forState: .Normal)
@@ -77,10 +70,11 @@ public class DetailledActivityViewController: UIViewController {
     
     @objc public func timerStarted(note: NSNotification) {
         if let userInfo = note.object, let taskFromNotification = userInfo["task"] as? TaskActivity where taskFromNotification.name == self.task.name {
+            if let sender = userInfo["sender"] as? String where sender == "ios" {
+                task.start()
+                sendActivityToAppleWatch(task, viewController: self)
+            }
             saveTasks()
-            // TODO: to avoid duplication send event but need a way to know where the action was started not to send notigication back
-            //sendActivityToAppleWatch(task, viewController: self)
-            print("iOS app::TimerStarted::TaskNotification::\(taskFromNotification)")
             dispatch_async(dispatch_get_main_queue()) {
                 self.startButton.setTitle("Stop", forState: .Normal)
                 self.startButton.setTitle("Stop", forState: .Selected)

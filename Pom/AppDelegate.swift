@@ -15,15 +15,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
     var session : WCSession!
     
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
-       // if let controller = UIApplication.topViewController(self.window?.rootViewController) {
-           // if let myController = controller as? ActivitiesViewController {
                 if (WCSession.isSupported()) {
                     session = WCSession.defaultSession()
                     session.delegate = self
                     session.activateSession()
                 }
-         //   }
-       // }
         return true
     }
 }
@@ -49,40 +45,40 @@ extension UIApplication {
 extension AppDelegate {
     func session(session: WCSession, didReceiveMessage message: [String : AnyObject], replyHandler: ([String : AnyObject]) -> Void) {
         print("RECEIVED ON IOS: \(message)")
-        let taskName = message["task"] as? String
-        let tasksFiltered = ActivitiesManager.instance.activities?.filter {$0.name == taskName}
-        guard let tasks = tasksFiltered else {return}
-        let task = tasks[0]
-        if task.isStarted() {
-            replyHandler(["taskId": task.name, "status": "started"])
-            return
-        }
-        if task.endDate != nil {
-            replyHandler(["taskId": task.name, "status": "finished"])
-            return
-        }
-        let dateFormatter = NSDateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
-        
-        let endDateString = message["end"] as? String
-        var endDate:NSDate? = nil
-        let startDateString = message["start"] as? String
-        var startDate: NSDate? = nil
-        
-        if let endDateString = endDateString  where endDateString != "" {
-            endDate = dateFormatter.dateFromString(endDateString)
-            NSNotificationCenter.defaultCenter().postNotificationName("TimerFired", object: ["task":task])
-            task.endDate = endDate
+        dispatch_async(dispatch_get_main_queue()) {
+            let taskName = message["task"] as? String
+            let tasksFiltered = ActivitiesManager.instance.activities?.filter {$0.name == taskName}
+            guard let tasks = tasksFiltered else {return}
+            let task = tasks[0]
+            if task.isStarted() {
+                replyHandler(["taskId": task.name, "status": "already started"])
+                return
+            }
+            if task.endDate != nil {
+                replyHandler(["taskId": task.name, "status": "already finished"])
+                return
+            }
+            let dateFormatter = NSDateFormatter()
+            dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+            
+            let endDateString = message["end"] as? String
+            var endDate:NSDate? = nil
+            let startDateString = message["start"] as? String
+            var startDate: NSDate? = nil
+            
+            if let endDateString = endDateString  where endDateString != "" {
+                endDate = dateFormatter.dateFromString(endDateString)
+                NSNotificationCenter.defaultCenter().postNotificationName("TimerFired", object: ["task":task, "sender":"watch"])
+                task.endDate = endDate
+                replyHandler(["taskId": task.name, "status": "finished ok"])
+
+            } else  if let startDateString = startDateString {
+                startDate = dateFormatter.dateFromString(startDateString)
+                NSNotificationCenter.defaultCenter().postNotificationName("TimerStarted", object: ["task":task, "sender":"watch"])
+                task.startDate = startDate
+                replyHandler(["taskId": task.name, "status": "started ok"])
+            }
             saveTasks()
-            replyHandler(["taskId": task.name, "status": "updated ok"])
-            return
         }
-        if let startDateString = startDateString {
-            startDate = dateFormatter.dateFromString(startDateString)
-            NSNotificationCenter.defaultCenter().postNotificationName("TimerStarted", object: ["task":task])
-            task.startDate = startDate
-        }
-        saveTasks()
-        replyHandler(["taskId": task.name, "status": "updated ok"])
     }
 }

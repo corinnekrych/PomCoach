@@ -39,18 +39,26 @@ class InterfaceController: WKInterfaceController {
     }
     
     func activityStarted(note: NSNotification) { // task started from ios app
+        print("Task started from iOS")
         if let userInfo = note.object, let taskFromNotification = userInfo["task"] as? TaskActivity, let current = actvitiesMgr.currentActivity where taskFromNotification.name == current.name {
+            print("Task started from iOS::Replay animation")
             replayAnimation(taskFromNotification)
         }
     }
     
     func replayAnimation(task: TaskActivity) {
         if let startDate = task.startDate  {
-            self.group.setBackgroundImageNamed("Time")
-            let timeElapsed = NSDate().timeIntervalSinceDate(startDate)
-            let imageRangeRemaining = (timeElapsed)*90/task.duration
-            self.group.startAnimatingWithImagesInRange(NSMakeRange(Int(imageRangeRemaining), 90), duration: task.duration - timeElapsed, repeatCount: 1)
-            self.display(task)
+            print("Task started from iOS::inside Replay animation")
+            dispatch_async(dispatch_get_main_queue()) {
+                self.group.setBackgroundImageNamed("Time")
+                let timeElapsed = NSDate().timeIntervalSinceDate(startDate) // issue with clock diff, this interval might be negative
+                let diff = timeElapsed < 0 ? abs(timeElapsed) : timeElapsed
+                let imageRangeRemaining = (diff)*90/task.duration
+                self.group.startAnimatingWithImagesInRange(NSMakeRange(Int(imageRangeRemaining), 90), duration: task.duration - diff, repeatCount: 1)
+                let rim = Int(imageRangeRemaining)
+                print("::RIM \(rim):: elapsed \(diff) task.duration \(task.duration)")
+                self.display(task)
+            }
         }
     }
 
@@ -176,5 +184,6 @@ class InterfaceController: WKInterfaceController {
             totalTimeLabel.setText("\(durationInMin) min")
         }
         taskNameLabel.setText(activity.name)
+        print("::Display")
     }
 }

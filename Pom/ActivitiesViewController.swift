@@ -43,12 +43,22 @@ class ActivitiesViewController: UIViewController {
 extension ActivitiesViewController {
     @objc func timerFired(note: NSNotification) {
         saveTasks()
-        dispatch_async(dispatch_get_main_queue()) {
-            print("iOSS App: TimerFired Notification")
-            self.tableView.reloadData()
+        
+        if let userInfo = note.object,
+            let taskFromNotification = userInfo["task"] as? TaskActivity  {
+            if let sender = userInfo["sender"] as? String where sender == "watch" {
+                print("::Activity fired from watch")
+            } else {
+                print("::Activity fired from iOS")
+                sendActivitiesToAppleWatch(self)
+            }
+            print("iOS app::TimerFired::TaskNotification::\(taskFromNotification)")
+            dispatch_async(dispatch_get_main_queue()) {
+                self.tableView.reloadData()
+            }
         }
     }
-    @objc func timerStarted(note: NSNotification) {
+    @objc func timerStarted(note: NSNotification) { //started from watch
         saveTasks()
         dispatch_async(dispatch_get_main_queue()) {
             print("iOSS App: TimerStarted Notification")
@@ -62,7 +72,7 @@ func sendActivitiesToAppleWatch(viewController: UIViewController) {
     print("sendActivitiesToAppleWatch")
     if let delegate = UIApplication.sharedApplication().delegate as? AppDelegate {
         // send to watch
-        print("sendActivitiesToAppleWatch::delegateSessio")
+        print("sendActivitiesToAppleWatch::delegateSession")
         if delegate.session.paired && delegate.session.watchAppInstalled {
             print("sendActivitiesToAppleWatch::watchinstalled")
             if let remainingActivities = ActivitiesManager.instance.remainingActivities {
@@ -84,9 +94,10 @@ func sendActivitiesToAppleWatch(viewController: UIViewController) {
 
 func sendActivityToAppleWatch(task: TaskActivity, viewController: UIViewController) {
     if let delegate = UIApplication.sharedApplication().delegate as? AppDelegate {
-        // send to watch
+        print("send to watch")
         if delegate.session.paired && delegate.session.watchAppInstalled {
             do {
+                print("sendActivityToAppleWatch \(task)")
                 try delegate.session.updateApplicationContext(["task": task.toDictionary()])
             } catch let error {
                 let alertController = UIAlertController(title: "Oops!", message: "Error: \(error). Please send again!", preferredStyle: .Alert)
@@ -256,16 +267,17 @@ extension ActivitiesViewController: UITableViewDataSource {
             else if activitiesMgr.remainingActivities == nil || activitiesMgr.remainingActivities?.count == 0 {
                 // Placeholder when there are no ongoing tasks
                 return tableView.dequeueReusableCellWithIdentifier("NoOngoingCell", forIndexPath: indexPath)
-            }
+            } 
         }
         
         let cell = tableView.dequeueReusableCellWithIdentifier(TaskCell.ReuseId, forIndexPath: indexPath) as! TaskCell
-        //if let activities = activitiesMgr.remainingActivities {
-            //if (activities.count > 0) {
-                let task = indexPath.section == 0 ? activitiesMgr.remainingActivities![indexPath.row] : activitiesMgr.completedActivities![indexPath.row]
-                cell.updateWithTask(task)
-            //}
-        //}
+        let task = indexPath.section == 0 ? activitiesMgr.remainingActivities![indexPath.row] : activitiesMgr.completedActivities![indexPath.row]
+        if (indexPath.section == 0 && indexPath.row == 0 && task.isStarted()) {
+            cell.updateWithTask(task, postfix: "Started")
+        } else {
+            cell.updateWithTask(task)
+        }
+        
         return cell
     }
     

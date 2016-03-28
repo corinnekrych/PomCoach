@@ -21,9 +21,9 @@ public class TaskCell: UITableViewCell {
 
 // MARK: Populate Cell
 extension TaskCell {
-    func updateWithTask(activity:TaskActivity) {
+    func updateWithTask(activity:TaskActivity, postfix: String = "") {
         self.activity = activity
-        nameLabel.text = activity.name
+        nameLabel.text = "\(activity.name) \(postfix)"
         self.backgroundColor = activity.type.color
     }
 }

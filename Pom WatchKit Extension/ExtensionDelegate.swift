@@ -76,7 +76,10 @@ extension ExtensionDelegate: WCSessionDelegate {
                     dispatch_async(dispatch_get_main_queue()) { // send notif in foregroung to ntfiy ui if app running
                         print("Notify CurrentActivityStarted")
                         NSNotificationCenter.defaultCenter().postNotificationName("CurrentActivityStarted", object: ["task":taskObject])
+                         print("INSIDE5")
                    }
+                    
+                   print("INSIDE6")
             }
         }
     }
