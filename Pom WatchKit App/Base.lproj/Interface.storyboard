@@ -67,10 +67,29 @@
             <objects>
                 <glanceController spacing="0.0" id="0uZ-2p-rRc" customClass="GlanceController" customModule="Pom_WatchKit_App" customModuleProvider="target">
                     <items>
-                        <group alignment="left" id="t8f-Gd-c4y"/>
-                        <group alignment="left" id="uCw-4Q-Ouw"/>
+                        <group alignment="left" id="t8f-Gd-c4y">
+                            <items>
+                                <label alignment="center" verticalAlignment="center" text="Label" id="6hd-y5-hLY"/>
+                            </items>
+                        </group>
+                        <group alignment="left" id="uCw-4Q-Ouw">
+                            <items>
+                                <group width="0.75" height="114.5" alignment="center" verticalAlignment="center" backgroundImage="Time12" animationDuration="25" layout="vertical" id="sB8-e2-TSr">
+                                    <items>
+                                        <group width="1" height="107.5" alignment="left" contentMode="center" layout="vertical" spacing="0.0" id="8uC-ai-1er" userLabel="StartButtonGroup">
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                            <edgeInsets key="margins" left="0.0" right="0.0" top="16" bottom="10"/>
+                                        </group>
+                                    </items>
+                                </group>
+                            </items>
+                        </group>
                     </items>
                     <edgeInsets key="margins" left="0.0" right="0.0" top="0.0" bottom="14"/>
+                    <connections>
+                        <outlet property="group" destination="sB8-e2-TSr" id="gB2-w0-MUs"/>
+                        <outlet property="taskName" destination="6hd-y5-hLY" id="5jw-Rz-CUU"/>
+                    </connections>
                 </glanceController>
             </objects>
             <point key="canvasLocation" x="235" y="672"/>

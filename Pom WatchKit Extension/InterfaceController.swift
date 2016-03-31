@@ -27,7 +27,7 @@ class InterfaceController: WKInterfaceController {
         
         guard let currentActivity = actvitiesMgr.currentActivity else {return}
         display(currentActivity)
-        
+        //self.group.setBackgroundImageNamed("Time0")
         if let _ = currentActivity.startDate where currentActivity.endDate == nil {
             replayAnimation(currentActivity)
         }
