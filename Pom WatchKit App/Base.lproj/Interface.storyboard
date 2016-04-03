@@ -11,7 +11,7 @@
                 <controller id="AgC-eL-Hgc" customClass="InterfaceController" customModule="Pom_WatchKit_App" customModuleProvider="target">
                     <items>
                         <label alignment="center" text="Label" id="Sde-zu-bn3">
-                            <color key="textColor" red="0.35294117650000001" green="0.7843137255" blue="0.98039215690000003" alpha="1" colorSpace="calibratedRGB"/>
+                            <color key="textColor" red="0.0" green="1" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         </label>
                     </items>
                 </controller>
