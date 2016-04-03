@@ -23,7 +23,7 @@ class GlanceController: WKInterfaceController {
     override func willActivate() {
         // This method is called when watch view controller is about to be visible to user
         super.willActivate()
-        if let current = ActivitiesManager.instance.currentActivity {
+        if let current = TasksManager.instance.currentTask {
             taskName.setText(current.name)
             if let startDate = current.startDate {
             self.group.setBackgroundImageNamed("Time")

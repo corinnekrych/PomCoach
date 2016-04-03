@@ -11,7 +11,7 @@ public class TaskCell: UITableViewCell {
   static let ReuseId = "TaskCell"
   
   @IBOutlet weak var nameLabel: UILabel!
-  public var activity: TaskActivity!
+  public var task: TaskActivity!
   
   public override func awakeFromNib() {
     super.awakeFromNib()
@@ -21,9 +21,9 @@ public class TaskCell: UITableViewCell {
 
 // MARK: Populate Cell
 extension TaskCell {
-    func updateWithTask(activity:TaskActivity, postfix: String = "") {
-        self.activity = activity
-        nameLabel.text = "\(activity.name) \(postfix)"
-        self.backgroundColor = activity.type.color
+    func updateWithTask(task: TaskActivity, postfix: String = "") {
+        self.task = task
+        nameLabel.text = "\(task.name) \(postfix)"
+        self.backgroundColor = task.type.color
     }
 }

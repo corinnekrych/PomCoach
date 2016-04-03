@@ -11,7 +11,7 @@ import WatchConnectivity
 
 class ExtensionDelegate: NSObject, WKExtensionDelegate {
     var session: WCSession!
-    let actvitiesMgr = ActivitiesManager.instance
+    let tasksMgr = TasksManager.instance
     func applicationDidFinishLaunching() {
         // Perform any final initialization of your application.
         if (WCSession.isSupported()) {
@@ -35,21 +35,21 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate {
 extension ExtensionDelegate: WCSessionDelegate {
     func session(session: WCSession, didReceiveApplicationContext applicationContext: [String : AnyObject]) {
         print("Received application context \(applicationContext)")
-        if let tasks = applicationContext["activities"] as? [[String : AnyObject]] {
-            let activities = tasks.map({ (task: [String : AnyObject]) -> TaskActivity in
+        if let tasks = applicationContext["tasks"] as? [[String : AnyObject]] {
+            let tasks = tasks.map({ (task: [String : AnyObject]) -> TaskActivity in
                 if let name = task["name"] as? String, let duration = task["duration"] as? Double, let type = task["type"] as? Int {
                     return TaskActivity(name: name,
                         duration: NSTimeInterval(duration),
                         startDate: nil, endDate: nil,
-                        type: ActivityType(rawValue: type)!,
-                        manager: ActivitiesManager.instance)
+                        type: TaskType(rawValue: type)!,
+                        manager: TasksManager.instance)
                 }
-                return TaskActivity(name: "TODO", duration: NSTimeInterval(10), manager: ActivitiesManager.instance)
+                return TaskActivity(name: "TODO", duration: NSTimeInterval(10), manager: TasksManager.instance)
             })
             
-            actvitiesMgr.remainingActivities = activities //update list in background
+            tasksMgr.remainingTasks = tasks //update list in background
             dispatch_async(dispatch_get_main_queue()) { //update list in foregroung if app running
-                NSNotificationCenter.defaultCenter().postNotificationName("ActivitiesUpdated", object: nil)
+                NSNotificationCenter.defaultCenter().postNotificationName("TasksUpdated", object: nil)
             }
         } else if let task = applicationContext["task"] as? [String : AnyObject] {
             print("INSIDE1 \(task)")
@@ -64,9 +64,9 @@ extension ExtensionDelegate: WCSessionDelegate {
                         duration: NSTimeInterval(duration),
                         startDate: NSDate(timeIntervalSinceReferenceDate: startDate),
                         endDate: nil,
-                        type: ActivityType(rawValue: type)!,
-                        manager: actvitiesMgr)
-                    let tasksFound = actvitiesMgr.activities?.filter{$0.name == name}
+                        type: TaskType(rawValue: type)!,
+                        manager: tasksMgr)
+                    let tasksFound = tasksMgr.tasks?.filter{$0.name == name}
                     print("INSIDE3 \(tasksFound)")
                     if let tasksFound = tasksFound where tasksFound.count > 0 {
                         print("INSIDE4 update task start date \(tasksFound)")
@@ -74,8 +74,8 @@ extension ExtensionDelegate: WCSessionDelegate {
                     }
         
                     dispatch_async(dispatch_get_main_queue()) { // send notif in foregroung to ntfiy ui if app running
-                        print("Notify CurrentActivityStarted")
-                        NSNotificationCenter.defaultCenter().postNotificationName("CurrentActivityStarted", object: ["task":taskObject])
+                        print("Notify CurrentTaskStarted")
+                        NSNotificationCenter.defaultCenter().postNotificationName("CurrentTaskStarted", object: ["task":taskObject])
                          print("INSIDE5")
                    }
                     

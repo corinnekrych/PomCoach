@@ -47,7 +47,7 @@ extension AppDelegate {
         print("RECEIVED ON IOS: \(message)")
         dispatch_async(dispatch_get_main_queue()) {
             let taskName = message["task"] as? String
-            let tasksFiltered = ActivitiesManager.instance.activities?.filter {$0.name == taskName}
+            let tasksFiltered = TasksManager.instance.tasks?.filter {$0.name == taskName}
             guard let tasks = tasksFiltered else {return}
             let task = tasks[0]
             if task.isStarted() {

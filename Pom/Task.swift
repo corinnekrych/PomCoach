@@ -1,11 +1,3 @@
-//
-//  Activity.swift
-//  Pom
-//
-//  Created by Corinne Krych on 27/02/16.
-//  Copyright © 2016 corinne. All rights reserved.
-//
-
 import Foundation
 
 public let TaskInterval = NSTimeInterval(10)
@@ -13,7 +5,7 @@ public let WorkoutInterval = NSTimeInterval(5)
 public let LongWorkoutInterval = NSTimeInterval(5)
 import UIKit
 
-public enum ActivityType: Int, CustomStringConvertible {
+public enum TaskType: Int, CustomStringConvertible {
     case Task = 0, Break = 1, LongBreak = 2
     public static let allColors = [Task, Break, LongBreak]
     
@@ -47,29 +39,29 @@ public enum ActivityType: Int, CustomStringConvertible {
     }
 }
 
-public protocol Activity: CustomStringConvertible {
+public protocol Task: CustomStringConvertible {
     var name: String {get}
     var duration: NSTimeInterval {get}
-    var activitiesManager: ActivitiesManager {get}
+    var tasksManager: TasksManager {get}
     var startDate: NSDate? {get set}
     var endDate: NSDate? {get set}
     var timer: NSTimer? {get set}
     var remainingTime: NSTimeInterval? {get}
-    var type: ActivityType {get set}
+    var type: TaskType {get set}
     func start()
     func stop()
     func isStarted() -> Bool
-    init(name: String, duration: NSTimeInterval, startDate: NSDate?, endDate: NSDate?, type: ActivityType, manager: ActivitiesManager)
+    init(name: String, duration: NSTimeInterval, startDate: NSDate?, endDate: NSDate?, type: TaskType, manager: TasksManager)
 }
 
-final public class TaskActivity: NSObject, Activity {
+final public class TaskActivity: NSObject, Task {
     public let name: String
     public let duration: NSTimeInterval
-    public let activitiesManager: ActivitiesManager
+    public let tasksManager: TasksManager
     public var startDate: NSDate?
     public var endDate: NSDate?
     public var timer: NSTimer?
-    public var type: ActivityType
+    public var type: TaskType
     
     
     public override var description: String {
@@ -82,16 +74,16 @@ final public class TaskActivity: NSObject, Activity {
         }
     }
     
-    public required init(name: String, duration: NSTimeInterval, startDate: NSDate? = nil, endDate: NSDate? = nil, type: ActivityType = .Task, manager: ActivitiesManager) {
+    public required init(name: String, duration: NSTimeInterval, startDate: NSDate? = nil, endDate: NSDate? = nil, type: TaskType = .Task, manager: TasksManager) {
         self.name = name
         self.duration = duration
         self.type = type
-        activitiesManager = manager
+        tasksManager = manager
         self.startDate = startDate
         self.endDate = endDate
     }
     
-    public convenience init(name: String, manager: ActivitiesManager) {
+    public convenience init(name: String, manager: TasksManager) {
         self.init(name: name, duration: NSTimeInterval(TaskInterval), startDate:nil, endDate: nil,  manager: manager)
     }
     
@@ -133,11 +125,11 @@ extension TaskActivity: NSCoding {
     public convenience init?(coder aDecoder: NSCoder) {
         guard let name = aDecoder.decodeObjectForKey("name") as? String,
             let duration = aDecoder.decodeObjectForKey("duration") as? NSTimeInterval,
-            let intType = aDecoder.decodeObjectForKey("type") as? Int, let type = ActivityType(rawValue:intType)
+            let intType = aDecoder.decodeObjectForKey("type") as? Int, let type = TaskType(rawValue:intType)
             else {return nil}
         let date1 = aDecoder.decodeObjectForKey("startDate") as?  NSDate
         let date2 = aDecoder.decodeObjectForKey("endDate") as? NSDate
-        self.init(name: name, duration: duration, startDate: date1, endDate:  date2, type: type, manager: ActivitiesManager.instance)
+        self.init(name: name, duration: duration, startDate: date1, endDate:  date2, type: type, manager: TasksManager.instance)
     }
     
     public func encodeWithCoder(encoder: NSCoder) {

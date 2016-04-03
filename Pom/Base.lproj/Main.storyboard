@@ -10,7 +10,7 @@
         <!--PomCoach-->
         <scene sceneID="mue-N0-OwP">
             <objects>
-                <viewController id="ybq-Nv-qyS" customClass="ActivitiesViewController" customModule="Pom" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="ybq-Nv-qyS" customClass="TasksViewController" customModule="Pom" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="2VB-da-scF"/>
                         <viewControllerLayoutGuide type="bottom" id="0XG-Ze-VYZ"/>
@@ -204,10 +204,10 @@
             </objects>
             <point key="canvasLocation" x="80.5" y="1207.5"/>
         </scene>
-        <!--Detailled Activity View Controller-->
+        <!--Detailled Task View Controller-->
         <scene sceneID="t9H-9T-xXd">
             <objects>
-                <viewController id="Mwi-YD-RMh" customClass="DetailledActivityViewController" customModule="Pom" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="Mwi-YD-RMh" customClass="DetailledTaskViewController" customModule="Pom" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="WH3-91-GHM"/>
                         <viewControllerLayoutGuide type="bottom" id="HXn-yT-h8m"/>

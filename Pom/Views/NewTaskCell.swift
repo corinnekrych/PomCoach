@@ -14,27 +14,27 @@ class NewTaskCell: UITableViewCell {
   
   @IBOutlet var colorButtons: [UIButton]!
   
-  var selectedColor: ActivityType!
+  var selectedColor: TaskType!
   
   override func awakeFromNib() {
     super.awakeFromNib()
     // Initialization code
     for (i, button) in colorButtons.enumerate() {
-      guard let color = ActivityType(rawValue: i)?.color else { continue }
+      guard let color = TaskType(rawValue: i)?.color else { continue }
       button.backgroundColor = color
     }
     reset()
   }
   
   func reset() {
-    selectedColor = ActivityType.Task
+    selectedColor = TaskType.Task
     topContainer.backgroundColor = selectedColor.color
     taskNameField.text = nil
   }
   
   @IBAction func onColorButton(sender: UIButton) {
     guard let index = colorButtons.indexOf(sender) else { return }
-    guard let color = ActivityType(rawValue: index) else { return }
+    guard let color = TaskType(rawValue: index) else { return }
     
     selectedColor = color
     

@@ -1,11 +1,3 @@
-//
-//  ActivitiesViewController.swift
-//  Pom
-//
-//  Created by Corinne Krych on 02/03/16.
-//  Copyright © 2016 corinne. All rights reserved.
-//
-
 import UIKit
 
 public func displayError(error: String, viewController: UIViewController) {
@@ -15,10 +7,10 @@ public func displayError(error: String, viewController: UIViewController) {
     viewController.presentViewController(alert, animated: true, completion: nil)
 }
 
-class ActivitiesViewController: UIViewController {
+class TasksViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     
-    var activitiesMgr = ActivitiesManager.instance
+    var tasksMgr = TasksManager.instance
     
     var newTaskCell: NewTaskCell?
     var addingNewTask: Bool = false
@@ -28,7 +20,7 @@ class ActivitiesViewController: UIViewController {
         tableView.backgroundColor = UIColor.blackColor()
         tableView.separatorStyle = .None
         loadSavedTasks()
-        sendActivitiesToAppleWatch(self)
+        sendTasksToAppleWatch(self)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("timerFired:"), name: "TimerFired", object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("timerStarted:"), name: "TimerStarted", object: nil)
     }
@@ -40,17 +32,17 @@ class ActivitiesViewController: UIViewController {
 }
 
 // MARK: TaskStarted TaskFired event
-extension ActivitiesViewController {
+extension TasksViewController {
     @objc func timerFired(note: NSNotification) {
         saveTasks()
         
         if let userInfo = note.object,
             let taskFromNotification = userInfo["task"] as? TaskActivity  {
             if let sender = userInfo["sender"] as? String where sender == "watch" {
-                print("::Activity fired from watch")
+                print("::Task fired from watch")
             } else {
-                print("::Activity fired from iOS")
-                sendActivitiesToAppleWatch(self)
+                print("::Task fired from iOS")
+                sendTasksToAppleWatch(self)
             }
             print("iOS app::TimerFired::TaskNotification::\(taskFromNotification)")
             dispatch_async(dispatch_get_main_queue()) {
@@ -68,21 +60,21 @@ extension ActivitiesViewController {
 }
 
 // MARK: Update context
-func sendActivitiesToAppleWatch(viewController: UIViewController) {
-    print("sendActivitiesToAppleWatch")
+func sendTasksToAppleWatch(viewController: UIViewController) {
+    print("sendTasksToAppleWatch")
     if let delegate = UIApplication.sharedApplication().delegate as? AppDelegate {
         // send to watch
-        print("sendActivitiesToAppleWatch::delegateSession")
+        print("sendTasksToAppleWatch::delegateSession")
         if delegate.session.paired && delegate.session.watchAppInstalled {
-            print("sendActivitiesToAppleWatch::watchinstalled")
-            if let remainingActivities = ActivitiesManager.instance.remainingActivities {
+            print("sendTasksToAppleWatch::watchinstalled")
+            if let remainingTasks = TasksManager.instance.remainingTasks {
                 
-                let dict = remainingActivities.map({ (task: TaskActivity) -> [String: AnyObject] in
+                let dict = remainingTasks.map({ (task: TaskActivity) -> [String: AnyObject] in
                     return task.toDictionary()
                 })
                 do {
-                    print("sendActivitiesToAppleWatch::updateApplicationContext")
-                    try delegate.session.updateApplicationContext(["activities": dict])
+                    print("sendTasksToAppleWatch::updateApplicationContext")
+                    try delegate.session.updateApplicationContext(["tasks": dict])
                 } catch let error {
                     let alertController = UIAlertController(title: "Oops!", message: "Error: \(error). Please send again!", preferredStyle: .Alert)
                     viewController.presentViewController(alertController, animated: true, completion: nil)
@@ -92,12 +84,12 @@ func sendActivitiesToAppleWatch(viewController: UIViewController) {
     }
 }
 
-func sendActivityToAppleWatch(task: TaskActivity, viewController: UIViewController) {
+func sendTaskToAppleWatch(task: TaskActivity, viewController: UIViewController) {
     if let delegate = UIApplication.sharedApplication().delegate as? AppDelegate {
         print("send to watch")
         if delegate.session.paired && delegate.session.watchAppInstalled {
             do {
-                print("sendActivityToAppleWatch \(task)")
+                print("sendTaskToAppleWatch \(task)")
                 try delegate.session.updateApplicationContext(["task": task.toDictionary()])
             } catch let error {
                 let alertController = UIAlertController(title: "Oops!", message: "Error: \(error). Please send again!", preferredStyle: .Alert)
@@ -110,11 +102,11 @@ func sendActivityToAppleWatch(task: TaskActivity, viewController: UIViewControll
 
 
 // MARK: segue
-extension ActivitiesViewController {
+extension TasksViewController {
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if let id = segue.identifier where id == "viewTask" {
-            if let dest = segue.destinationViewController as? DetailledActivityViewController {
-                if let taskCell = sender as? TaskCell, let task = taskCell.activity {
+            if let dest = segue.destinationViewController as? DetailledTaskViewController {
+                if let taskCell = sender as? TaskCell, let task = taskCell.task {
                     dest.task = task
                 }
             }
@@ -122,7 +114,7 @@ extension ActivitiesViewController {
     }
 }
 // MARK: Delete / Move task
-extension ActivitiesViewController {
+extension TasksViewController {
     func tableView(tableView: UITableView, editingStyleForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCellEditingStyle {
         return .Delete
     }
@@ -133,11 +125,11 @@ extension ActivitiesViewController {
     
     func tableView(tableView: UITableView, moveRowAtIndexPath sourceIndexPath: NSIndexPath, toIndexPath destinationIndexPath: NSIndexPath) {
         if sourceIndexPath.section == 0 {
-            guard var remainingActivities = activitiesMgr.remainingActivities else {return}
-            let moved = remainingActivities[sourceIndexPath.row]
-            remainingActivities.removeAtIndex(sourceIndexPath.row)
-            remainingActivities.insert(moved, atIndex: destinationIndexPath.row)
-            activitiesMgr.remainingActivities = remainingActivities
+            guard var remainingTasks = tasksMgr.remainingTasks else {return}
+            let moved = remainingTasks[sourceIndexPath.row]
+            remainingTasks.removeAtIndex(sourceIndexPath.row)
+            remainingTasks.insert(moved, atIndex: destinationIndexPath.row)
+            tasksMgr.remainingTasks = remainingTasks
         }
     }
     
@@ -154,7 +146,7 @@ extension ActivitiesViewController {
 }
 
 // MARK: Add New Task
-extension ActivitiesViewController {
+extension TasksViewController {
     @IBAction func editMode(sender: UIBarButtonItem) {
         self.tableView.editing = !self.tableView.editing
         saveTasks()
@@ -164,11 +156,11 @@ extension ActivitiesViewController {
         if editingStyle == .Delete && indexPath.section == 0 {
             // Delete the row from the data source
             // meals.removeAtIndex(indexPath.row)
-            guard var remainingActivities = activitiesMgr.remainingActivities else {return}
-            if remainingActivities.count > 0 {
-                remainingActivities.removeAtIndex(indexPath.row)
-                activitiesMgr.remainingActivities = remainingActivities
-                if remainingActivities.count == 0 { // always keep on row in section 0
+            guard var remainingTasks = tasksMgr.remainingTasks else {return}
+            if remainingTasks.count > 0 {
+                remainingTasks.removeAtIndex(indexPath.row)
+                tasksMgr.remainingTasks = remainingTasks
+                if remainingTasks.count == 0 { // always keep on row in section 0
                     tableView.reloadRowsAtIndexPaths([NSIndexPath(forRow: 0, inSection: 0)], withRowAnimation: .Fade)
                 } else {
                     tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
@@ -181,7 +173,7 @@ extension ActivitiesViewController {
     @IBAction func beginAddingTask() {
         addingNewTask = true
         tableView.allowsSelection = false
-        if (activitiesMgr.remainingActivities != nil && activitiesMgr.remainingActivities?.count > 0) {
+        if (tasksMgr.remainingTasks != nil && tasksMgr.remainingTasks?.count > 0) {
             tableView.insertRowsAtIndexPaths([NSIndexPath(forRow: 0, inSection: 0)], withRowAnimation: .Top)
         } else {
             tableView.reloadRowsAtIndexPaths([NSIndexPath(forRow: 0, inSection: 0)], withRowAnimation: .Bottom)
@@ -201,8 +193,8 @@ extension ActivitiesViewController {
             return
         }
         
-        let task = TaskActivity(name: name, duration: TaskInterval, type: color, manager: ActivitiesManager.instance)
-        activitiesMgr.activities?.insert(task, atIndex: 0)
+        let task = TaskActivity(name: name, duration: TaskInterval, type: color, manager: TasksManager.instance)
+        tasksMgr.tasks?.insert(task, atIndex: 0)
         addingNewTask = false
         tableView.reloadRowsAtIndexPaths([NSIndexPath(forRow: 0, inSection: 0)], withRowAnimation: .Fade)
         newTaskCell?.reset()
@@ -210,19 +202,19 @@ extension ActivitiesViewController {
         tableView.reloadData()
         tableView.endEditing(true)
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Add, target: self, action: "beginAddingTask")
-        sendActivitiesToAppleWatch(self)
+        sendTasksToAppleWatch(self)
         tableView.allowsSelection = true
     }
 }
 
 // MARK: UITableViewDelegate
-extension ActivitiesViewController: UITableViewDelegate {
+extension TasksViewController: UITableViewDelegate {
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        if  (indexPath.section == 1 || activitiesMgr.activities == nil) {
+        if  (indexPath.section == 1 || tasksMgr.tasks == nil) {
             return
         }
         guard indexPath.section != 1 else { return }
-        guard activitiesMgr.activities!.count != 0 else {
+        guard tasksMgr.tasks!.count != 0 else {
             return
         }
         guard !(addingNewTask && indexPath.section == 0 && indexPath.row == 0) else { return }
@@ -236,7 +228,7 @@ extension ActivitiesViewController: UITableViewDelegate {
 }
 
 // MARK: UITableViewDataSource
-extension ActivitiesViewController: UITableViewDataSource {
+extension TasksViewController: UITableViewDataSource {
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return 2
     }
@@ -244,13 +236,13 @@ extension ActivitiesViewController: UITableViewDataSource {
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if section == 0 {
             if addingNewTask {
-                return 1 + (activitiesMgr.remainingActivities?.count ?? 0)
+                return 1 + (tasksMgr.remainingTasks?.count ?? 0)
             } else {
-                return max(1, activitiesMgr.remainingActivities?.count ?? 0)
+                return max(1, tasksMgr.remainingTasks?.count ?? 0)
             }
         }
         else if section == 1 {
-            if let completed = activitiesMgr.completedActivities {
+            if let completed = tasksMgr.completedTasks {
             return completed.count
             }
         }
@@ -264,14 +256,14 @@ extension ActivitiesViewController: UITableViewDataSource {
                 newTaskCell = cell
                 return cell
             }
-            else if activitiesMgr.remainingActivities == nil || activitiesMgr.remainingActivities?.count == 0 {
+            else if tasksMgr.remainingTasks == nil || tasksMgr.remainingTasks?.count == 0 {
                 // Placeholder when there are no ongoing tasks
                 return tableView.dequeueReusableCellWithIdentifier("NoOngoingCell", forIndexPath: indexPath)
             } 
         }
         
         let cell = tableView.dequeueReusableCellWithIdentifier(TaskCell.ReuseId, forIndexPath: indexPath) as! TaskCell
-        let task = indexPath.section == 0 ? activitiesMgr.remainingActivities![indexPath.row] : activitiesMgr.completedActivities![indexPath.row]
+        let task = indexPath.section == 0 ? tasksMgr.remainingTasks![indexPath.row] : tasksMgr.completedTasks![indexPath.row]
         if (indexPath.section == 0 && indexPath.row == 0 && task.isStarted()) {
             cell.updateWithTask(task, postfix: "Started")
         } else {
@@ -283,7 +275,7 @@ extension ActivitiesViewController: UITableViewDataSource {
     
     // Completed Header
     func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        if let completed = activitiesMgr.completedActivities {
+        if let completed = tasksMgr.completedTasks {
             if section == 1 && completed.count > 0 {
                 return 30
             }
@@ -292,7 +284,7 @@ extension ActivitiesViewController: UITableViewDataSource {
     }
     
     func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        guard section == 1 && activitiesMgr.activities!.count > 0 else { return nil }
+        guard section == 1 && tasksMgr.tasks!.count > 0 else { return nil }
         let label = UILabel()
         label.text = "COMPLETED"
         label.textAlignment = .Center

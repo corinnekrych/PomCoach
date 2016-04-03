@@ -1,14 +1,6 @@
-//
-//  DetailledActivityViewController.swift
-//  Pom
-//
-//  Created by Corinne Krych on 02/03/16.
-//  Copyright © 2016 corinne. All rights reserved.
-//
-
 import UIKit
 
-public class DetailledActivityViewController: UIViewController {
+public class DetailledTaskViewController: UIViewController {
     public var task: TaskActivity!
     @IBOutlet weak var statusLabel: UILabel!
     @IBOutlet weak var startButton: UIButton!
@@ -18,7 +10,7 @@ public class DetailledActivityViewController: UIViewController {
         if task.isStarted() {
             displayError("Already started", viewController: self)
         } else if task.endDate == nil {
-            if task.name == ActivitiesManager.instance.currentActivity?.name {                
+            if task.name == TasksManager.instance.currentTask?.name {                
                 NSNotificationCenter.defaultCenter().postNotificationName("TimerStarted", object: ["task":task, "sender":"ios"])
             } else {
                 displayError("Do your tasks in order :P", viewController: self)
@@ -54,10 +46,10 @@ public class DetailledActivityViewController: UIViewController {
         if let userInfo = note.object, taskFromNotification = userInfo["task"] as? TaskActivity where taskFromNotification.name == self.task.name {
             saveTasks()
             if let sender = userInfo["sender"] as? String where sender == "watch" {
-                print("::Activity fired from watch")
+                print("::Task fired from watch")
             } else {
-                print("::Activity fired from iOS")
-                sendActivitiesToAppleWatch(self)
+                print("::Task fired from iOS")
+                sendTasksToAppleWatch(self)
             }
             print("iOS app::TimerFired::TaskNotification::\(taskFromNotification)")
             dispatch_async(dispatch_get_main_queue()) {
@@ -72,7 +64,7 @@ public class DetailledActivityViewController: UIViewController {
         if let userInfo = note.object, let taskFromNotification = userInfo["task"] as? TaskActivity where taskFromNotification.name == self.task.name {
             if let sender = userInfo["sender"] as? String where sender == "ios" {
                 task.start()
-                sendActivityToAppleWatch(task, viewController: self)
+                sendTaskToAppleWatch(task, viewController: self)
             }
             saveTasks()
             dispatch_async(dispatch_get_main_queue()) {
