@@ -17,6 +17,7 @@ class InterfaceController: WKInterfaceController {
     @IBOutlet var startButton: WKInterfaceButton!
     @IBOutlet var timer: WKInterfaceTimer!
     @IBOutlet var startButtonImage: WKInterfaceImage!
+    var timerFire: NSTimer!
     
     override func awakeWithContext(context: AnyObject?) {
         super.awakeWithContext(context)
@@ -41,11 +42,26 @@ class InterfaceController: WKInterfaceController {
             let duration = NSDate(timeIntervalSinceNow: currentTask.duration)
             timer.setDate(duration)
             timer.start()
+            timerFire = NSTimer.scheduledTimerWithTimeInterval(currentTask.duration,
+                target: self, selector: "fire", userInfo: nil, repeats: false)
             currentTask.start()
+            group.setBackgroundImageNamed("Time")
+            group.startAnimatingWithImagesInRange(NSMakeRange(0, 90), duration: currentTask.duration, repeatCount: 1)
             startButtonImage.setHidden(true)
             timer.setHidden(false)
             taskNameLabel.setText(currentTask.name)
         }
+    }
+    
+    func fire() {
+        timer.stop()
+        startButtonImage.setHidden(false)
+        timer.setHidden(true)
+        guard let current = TasksManager.instance.currentTask else {return}
+        print("FIRE: \(current.name)")
+        current.stop()
+        group.stopAnimating()
+        display(TasksManager.instance.currentTask)
     }
     
     func display(task: Task?) {
@@ -55,6 +71,7 @@ class InterfaceController: WKInterfaceController {
             startButtonImage.setHidden(true)
             return
         }
+        group.setBackgroundImageNamed("Time0")
         taskNameLabel.setText(task.name)
     }
 

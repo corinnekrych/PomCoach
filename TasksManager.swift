@@ -26,7 +26,7 @@ final public class TasksManager {
     public static let instance = TasksManager()
     
     public init() {
-        self.tasks = [TaskActivity(name: "Task1", manager: self), TaskActivity(name: "Task", manager: self)]
+        self.tasks = [TaskActivity(name: "Task2", manager: self), TaskActivity(name: "Task1", manager: self)]
     }
     
     public init(tasks: [TaskActivity]) {
