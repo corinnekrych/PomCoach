@@ -25,6 +25,8 @@
 		48B557DF1CB14D2A004D7003 /* NotificationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48B557DE1CB14D2A004D7003 /* NotificationController.swift */; };
 		48B557E11CB14D2A004D7003 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 48B557E01CB14D2A004D7003 /* Assets.xcassets */; };
 		48B557E51CB14D2A004D7003 /* Pom WatchKit App.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 48B557C71CB14D2A004D7003 /* Pom WatchKit App.app */; };
+		48B557ED1CB19D0C004D7003 /* Task.swift in Sources */ = {isa = PBXBuildFile; fileRef = 481C34031C81DB2300FBE279 /* Task.swift */; };
+		48B557EE1CB19D0C004D7003 /* TasksManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48751CD41C830086006255F4 /* TasksManager.swift */; };
 		48D2A7251C87666200631650 /* TasksViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48D2A7241C87666200631650 /* TasksViewController.swift */; };
 		48D2A72D1C876EC600631650 /* ColorCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48D2A7291C876EC600631650 /* ColorCell.swift */; };
 		48D2A72E1C876EC600631650 /* NewTaskCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48D2A72A1C876EC600631650 /* NewTaskCell.swift */; };
@@ -494,6 +496,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				48B557ED1CB19D0C004D7003 /* Task.swift in Sources */,
+				48B557EE1CB19D0C004D7003 /* TasksManager.swift in Sources */,
 				48B557DF1CB14D2A004D7003 /* NotificationController.swift in Sources */,
 				48B557DD1CB14D2A004D7003 /* ExtensionDelegate.swift in Sources */,
 				48B557DB1CB14D2A004D7003 /* InterfaceController.swift in Sources */,
@@ -812,6 +816,7 @@
 				48B557E91CB14D2A004D7003 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		48B557EC1CB14D2A004D7003 /* Build configuration list for PBXNativeTarget "Pom WatchKit App" */ = {
 			isa = XCConfigurationList;
@@ -820,6 +825,7 @@
 				48B557E71CB14D2A004D7003 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

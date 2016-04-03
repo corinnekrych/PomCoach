@@ -20,16 +20,27 @@
                                     <group key="contentGroup" width="1" height="1" alignment="left" layout="vertical" id="1ff-7U-oTM">
                                         <items>
                                             <imageView alignment="center" verticalAlignment="center" image="Start" id="MSS-Rt-snX"/>
-                                            <timer alignment="center" verticalAlignment="center" hidden="YES" id="Slz-Uy-zlr"/>
-                                            <label alignment="center" verticalAlignment="center" text="25 min" id="Sjy-1G-AXC">
+                                            <timer alignment="center" verticalAlignment="center" hidden="YES" id="Slz-Uy-zlr">
                                                 <color key="textColor" red="0.0" green="1" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                            </label>
+                                                <fontDescription key="font" type="system" weight="ultraLight" pointSize="27"/>
+                                                <calendarUnit key="units" minute="YES" second="YES"/>
+                                            </timer>
                                         </items>
                                     </group>
+                                    <connections>
+                                        <action selector="onStartButton" destination="AgC-eL-Hgc" id="dQq-yh-2NZ"/>
+                                    </connections>
                                 </button>
                             </items>
                         </group>
                     </items>
+                    <connections>
+                        <outlet property="group" destination="KzP-6l-pMx" id="OEU-Ip-325"/>
+                        <outlet property="startButton" destination="OBm-RO-DqU" id="hDA-HQ-2Eq"/>
+                        <outlet property="startButtonImage" destination="MSS-Rt-snX" id="gxG-HK-gTm"/>
+                        <outlet property="taskNameLabel" destination="Sde-zu-bn3" id="l6n-0Y-oem"/>
+                        <outlet property="timer" destination="Slz-Uy-zlr" id="JdD-n4-fuF"/>
+                    </connections>
                 </controller>
             </objects>
             <point key="canvasLocation" x="220" y="345"/>
