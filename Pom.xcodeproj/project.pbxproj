@@ -15,19 +15,7 @@
 		484FC6111C8045E50014595E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 484FC60F1C8045E50014595E /* LaunchScreen.storyboard */; };
 		484FC61C1C8045E50014595E /* PomTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 484FC61B1C8045E50014595E /* PomTests.swift */; };
 		484FC6271C8045E50014595E /* PomUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 484FC6261C8045E50014595E /* PomUITests.swift */; };
-		484FC62C1C8045E50014595E /* Pom WatchKit App.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 484FC62B1C8045E50014595E /* Pom WatchKit App.app */; };
-		484FC6321C8045E50014595E /* Interface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 484FC6301C8045E50014595E /* Interface.storyboard */; };
-		484FC6341C8045E50014595E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 484FC6331C8045E50014595E /* Assets.xcassets */; };
-		484FC63B1C8045E50014595E /* Pom WatchKit Extension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 484FC63A1C8045E50014595E /* Pom WatchKit Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		484FC6421C8045E50014595E /* InterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 484FC6411C8045E50014595E /* InterfaceController.swift */; };
-		484FC6441C8045E50014595E /* ExtensionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 484FC6431C8045E50014595E /* ExtensionDelegate.swift */; };
-		484FC6461C8045E50014595E /* NotificationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 484FC6451C8045E50014595E /* NotificationController.swift */; };
-		484FC6481C8045E50014595E /* GlanceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 484FC6471C8045E50014595E /* GlanceController.swift */; };
-		484FC64A1C8045E50014595E /* ComplicationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 484FC6491C8045E50014595E /* ComplicationController.swift */; };
-		484FC64C1C8045E50014595E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 484FC64B1C8045E50014595E /* Assets.xcassets */; };
 		48751CD51C830086006255F4 /* TasksManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48751CD41C830086006255F4 /* TasksManager.swift */; };
-		48751CD61C8320A2006255F4 /* Task.swift in Sources */ = {isa = PBXBuildFile; fileRef = 481C34031C81DB2300FBE279 /* Task.swift */; };
-		48751CD71C8320A2006255F4 /* TasksManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48751CD41C830086006255F4 /* TasksManager.swift */; };
 		489F29241C9DA7D900938278 /* CircleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 489F29231C9DA7D900938278 /* CircleView.swift */; };
 		48D2A7251C87666200631650 /* TasksViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48D2A7241C87666200631650 /* TasksViewController.swift */; };
 		48D2A72D1C876EC600631650 /* ColorCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48D2A7291C876EC600631650 /* ColorCell.swift */; };
@@ -50,41 +38,15 @@
 			remoteGlobalIDString = 484FC6021C8045E50014595E;
 			remoteInfo = Pom;
 		};
-		484FC62D1C8045E50014595E /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 484FC5FB1C8045E50014595E /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 484FC62A1C8045E50014595E;
-			remoteInfo = "Pom WatchKit App";
-		};
-		484FC63C1C8045E50014595E /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 484FC5FB1C8045E50014595E /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 484FC6391C8045E50014595E;
-			remoteInfo = "Pom WatchKit Extension";
-		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		484FC6531C8045E50014595E /* Embed App Extensions */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 13;
-			files = (
-				484FC63B1C8045E50014595E /* Pom WatchKit Extension.appex in Embed App Extensions */,
-			);
-			name = "Embed App Extensions";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		484FC6571C8045E50014595E /* Embed Watch Content */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "$(CONTENTS_FOLDER_PATH)/Watch";
 			dstSubfolderSpec = 16;
 			files = (
-				484FC62C1C8045E50014595E /* Pom WatchKit App.app in Embed Watch Content */,
 			);
 			name = "Embed Watch Content";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -106,19 +68,6 @@
 		484FC6221C8045E50014595E /* PomUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PomUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		484FC6261C8045E50014595E /* PomUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PomUITests.swift; sourceTree = "<group>"; };
 		484FC6281C8045E50014595E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		484FC62B1C8045E50014595E /* Pom WatchKit App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Pom WatchKit App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		484FC6311C8045E50014595E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Interface.storyboard; sourceTree = "<group>"; };
-		484FC6331C8045E50014595E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		484FC6351C8045E50014595E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		484FC63A1C8045E50014595E /* Pom WatchKit Extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "Pom WatchKit Extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
-		484FC6401C8045E50014595E /* PushNotificationPayload.apns */ = {isa = PBXFileReference; lastKnownFileType = text; path = PushNotificationPayload.apns; sourceTree = "<group>"; };
-		484FC6411C8045E50014595E /* InterfaceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterfaceController.swift; sourceTree = "<group>"; };
-		484FC6431C8045E50014595E /* ExtensionDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionDelegate.swift; sourceTree = "<group>"; };
-		484FC6451C8045E50014595E /* NotificationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationController.swift; sourceTree = "<group>"; };
-		484FC6471C8045E50014595E /* GlanceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlanceController.swift; sourceTree = "<group>"; };
-		484FC6491C8045E50014595E /* ComplicationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComplicationController.swift; sourceTree = "<group>"; };
-		484FC64B1C8045E50014595E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		484FC64D1C8045E50014595E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		48751CD41C830086006255F4 /* TasksManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TasksManager.swift; sourceTree = "<group>"; };
 		489F29231C9DA7D900938278 /* CircleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CircleView.swift; sourceTree = "<group>"; };
 		48D2A7241C87666200631650 /* TasksViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TasksViewController.swift; sourceTree = "<group>"; };
@@ -149,13 +98,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		484FC6371C8045E50014595E /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -173,8 +115,6 @@
 			children = (
 				481C34021C81DAC700FBE279 /* Shared */,
 				484FC6051C8045E50014595E /* Pom */,
-				484FC62F1C8045E50014595E /* Pom WatchKit App */,
-				484FC63E1C8045E50014595E /* Pom WatchKit Extension */,
 				484FC61A1C8045E50014595E /* PomTests */,
 				484FC6251C8045E50014595E /* PomUITests */,
 				484FC6041C8045E50014595E /* Products */,
@@ -187,8 +127,6 @@
 				484FC6031C8045E50014595E /* Pom.app */,
 				484FC6171C8045E50014595E /* PomTests.xctest */,
 				484FC6221C8045E50014595E /* PomUITests.xctest */,
-				484FC62B1C8045E50014595E /* Pom WatchKit App.app */,
-				484FC63A1C8045E50014595E /* Pom WatchKit Extension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -223,39 +161,6 @@
 				484FC6281C8045E50014595E /* Info.plist */,
 			);
 			path = PomUITests;
-			sourceTree = "<group>";
-		};
-		484FC62F1C8045E50014595E /* Pom WatchKit App */ = {
-			isa = PBXGroup;
-			children = (
-				484FC6301C8045E50014595E /* Interface.storyboard */,
-				484FC6331C8045E50014595E /* Assets.xcassets */,
-				484FC6351C8045E50014595E /* Info.plist */,
-			);
-			path = "Pom WatchKit App";
-			sourceTree = "<group>";
-		};
-		484FC63E1C8045E50014595E /* Pom WatchKit Extension */ = {
-			isa = PBXGroup;
-			children = (
-				484FC6411C8045E50014595E /* InterfaceController.swift */,
-				484FC6431C8045E50014595E /* ExtensionDelegate.swift */,
-				484FC6451C8045E50014595E /* NotificationController.swift */,
-				484FC6471C8045E50014595E /* GlanceController.swift */,
-				484FC6491C8045E50014595E /* ComplicationController.swift */,
-				484FC64B1C8045E50014595E /* Assets.xcassets */,
-				484FC64D1C8045E50014595E /* Info.plist */,
-				484FC63F1C8045E50014595E /* Supporting Files */,
-			);
-			path = "Pom WatchKit Extension";
-			sourceTree = "<group>";
-		};
-		484FC63F1C8045E50014595E /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				484FC6401C8045E50014595E /* PushNotificationPayload.apns */,
-			);
-			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
 		48542B7C1C88DF7C00C821D5 /* ViewControllers */ = {
@@ -293,7 +198,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				484FC62E1C8045E50014595E /* PBXTargetDependency */,
 			);
 			name = Pom;
 			productName = Pom;
@@ -336,40 +240,6 @@
 			productReference = 484FC6221C8045E50014595E /* PomUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
-		484FC62A1C8045E50014595E /* Pom WatchKit App */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 484FC6541C8045E50014595E /* Build configuration list for PBXNativeTarget "Pom WatchKit App" */;
-			buildPhases = (
-				484FC6291C8045E50014595E /* Resources */,
-				484FC6531C8045E50014595E /* Embed App Extensions */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				484FC63D1C8045E50014595E /* PBXTargetDependency */,
-			);
-			name = "Pom WatchKit App";
-			productName = "Pom WatchKit App";
-			productReference = 484FC62B1C8045E50014595E /* Pom WatchKit App.app */;
-			productType = "com.apple.product-type.application.watchapp2";
-		};
-		484FC6391C8045E50014595E /* Pom WatchKit Extension */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 484FC6501C8045E50014595E /* Build configuration list for PBXNativeTarget "Pom WatchKit Extension" */;
-			buildPhases = (
-				484FC6361C8045E50014595E /* Sources */,
-				484FC6371C8045E50014595E /* Frameworks */,
-				484FC6381C8045E50014595E /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = "Pom WatchKit Extension";
-			productName = "Pom WatchKit Extension";
-			productReference = 484FC63A1C8045E50014595E /* Pom WatchKit Extension.appex */;
-			productType = "com.apple.product-type.watchkit2-extension";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -391,12 +261,6 @@
 						CreatedOnToolsVersion = 7.2;
 						TestTargetID = 484FC6021C8045E50014595E;
 					};
-					484FC62A1C8045E50014595E = {
-						CreatedOnToolsVersion = 7.2;
-					};
-					484FC6391C8045E50014595E = {
-						CreatedOnToolsVersion = 7.2;
-					};
 				};
 			};
 			buildConfigurationList = 484FC5FE1C8045E50014595E /* Build configuration list for PBXProject "Pom" */;
@@ -415,8 +279,6 @@
 				484FC6021C8045E50014595E /* Pom */,
 				484FC6161C8045E50014595E /* PomTests */,
 				484FC6211C8045E50014595E /* PomUITests */,
-				484FC62A1C8045E50014595E /* Pom WatchKit App */,
-				484FC6391C8045E50014595E /* Pom WatchKit Extension */,
 			);
 		};
 /* End PBXProject section */
@@ -443,23 +305,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		484FC6291C8045E50014595E /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				484FC6341C8045E50014595E /* Assets.xcassets in Resources */,
-				484FC6321C8045E50014595E /* Interface.storyboard in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		484FC6381C8045E50014595E /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				484FC64C1C8045E50014595E /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -498,20 +343,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		484FC6361C8045E50014595E /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				48751CD61C8320A2006255F4 /* Task.swift in Sources */,
-				48751CD71C8320A2006255F4 /* TasksManager.swift in Sources */,
-				484FC6461C8045E50014595E /* NotificationController.swift in Sources */,
-				484FC6441C8045E50014595E /* ExtensionDelegate.swift in Sources */,
-				484FC64A1C8045E50014595E /* ComplicationController.swift in Sources */,
-				484FC6421C8045E50014595E /* InterfaceController.swift in Sources */,
-				484FC6481C8045E50014595E /* GlanceController.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -524,16 +355,6 @@
 			isa = PBXTargetDependency;
 			target = 484FC6021C8045E50014595E /* Pom */;
 			targetProxy = 484FC6231C8045E50014595E /* PBXContainerItemProxy */;
-		};
-		484FC62E1C8045E50014595E /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 484FC62A1C8045E50014595E /* Pom WatchKit App */;
-			targetProxy = 484FC62D1C8045E50014595E /* PBXContainerItemProxy */;
-		};
-		484FC63D1C8045E50014595E /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 484FC6391C8045E50014595E /* Pom WatchKit Extension */;
-			targetProxy = 484FC63C1C8045E50014595E /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -552,14 +373,6 @@
 				484FC6101C8045E50014595E /* Base */,
 			);
 			name = LaunchScreen.storyboard;
-			sourceTree = "<group>";
-		};
-		484FC6301C8045E50014595E /* Interface.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				484FC6311C8045E50014595E /* Base */,
-			);
-			name = Interface.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -648,68 +461,6 @@
 			};
 			name = Release;
 		};
-		484FC6511C8045E50014595E /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_COMPLICATION_NAME = Complication;
-				INFOPLIST_FILE = "Pom WatchKit Extension/Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = org.corinne.Pom.watchkitapp.watchkitextension;
-				PRODUCT_NAME = "${TARGET_NAME}";
-				SDKROOT = watchos;
-				SKIP_INSTALL = YES;
-				TARGETED_DEVICE_FAMILY = 4;
-				WATCHOS_DEPLOYMENT_TARGET = 2.1;
-			};
-			name = Debug;
-		};
-		484FC6521C8045E50014595E /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_COMPLICATION_NAME = Complication;
-				INFOPLIST_FILE = "Pom WatchKit Extension/Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = org.corinne.Pom.watchkitapp.watchkitextension;
-				PRODUCT_NAME = "${TARGET_NAME}";
-				SDKROOT = watchos;
-				SKIP_INSTALL = YES;
-				TARGETED_DEVICE_FAMILY = 4;
-				WATCHOS_DEPLOYMENT_TARGET = 2.1;
-			};
-			name = Release;
-		};
-		484FC6551C8045E50014595E /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
-				IBSC_MODULE = Pom_WatchKit_Extension;
-				INFOPLIST_FILE = "Pom WatchKit App/Info.plist";
-				PRODUCT_BUNDLE_IDENTIFIER = org.corinne.Pom.watchkitapp;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = watchos;
-				SKIP_INSTALL = YES;
-				TARGETED_DEVICE_FAMILY = 4;
-				WATCHOS_DEPLOYMENT_TARGET = 2.1;
-			};
-			name = Debug;
-		};
-		484FC6561C8045E50014595E /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
-				IBSC_MODULE = Pom_WatchKit_Extension;
-				INFOPLIST_FILE = "Pom WatchKit App/Info.plist";
-				PRODUCT_BUNDLE_IDENTIFIER = org.corinne.Pom.watchkitapp;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = watchos;
-				SKIP_INSTALL = YES;
-				TARGETED_DEVICE_FAMILY = 4;
-				WATCHOS_DEPLOYMENT_TARGET = 2.1;
-			};
-			name = Release;
-		};
 		484FC6591C8045E50014595E /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -788,24 +539,6 @@
 			buildConfigurations = (
 				484FC64E1C8045E50014595E /* Debug */,
 				484FC64F1C8045E50014595E /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		484FC6501C8045E50014595E /* Build configuration list for PBXNativeTarget "Pom WatchKit Extension" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				484FC6511C8045E50014595E /* Debug */,
-				484FC6521C8045E50014595E /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		484FC6541C8045E50014595E /* Build configuration list for PBXNativeTarget "Pom WatchKit App" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				484FC6551C8045E50014595E /* Debug */,
-				484FC6561C8045E50014595E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
