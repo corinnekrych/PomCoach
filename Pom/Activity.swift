@@ -27,9 +27,9 @@ public enum ActivityType: Int, CustomStringConvertible {
     
     public var color: UIColor {
         switch self {
-        case .Task:    return UIColor(red: 4/255.0, green: 222/255.0, blue: 113/255.0, alpha: 1)
+        case .Task:    return UIColor(red: 32/255.0, green: 148/255.0, blue: 250/255.0, alpha: 1)
         case .Break:   return UIColor(red: 255/255.0, green: 149/255.0, blue: 0/255.0, alpha: 1)
-        case .LongBreak:   return UIColor(red: 250/255.0, green: 200/255.0, blue: 20/255.0, alpha: 1)
+        case .LongBreak:   return UIColor(red: 255/255.0, green: 59/255.0, blue: 48/255.0, alpha: 1)
         }
     }
     

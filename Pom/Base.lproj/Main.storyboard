@@ -7,7 +7,7 @@
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
-        <!--POM COACH-->
+        <!--PomCoach-->
         <scene sceneID="mue-N0-OwP">
             <objects>
                 <viewController id="ybq-Nv-qyS" customClass="ActivitiesViewController" customModule="Pom" customModuleProvider="target" sceneMemberID="viewController">
@@ -21,8 +21,8 @@
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="60" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="ffI-UC-DxH">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
-                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                <color key="sectionIndexBackgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="sectionIndexBackgroundColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="NoOngoingCell" id="AcX-7l-kEK">
                                         <rect key="frame" x="0.0" y="22" width="375" height="60"/>
@@ -31,10 +31,10 @@
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="60"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="NOTHING TO DO? TAKE IT EASY ;)" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BH7-rn-PLh">
-                                                    <rect key="frame" x="59" y="20" width="258" height="20"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Nothing to do? Take it easy ;)" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BH7-rn-PLh">
+                                                    <rect key="frame" x="78" y="20" width="219" height="20"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
-                                                    <color key="textColor" red="0.98039215690000003" green="0.066666666669999999" blue="0.30980392159999998" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
@@ -54,7 +54,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KzJ-ZK-xZ8">
-                                                    <rect key="frame" x="8" y="20" width="41.5" height="19.5"/>
+                                                    <rect key="frame" x="8" y="20" width="42" height="20"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                                     <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
@@ -94,7 +94,7 @@
                                                     <rect key="frame" x="0.0" y="0.0" width="375" height="60"/>
                                                     <subviews>
                                                         <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Give me a name" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ONM-yF-7sl">
-                                                            <rect key="frame" x="8" y="20" width="120" height="20"/>
+                                                            <rect key="frame" x="8" y="20" width="367" height="20"/>
                                                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                             <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                             <textInputTraits key="textInputTraits"/>
@@ -104,6 +104,7 @@
                                                     <constraints>
                                                         <constraint firstItem="ONM-yF-7sl" firstAttribute="leading" secondItem="f8Q-hK-vQk" secondAttribute="leadingMargin" id="F6B-sx-ycu"/>
                                                         <constraint firstAttribute="height" constant="60" id="GPa-Ic-ndu"/>
+                                                        <constraint firstAttribute="trailing" secondItem="ONM-yF-7sl" secondAttribute="trailing" id="MdZ-hu-XGp"/>
                                                         <constraint firstItem="ONM-yF-7sl" firstAttribute="centerY" secondItem="f8Q-hK-vQk" secondAttribute="centerY" id="dnL-sl-PzQ"/>
                                                     </constraints>
                                                 </view>
@@ -111,7 +112,7 @@
                                                     <rect key="frame" x="0.0" y="60" width="125" height="30"/>
                                                     <color key="backgroundColor" red="0.9337349398" green="0.0" blue="0.2490904796" alpha="0.29999999999999999" colorSpace="calibratedRGB"/>
                                                     <state key="normal" title="Task">
-                                                        <color key="titleColor" red="0.0" green="0.50196081400000003" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     </state>
                                                     <connections>
                                                         <action selector="onColorButton:" destination="1UZ-lc-HfN" eventType="touchUpInside" id="a2p-O6-oaP"/>
@@ -121,7 +122,7 @@
                                                     <rect key="frame" x="125" y="60" width="125" height="30"/>
                                                     <color key="backgroundColor" red="0.0" green="0.0" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                     <state key="normal" title="Break">
-                                                        <color key="titleColor" red="1" green="1" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     </state>
                                                     <connections>
                                                         <action selector="onColorButton:" destination="1UZ-lc-HfN" eventType="touchUpInside" id="Atu-Ca-lRm"/>
@@ -131,7 +132,7 @@
                                                     <rect key="frame" x="250" y="60" width="125" height="30"/>
                                                     <color key="backgroundColor" red="0.50196081400000003" green="0.50196081400000003" blue="0.50196081400000003" alpha="1" colorSpace="calibratedRGB"/>
                                                     <state key="normal" title="Long Break">
-                                                        <color key="titleColor" red="1" green="0.40000000600000002" blue="0.40000000600000002" alpha="1" colorSpace="calibratedRGB"/>
+                                                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     </state>
                                                     <connections>
                                                         <action selector="onColorButton:" destination="1UZ-lc-HfN" eventType="touchUpInside" id="2UB-Gy-7EW"/>
@@ -181,7 +182,7 @@
                             <constraint firstItem="ffI-UC-DxH" firstAttribute="top" secondItem="2VB-da-scF" secondAttribute="bottom" id="tFT-va-KBp"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="POM COACH" id="eXa-Ng-dtM">
+                    <navigationItem key="navigationItem" title="PomCoach" id="eXa-Ng-dtM">
                         <barButtonItem key="backBarButtonItem" title="Back" id="aJ4-9z-kas"/>
                         <barButtonItem key="leftBarButtonItem" title="Item" systemItem="edit" id="Wmg-zF-NVe">
                             <connections>
@@ -222,20 +223,20 @@
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" weight="ultraLight" pointSize="27"/>
                                 <state key="normal" title="action">
-                                    <color key="titleColor" red="0.40000000600000002" green="1" blue="0.40000000600000002" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
                                     <action selector="startTimer:" destination="Mwi-YD-RMh" eventType="touchUpInside" id="FjG-lo-ivD"/>
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="TaskStatus" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cJF-cY-uLr">
-                                <rect key="frame" x="127" y="285" width="121" height="32.5"/>
+                                <rect key="frame" x="127" y="285" width="121" height="33"/>
                                 <fontDescription key="fontDescription" type="system" weight="ultraLight" pointSize="27"/>
-                                <color key="textColor" red="0.40000000600000002" green="1" blue="0.40000000600000002" alpha="1" colorSpace="calibratedRGB"/>
-                                <color key="highlightedColor" red="0.40000000600000002" green="1" blue="0.40000000600000002" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="highlightedColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="o9p-2C-0Nu" customClass="CircleView" customModule="Pom" customModuleProvider="target">
-                                <rect key="frame" x="37.5" y="151.5" width="300" height="300"/>
+                                <rect key="frame" x="38" y="152" width="300" height="300"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="300" id="MLa-hV-mh7"/>

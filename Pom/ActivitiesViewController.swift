@@ -294,9 +294,9 @@ extension ActivitiesViewController: UITableViewDataSource {
     func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         guard section == 1 && activitiesMgr.activities!.count > 0 else { return nil }
         let label = UILabel()
-        label.text = "    COMPLETED"
-        label.textColor = UIColor(red: 250/255.0, green: 17/255.0, blue: 79/255.0, alpha: 1)
-        label.backgroundColor = UIColor(red: 250/255.0, green: 17/255.0, blue: 79/255.0, alpha: 1).colorWithAlphaComponent(0.17)
+        label.text = "COMPLETED"
+        label.textAlignment = .Center
+        label.textColor = UIColor.whiteColor()
         
         return label
     }
