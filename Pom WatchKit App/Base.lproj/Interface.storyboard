@@ -11,8 +11,24 @@
                 <controller id="AgC-eL-Hgc" customClass="InterfaceController" customModule="Pom_WatchKit_App" customModuleProvider="target">
                     <items>
                         <label alignment="center" text="Label" id="Sde-zu-bn3">
-                            <color key="textColor" red="0.35294117650000001" green="0.7843137255" blue="0.98039215690000003" alpha="1" colorSpace="calibratedRGB"/>
+                            <color key="textColor" red="0.0" green="1" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                            <fontDescription key="font" type="system" weight="ultraLight" pointSize="17"/>
                         </label>
+                        <group width="1" height="0.90000000000000002" alignment="center" verticalAlignment="center" backgroundImage="Time12" id="KzP-6l-pMx">
+                            <items>
+                                <button alignment="left" id="OBm-RO-DqU">
+                                    <group key="contentGroup" width="1" height="1" alignment="left" layout="vertical" id="1ff-7U-oTM">
+                                        <items>
+                                            <imageView alignment="center" verticalAlignment="center" image="Start" id="MSS-Rt-snX"/>
+                                            <timer alignment="center" verticalAlignment="center" hidden="YES" id="Slz-Uy-zlr"/>
+                                            <label alignment="center" verticalAlignment="center" text="25 min" id="Sjy-1G-AXC">
+                                                <color key="textColor" red="0.0" green="1" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                            </label>
+                                        </items>
+                                    </group>
+                                </button>
+                            </items>
+                        </group>
                     </items>
                 </controller>
             </objects>
