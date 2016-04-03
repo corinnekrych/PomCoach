@@ -17,6 +17,14 @@
 		484FC6271C8045E50014595E /* PomUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 484FC6261C8045E50014595E /* PomUITests.swift */; };
 		48751CD51C830086006255F4 /* TasksManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48751CD41C830086006255F4 /* TasksManager.swift */; };
 		489F29241C9DA7D900938278 /* CircleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 489F29231C9DA7D900938278 /* CircleView.swift */; };
+		48B557CB1CB14D2A004D7003 /* Interface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 48B557C91CB14D2A004D7003 /* Interface.storyboard */; };
+		48B557CD1CB14D2A004D7003 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 48B557CC1CB14D2A004D7003 /* Assets.xcassets */; };
+		48B557D41CB14D2A004D7003 /* Pom WatchKit App Extension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 48B557D31CB14D2A004D7003 /* Pom WatchKit App Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		48B557DB1CB14D2A004D7003 /* InterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48B557DA1CB14D2A004D7003 /* InterfaceController.swift */; };
+		48B557DD1CB14D2A004D7003 /* ExtensionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48B557DC1CB14D2A004D7003 /* ExtensionDelegate.swift */; };
+		48B557DF1CB14D2A004D7003 /* NotificationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48B557DE1CB14D2A004D7003 /* NotificationController.swift */; };
+		48B557E11CB14D2A004D7003 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 48B557E01CB14D2A004D7003 /* Assets.xcassets */; };
+		48B557E51CB14D2A004D7003 /* Pom WatchKit App.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 48B557C71CB14D2A004D7003 /* Pom WatchKit App.app */; };
 		48D2A7251C87666200631650 /* TasksViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48D2A7241C87666200631650 /* TasksViewController.swift */; };
 		48D2A72D1C876EC600631650 /* ColorCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48D2A7291C876EC600631650 /* ColorCell.swift */; };
 		48D2A72E1C876EC600631650 /* NewTaskCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48D2A72A1C876EC600631650 /* NewTaskCell.swift */; };
@@ -38,6 +46,20 @@
 			remoteGlobalIDString = 484FC6021C8045E50014595E;
 			remoteInfo = Pom;
 		};
+		48B557D51CB14D2A004D7003 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 484FC5FB1C8045E50014595E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 48B557D21CB14D2A004D7003;
+			remoteInfo = "Pom WatchKit App Extension";
+		};
+		48B557E31CB14D2A004D7003 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 484FC5FB1C8045E50014595E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 48B557C61CB14D2A004D7003;
+			remoteInfo = "Pom WatchKit App";
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -47,8 +69,20 @@
 			dstPath = "$(CONTENTS_FOLDER_PATH)/Watch";
 			dstSubfolderSpec = 16;
 			files = (
+				48B557E51CB14D2A004D7003 /* Pom WatchKit App.app in Embed Watch Content */,
 			);
 			name = "Embed Watch Content";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		48B557EB1CB14D2A004D7003 /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				48B557D41CB14D2A004D7003 /* Pom WatchKit App Extension.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
@@ -70,6 +104,17 @@
 		484FC6281C8045E50014595E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		48751CD41C830086006255F4 /* TasksManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TasksManager.swift; sourceTree = "<group>"; };
 		489F29231C9DA7D900938278 /* CircleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CircleView.swift; sourceTree = "<group>"; };
+		48B557C71CB14D2A004D7003 /* Pom WatchKit App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Pom WatchKit App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		48B557CA1CB14D2A004D7003 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Interface.storyboard; sourceTree = "<group>"; };
+		48B557CC1CB14D2A004D7003 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		48B557CE1CB14D2A004D7003 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		48B557D31CB14D2A004D7003 /* Pom WatchKit App Extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "Pom WatchKit App Extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
+		48B557D91CB14D2A004D7003 /* PushNotificationPayload.apns */ = {isa = PBXFileReference; lastKnownFileType = text; path = PushNotificationPayload.apns; sourceTree = "<group>"; };
+		48B557DA1CB14D2A004D7003 /* InterfaceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterfaceController.swift; sourceTree = "<group>"; };
+		48B557DC1CB14D2A004D7003 /* ExtensionDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionDelegate.swift; sourceTree = "<group>"; };
+		48B557DE1CB14D2A004D7003 /* NotificationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationController.swift; sourceTree = "<group>"; };
+		48B557E01CB14D2A004D7003 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		48B557E21CB14D2A004D7003 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		48D2A7241C87666200631650 /* TasksViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TasksViewController.swift; sourceTree = "<group>"; };
 		48D2A7291C876EC600631650 /* ColorCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ColorCell.swift; path = Views/ColorCell.swift; sourceTree = "<group>"; };
 		48D2A72A1C876EC600631650 /* NewTaskCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NewTaskCell.swift; path = Views/NewTaskCell.swift; sourceTree = "<group>"; };
@@ -98,6 +143,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		48B557D01CB14D2A004D7003 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -117,6 +169,8 @@
 				484FC6051C8045E50014595E /* Pom */,
 				484FC61A1C8045E50014595E /* PomTests */,
 				484FC6251C8045E50014595E /* PomUITests */,
+				48B557C81CB14D2A004D7003 /* Pom WatchKit App */,
+				48B557D71CB14D2A004D7003 /* Pom WatchKit App Extension */,
 				484FC6041C8045E50014595E /* Products */,
 			);
 			sourceTree = "<group>";
@@ -127,6 +181,8 @@
 				484FC6031C8045E50014595E /* Pom.app */,
 				484FC6171C8045E50014595E /* PomTests.xctest */,
 				484FC6221C8045E50014595E /* PomUITests.xctest */,
+				48B557C71CB14D2A004D7003 /* Pom WatchKit App.app */,
+				48B557D31CB14D2A004D7003 /* Pom WatchKit App Extension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -172,6 +228,37 @@
 			name = ViewControllers;
 			sourceTree = "<group>";
 		};
+		48B557C81CB14D2A004D7003 /* Pom WatchKit App */ = {
+			isa = PBXGroup;
+			children = (
+				48B557C91CB14D2A004D7003 /* Interface.storyboard */,
+				48B557CC1CB14D2A004D7003 /* Assets.xcassets */,
+				48B557CE1CB14D2A004D7003 /* Info.plist */,
+			);
+			path = "Pom WatchKit App";
+			sourceTree = "<group>";
+		};
+		48B557D71CB14D2A004D7003 /* Pom WatchKit App Extension */ = {
+			isa = PBXGroup;
+			children = (
+				48B557DA1CB14D2A004D7003 /* InterfaceController.swift */,
+				48B557DC1CB14D2A004D7003 /* ExtensionDelegate.swift */,
+				48B557DE1CB14D2A004D7003 /* NotificationController.swift */,
+				48B557E01CB14D2A004D7003 /* Assets.xcassets */,
+				48B557E21CB14D2A004D7003 /* Info.plist */,
+				48B557D81CB14D2A004D7003 /* Supporting Files */,
+			);
+			path = "Pom WatchKit App Extension";
+			sourceTree = "<group>";
+		};
+		48B557D81CB14D2A004D7003 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				48B557D91CB14D2A004D7003 /* PushNotificationPayload.apns */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
 		48D2A7281C876EBB00631650 /* Views */ = {
 			isa = PBXGroup;
 			children = (
@@ -198,6 +285,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				48B557E41CB14D2A004D7003 /* PBXTargetDependency */,
 			);
 			name = Pom;
 			productName = Pom;
@@ -240,6 +328,40 @@
 			productReference = 484FC6221C8045E50014595E /* PomUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
+		48B557C61CB14D2A004D7003 /* Pom WatchKit App */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 48B557EC1CB14D2A004D7003 /* Build configuration list for PBXNativeTarget "Pom WatchKit App" */;
+			buildPhases = (
+				48B557C51CB14D2A004D7003 /* Resources */,
+				48B557EB1CB14D2A004D7003 /* Embed App Extensions */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				48B557D61CB14D2A004D7003 /* PBXTargetDependency */,
+			);
+			name = "Pom WatchKit App";
+			productName = "Pom WatchKit App";
+			productReference = 48B557C71CB14D2A004D7003 /* Pom WatchKit App.app */;
+			productType = "com.apple.product-type.application.watchapp2";
+		};
+		48B557D21CB14D2A004D7003 /* Pom WatchKit App Extension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 48B557EA1CB14D2A004D7003 /* Build configuration list for PBXNativeTarget "Pom WatchKit App Extension" */;
+			buildPhases = (
+				48B557CF1CB14D2A004D7003 /* Sources */,
+				48B557D01CB14D2A004D7003 /* Frameworks */,
+				48B557D11CB14D2A004D7003 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Pom WatchKit App Extension";
+			productName = "Pom WatchKit App Extension";
+			productReference = 48B557D31CB14D2A004D7003 /* Pom WatchKit App Extension.appex */;
+			productType = "com.apple.product-type.watchkit2-extension";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -261,6 +383,12 @@
 						CreatedOnToolsVersion = 7.2;
 						TestTargetID = 484FC6021C8045E50014595E;
 					};
+					48B557C61CB14D2A004D7003 = {
+						CreatedOnToolsVersion = 7.2;
+					};
+					48B557D21CB14D2A004D7003 = {
+						CreatedOnToolsVersion = 7.2;
+					};
 				};
 			};
 			buildConfigurationList = 484FC5FE1C8045E50014595E /* Build configuration list for PBXProject "Pom" */;
@@ -279,6 +407,8 @@
 				484FC6021C8045E50014595E /* Pom */,
 				484FC6161C8045E50014595E /* PomTests */,
 				484FC6211C8045E50014595E /* PomUITests */,
+				48B557C61CB14D2A004D7003 /* Pom WatchKit App */,
+				48B557D21CB14D2A004D7003 /* Pom WatchKit App Extension */,
 			);
 		};
 /* End PBXProject section */
@@ -305,6 +435,23 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		48B557C51CB14D2A004D7003 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				48B557CD1CB14D2A004D7003 /* Assets.xcassets in Resources */,
+				48B557CB1CB14D2A004D7003 /* Interface.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		48B557D11CB14D2A004D7003 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				48B557E11CB14D2A004D7003 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -343,6 +490,16 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		48B557CF1CB14D2A004D7003 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				48B557DF1CB14D2A004D7003 /* NotificationController.swift in Sources */,
+				48B557DD1CB14D2A004D7003 /* ExtensionDelegate.swift in Sources */,
+				48B557DB1CB14D2A004D7003 /* InterfaceController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -355,6 +512,16 @@
 			isa = PBXTargetDependency;
 			target = 484FC6021C8045E50014595E /* Pom */;
 			targetProxy = 484FC6231C8045E50014595E /* PBXContainerItemProxy */;
+		};
+		48B557D61CB14D2A004D7003 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 48B557D21CB14D2A004D7003 /* Pom WatchKit App Extension */;
+			targetProxy = 48B557D51CB14D2A004D7003 /* PBXContainerItemProxy */;
+		};
+		48B557E41CB14D2A004D7003 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 48B557C61CB14D2A004D7003 /* Pom WatchKit App */;
+			targetProxy = 48B557E31CB14D2A004D7003 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -373,6 +540,14 @@
 				484FC6101C8045E50014595E /* Base */,
 			);
 			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+		48B557C91CB14D2A004D7003 /* Interface.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				48B557CA1CB14D2A004D7003 /* Base */,
+			);
+			name = Interface.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -531,6 +706,66 @@
 			};
 			name = Release;
 		};
+		48B557E61CB14D2A004D7003 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
+				IBSC_MODULE = Pom_WatchKit_App_Extension;
+				INFOPLIST_FILE = "Pom WatchKit App/Info.plist";
+				PRODUCT_BUNDLE_IDENTIFIER = org.corinne.Pom.watchkitapp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 2.1;
+			};
+			name = Debug;
+		};
+		48B557E71CB14D2A004D7003 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
+				IBSC_MODULE = Pom_WatchKit_App_Extension;
+				INFOPLIST_FILE = "Pom WatchKit App/Info.plist";
+				PRODUCT_BUNDLE_IDENTIFIER = org.corinne.Pom.watchkitapp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 2.1;
+			};
+			name = Release;
+		};
+		48B557E81CB14D2A004D7003 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = "Pom WatchKit App Extension/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = org.corinne.Pom.watchkitapp.watchkitextension;
+				PRODUCT_NAME = "${TARGET_NAME}";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 2.1;
+			};
+			name = Debug;
+		};
+		48B557E91CB14D2A004D7003 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = "Pom WatchKit App Extension/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = org.corinne.Pom.watchkitapp.watchkitextension;
+				PRODUCT_NAME = "${TARGET_NAME}";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 2.1;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -569,6 +804,22 @@
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
+		};
+		48B557EA1CB14D2A004D7003 /* Build configuration list for PBXNativeTarget "Pom WatchKit App Extension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				48B557E81CB14D2A004D7003 /* Debug */,
+				48B557E91CB14D2A004D7003 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		48B557EC1CB14D2A004D7003 /* Build configuration list for PBXNativeTarget "Pom WatchKit App" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				48B557E61CB14D2A004D7003 /* Debug */,
+				48B557E71CB14D2A004D7003 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
 		};
 /* End XCConfigurationList section */
 	};
